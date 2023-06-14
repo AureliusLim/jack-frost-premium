@@ -13,9 +13,17 @@ export const POST = (async ({ request }) => {
 		const simProducts = await getSimilarProducts(product.name);
 		// console.log('Simlar products: ' + JSON.stringify(simProducts));
 		if (simProducts.length > 0) return json({ success: false, error: 'Product already exists.' });
-
 		// Move uploaded image to products folder
+		const { data: listData, error: listError } = await supabase.storage
+				.from('images')
+				.list();
+		if (listError) {
+			console.error('Error listing files:', listError);
+		} else {
+			console.log('Files in the "images" bucket:', listData);
+		}
 		console.log('moving uploaded image to products folder...');
+		console.log(product);
 		const { data, error } = await supabase.storage
 			.from('images')
 			.move(product.img_path, `products/${product.img_path}`);

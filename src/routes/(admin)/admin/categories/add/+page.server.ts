@@ -2,12 +2,12 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ locals, fetch }) => {
-	const session = await locals.validate();
+	const session = await locals.validateUser();
 	if (!session) {
 		// throw error(401, 'Unauthorized user.'); // 401 error page
 		throw redirect(303, '/'); // Redirect landing page
 	}
-
+	
 	const res = await fetch('/api/categories');
 	const categories = await res.json();
 

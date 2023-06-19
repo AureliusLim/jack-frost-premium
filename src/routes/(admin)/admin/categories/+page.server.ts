@@ -4,6 +4,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals, fetch }) => {
 	const session = await locals.validate();
+	
 	if (!session) {
 		throw redirect(303, '/'); // Redirect landing page
 	}

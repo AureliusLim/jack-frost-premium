@@ -12,14 +12,19 @@ datasource db {
 
 /// User model
 model User {
-  id       String    @id @unique
-  email    String    @unique
-  role     Role      @default(ADMIN)
-  session  Session[]
-  Key      Key[]
+  id              String    @id @unique
+  email           String    @unique
+  role            Role      @default(ADMIN)
+  session         Session[]
+  Key             Key[]
+  firstName       String?
+  lastName        String?
+  contactNumber   String?
+  address         String?
 
   @@map("user")
 }
+
 
 /// Enums for user roles
 enum Role {

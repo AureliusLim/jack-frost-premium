@@ -6,8 +6,10 @@ export const GET = async ({locals}) => {
   console.log("USERSESSION")
   console.log(session.user?.userEmail)
   let name = session.user?.userEmail;
+  let role = session.user?.userRole;
   return json({
     success: true,
-    name
+    name,
+    role
   });
 };

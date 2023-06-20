@@ -38,8 +38,13 @@ export const actions = {
 			});
 		}
 		// Add order
+		const user = await fetch('/api/get-session');
+		let userresponse = await user.json();
+		const email = userresponse.name;
+		console.log("EMAIL:",email)
 		const order = {
 			name: formData.customer_name as string,
+			email: email as string,
 			contact: formData.contact_number as string,
 			payment: formData.payment_method as string,
 			total: Number(formData.totalprice),

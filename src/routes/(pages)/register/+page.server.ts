@@ -1,10 +1,10 @@
 import { auth } from '$lib/server/lucia';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '$lib/server/prisma';
 
 
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 export const load: PageServerLoad = async ({ locals }) => {
   const {user,session} = await locals.validateUser()

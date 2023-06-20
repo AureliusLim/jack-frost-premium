@@ -130,6 +130,7 @@ model Order {
   /// user        User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
   order_details       OrderDetails[]
   payments            Payment[]
+  orderNumber         String         @default("")
 
   /// @@index([user_id])
   @@map("order")

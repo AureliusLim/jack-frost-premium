@@ -9,8 +9,43 @@
 	import CartStore from '$lib/stores/cart';
 	import LoginModal from '$lib/components/Modal/LoginModal.svelte';
 	import { onMount } from 'svelte';
-	let loggedInEmail: string = '';
-
+	import { beforeUpdate } from 'svelte';
+	beforeUpdate(async () => {
+    console.log("MOUNTING")
+    try {
+      const response = await fetch('api/get-session');
+      const data = await response.json();
+			
+			if(data.role == "USER"){
+				email = data.name;
+			}
+			if(!(data.name)){
+				email= "";
+			}
+     
+      // Fetch the orders from the API
+    } catch (error) {
+      console.error(error);
+    }
+  });
+	onMount(async () => {
+    console.log("MOUNTING")
+    try {
+      const response = await fetch('api/get-session');
+      const data = await response.json();
+			
+			if(data.role == "USER"){
+				email = data.name;
+			}
+			if(!(data.name)){
+				email= "";
+			}
+     
+      // Fetch the orders from the API
+    } catch (error) {
+      console.error(error);
+    }
+  });
 	const openCart = () => {
 		isViewingCart = true;
 		console.log('opening cart');
@@ -31,8 +66,11 @@
 		loginForm = false;
 		const response = await fetch('api/get-session');
 		let data = await response.json()
-		email = data.name;
-		console.log(data)
+		if (data.name){
+			email = data.name;
+			console.log(data)
+		}
+		
 		console.log('closing login');
 	};
 
@@ -55,6 +93,7 @@
       });
 			email = "";
 			console.log("LOGGED OUT")
+			goto("/")
 	}
 	let isViewingCart = false;
 	let loginForm = false;
@@ -68,6 +107,7 @@
 {/if}
 {#if email}
 <button on:click={handleLogout}>Logout</button>
+<button on:click={() => goto('/myorders')}>My Orders</button>
 {/if}
 <button on:click={openRegister}>Register</button>
 <p>{email}</p>

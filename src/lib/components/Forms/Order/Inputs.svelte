@@ -2,7 +2,15 @@
 	import type { Order } from '$lib/types/order';
 	import { createEventDispatcher } from 'svelte';
 	import type { ActionData } from './$types';
-
+	import { onMount } from 'svelte';
+	let isLoggedin = false;
+	// onMount(async()=>{
+	// 	const response = await fetch('api/get-session');
+  //     const data = await response.json();
+	// 		if(!data.name){
+	// 			;
+	// 		}
+	// })
 	const dispatch = createEventDispatcher();
 
 	const closeForm = () => {

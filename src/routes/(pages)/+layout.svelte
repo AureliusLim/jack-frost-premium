@@ -108,6 +108,7 @@
 {#if email}
 <button on:click={handleLogout}>Logout</button>
 <button on:click={() => goto('/myorders')}>My Orders</button>
+<button on:click={() => goto('/profile')}>My Profile</button>
 {/if}
 <button on:click={openRegister}>Register</button>
 <p>{email}</p>

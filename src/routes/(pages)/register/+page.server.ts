@@ -23,8 +23,10 @@ export const actions: Actions = {
       lastName,
       email,
       contactNumber,
-      address,
-      paymentMethod,
+      street,
+      cityProvince,
+      buildingNumber,
+      postalCode,
       password
     } = Object.fromEntries(await request.formData()) as Record<string, string>;
 
@@ -51,8 +53,10 @@ export const actions: Actions = {
 					lastName,
 					email,
 					contactNumber,
-					address,
-			    paymentMethod,
+					street,
+          cityProvince,
+          buildingNumber,
+          postalCode,
         },
       });
 			

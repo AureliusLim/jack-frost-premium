@@ -20,10 +20,14 @@ model User {
   firstName       String?
   lastName        String?
   contactNumber   String?
-  address         String?
+  street          String?
+  cityProvince    String?
+  buildingNumber  String?
+  postalCode      String?
 
   @@map("user")
 }
+
 
 
 /// Enums for user roles

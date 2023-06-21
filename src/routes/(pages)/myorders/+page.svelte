@@ -104,7 +104,7 @@
 <div class="container">
   <div class="content-wrapper">
     <div class="left-box">
-      <button >My Profile</button>
+      <button on:click={()=> goto('/profile')}>Profile Information</button>
       <button >Change Password</button>
       <button on:click={() => goto('/myorders')}>My Orders</button>
       <button on:click={(handleLogout)} >Sign Out</button>
@@ -134,7 +134,7 @@
         </tbody>
       </table>
     {:else}
-      <p class="no-orders">No orders found.</p>
+      <table class="ordertable"><thead><tr><th>No Orders Found.</th></tr></thead></table>
     {/if}
     <div class="right-box">
       {#if selectedOrder}

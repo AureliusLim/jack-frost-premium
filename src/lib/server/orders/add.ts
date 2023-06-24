@@ -5,6 +5,7 @@ import type { CartItem } from '$lib/types/cart';
 // payment method, total price, additional details and order items
 const addOrder = async (
 	name: string,
+	delivery_address: string,
 	email: string,
 	contact: string,
 	payment: string,
@@ -21,7 +22,8 @@ const addOrder = async (
 	console.log(total);
 	const result = await prisma.order.create({
 		data: {
-			name,
+			name: name,
+			delivery_address: delivery_address,
 			email: email,
 			primary_contact: contact,
 			payment_mode: payment,

@@ -5,8 +5,8 @@ import addOrder from '$lib/server/orders/add';
 // Add an order to a database
 export const POST = (async ({ request }) => {
 	try {
-		const { name, email, contact, payment, total, details, items } = await request.json();
-		const { id } = await addOrder(name, email, contact, payment, total, details, items);
+		const { name, delivery_address, email, contact, payment, total, details, items } = await request.json();
+		const { id } = await addOrder(name, delivery_address, email, contact, payment, total, details, items);
 		return json({ success: true, id });
 	} catch (err) {
 		console.error(err);

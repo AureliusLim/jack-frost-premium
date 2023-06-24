@@ -3,7 +3,9 @@
   import { goto } from '$app/navigation';
   let selectedOrder;
   let orders = [];
+  let filteredOrders = [];
   let items;
+  let selectedTab = "all";
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const date = new Date(dateString);
@@ -34,12 +36,41 @@
     items = selectedOrder.order_details;
     console.log(selectedOrder)
   }
+  const allOrder = ()=>{
+    selectedTab = "all";
+    filteredOrders = orders;
+  }
+  const onProcess = ()=>{
+    selectedTab = "onProcess";
+    filteredOrders= [];
+    let count = 0;
+    for(let c = 0; c < orders.length; c++){
+      if(orders[c].payment_status !== "SS"){
+        filteredOrders[count] = orders[c];
+        count++;
+      }
+    }
+    console.log(filteredOrders);
+  }
+  const completedOrder = ()=>{
+    selectedTab = "completed";
+    filteredOrders= [];
+    let count = 0;
+    for(let c = 0; c < orders.length; c++){
+      if(orders[c].payment_status === "SS"){
+        filteredOrders[count] = orders[c];
+        count++;
+      }
+    }
+    console.log(filteredOrders);
+  }
   onMount(async () => {
     console.log("MOUNTING")
     try {
       const response = await fetch('api/get-myorders');
       const data = await response.json();
       orders = data.orders;
+      filteredOrders = orders;
       console.log(orders);
       // Fetch the orders from the API
     } catch (error) {
@@ -76,6 +107,9 @@
     border: 1px solid black;
     margin:5px;
   }
+  .ordertable th {
+    text-align: left; 
+  }
 
   .right-box {
     width: 25%;
@@ -95,6 +129,14 @@
   .breakdown th:nth-child(2) {
     width: 30%;
   }
+  .tabs {
+    font-weight: lighter;
+    
+  }
+
+  .tabs:hover {
+    text-decoration: underline;
+  }
 </style>
 <svelte:head>
   <title>My Orders | Jack Frost Premium Ice Cream</title>
@@ -111,8 +153,16 @@
     </div>
     
     {#if orders.length > 0}
+    
       <table class="ordertable">
+       
         <thead>
+          <tr>
+            <th><button class="tabs" on:click={(allOrder)}>All Orders</button></th>
+            <th><button class="tabs" on:click={(onProcess)}>On Process</button></th>
+            <th><button class="tabs" on:click={(completedOrder)}>Completed</button></th>
+          </tr>
+
           <tr>
             <th>Order No</th>
             <th>Date Ordered</th>
@@ -122,11 +172,18 @@
           </tr>
         </thead>
         <tbody>
-          {#each orders as order}
+          {#each filteredOrders as order}
+
             <tr on:click={() => selectOrder(order)}>
               <td>#{Number(order.orderNumber).toString().padStart(5, '0') ?? '*****'}</td>
               <td>{formatDate(order.created_at)}</td>
-              <td>On Process</td>
+              <td>
+                {#if order.payment_status === 'SS'}
+                  Completed
+                {:else}
+                  On Process
+                {/if}
+              </td>
               <td>{getQuantity(order.order_details)}</td>
               <td>{order.total_price}</td>
             </tr>

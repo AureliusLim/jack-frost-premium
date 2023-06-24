@@ -72,6 +72,7 @@
 			<ul class="text-indigo-900 mt-4 ">
 				<li>Name: {order?.name}</li>
 				<li>Contact Number: {order.primary_contact}</li>
+				<li>Delivery Address: {order.delivery_address}</li>
 				<li>Payment Method: {order.payment_mode}</li>
 			</ul>
 		</div>

@@ -1,7 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
+	import ConfirmationModal from '$lib/components/Modal/Confirmation.svelte';
   let userdetails = {};
+  let isEditing = false;
+  let modalOn = false;
   onMount(async () => {
     console.log("MOUNTING")
     try {
@@ -25,6 +28,55 @@
     console.log('LOGGED OUT');
     goto('/');
   };
+
+  const handleConfirm = ()=>{
+    modalOn = true;
+  }
+  const handleEdit = ()=>{
+    isEditing = true;
+  }
+  const handleCancel = ()=>{
+    isEditing = false;
+  }
+  const handleModalConfirm = async ()=>{
+    modalOn = false;
+    isEditing = false;
+   
+    // Create the request body
+    const requestBody = {
+      firstName: userdetails.firstName,
+      lastName: userdetails.lastName,
+      email: userdetails.email,
+      contactNumber: userdetails.contactNumber,
+      street: userdetails.street,
+      cityProvince: userdetails.cityProvince,
+      buildingNumber: userdetails.buildingNumber,
+      postalCode: userdetails.postalCode
+    };
+    try{
+      const response = await fetch('api/edit-userdetails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+      let data = await response.json();
+      console.log(data.message);
+      if(data.success == false){
+        alert('The email is already registered to another account.');
+      }
+      location.reload()
+    }
+    catch(error){
+      
+      console.log(error)
+    }
+   
+  }
+  const handleModalCancel = ()=>{
+    modalOn = false;
+  }
 </script>
 
 <style>
@@ -55,7 +107,7 @@
     margin: 0px 0px 0px 10px;
     flex-grow: 1;
     border: 1px solid black;
-    height: 500px;
+    height: 600px;
     padding: 10px;
   }
 
@@ -83,6 +135,27 @@
     padding: 5px;
     
   }
+
+  .form-input {
+      border: 1px solid gray;
+     
+      
+      width: 40%; 
+      box-sizing: border-box; 
+  }
+
+  .edit {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .edit button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-left: 5px;
+    border: 1px solid black;
+  }
 </style>
 
 <svelte:head>
@@ -100,57 +173,108 @@
 
     <div class="right-box">
       <div class="profile-wrapper">
+        <form id="userinfo">
         <h1>Profile Information</h1>
-
         <div class="info-grid">
           <div class="info-item">
             <p class="label">First Name</p>
-            <p>{userdetails.firstName}</p>
+            {#if isEditing}
+              <input class="form-input" type="text" id="firstName" bind:value={userdetails.firstName} />
+            {:else}
+              <p>{userdetails.firstName}</p>
+            {/if}
           </div>
 
           <div class="info-item">
             <p class="label">Last Name</p>
-            <p>{userdetails.lastName}</p>
+            {#if isEditing}
+              <input class="form-input" type="text" id="lastName" bind:value={userdetails.lastName} />
+            {:else}
+              <p>{userdetails.lastName}</p>
+            {/if}
           </div>
 
           <div class="info-item">
             <p class="label">Email Address</p>
-            <p>{userdetails.email}</p>
+            {#if isEditing}
+              <input class="form-input" type="text" id="email" bind:value={userdetails.email} />
+            {:else}
+              <p>{userdetails.email}</p>
+            {/if}
           </div>
-
+       
           <div class="info-item">
             <p class="label">Contact</p>
-            <p>{userdetails.contactNumber}</p>
+            {#if isEditing}
+              <input class="form-input" type="text" id="contactNumber" bind:value={userdetails.contactNumber} />
+            {:else}
+              <p>{userdetails.contactNumber}</p>
+            {/if}
           </div>
-          
-        </div>
 
+        </div>
         <h1>Address</h1>
-
         <div class="info-grid">
-          <div class="info-item">
-            <p class="label">Street</p>
-            <p>{userdetails.street}</p>
-          </div>
+            <div class="info-item">
+              <p class="label">Street</p>
+              {#if isEditing}
+                <input class="form-input" type="text" id="street" bind:value={userdetails.street} />
+              {:else}
+                <p>{userdetails.street}</p>
+              {/if}
+            </div>
 
-          <div class="info-item">
-            <p class="label">City, Province</p>
-            <p>{userdetails.cityProvince}</p>
-          </div>
-        
+            <div class="info-item">
+              <p class="label">City, Province</p>
+              {#if isEditing}
+                <input class="form-input" type="text" id="cityProvince" bind:value={userdetails.cityProvince} />
+              {:else}
+                <p>{userdetails.cityProvince}</p>
+              {/if}
+            </div>
 
-          <div class="info-item">
-            <p class="label">Building/Floor/Unit Number</p>
-            <p>{userdetails.buildingNumber}</p>
-          </div>
-
-          <div class="info-item">
-            <p class="label">Postal Code</p>
-            <p>{userdetails.postalCode}</p>
-          </div>
-          
+            <div class="info-item">
+              <p class="label">Building/Floor/Unit Number</p>
+              {#if isEditing}
+                <input class="form-input" type="text" id="buildingNumber" bind:value={userdetails.buildingNumber} />
+              {:else}
+                <p>{userdetails.buildingNumber}</p>
+              {/if}
+            </div>
+            
+            <div class="info-item">
+              <p class="label">Postal Code</p>
+              {#if isEditing}
+                <input class="form-input" type="text" id="postalCode" bind:value={userdetails.postalCode} />
+              {:else}
+                <p>{userdetails.postalCode}</p>
+              {/if}
+            </div>
 
         </div>
+      
+        </form>
+
+        <div class="edit">
+          {#if isEditing}
+            <button class="form-button" on:click={handleConfirm}>Confirm</button>
+            <button class="form-button" on:click={handleCancel}>Cancel</button>
+          {:else}
+            <button class="form-button" on:click={handleEdit}>Edit Details</button>
+          {/if}
+
+        </div>
+        {#if modalOn}
+        <ConfirmationModal
+            confirmationHeader=""
+            confirmationDetails = "Are you sure you want to make the changes?"
+            cancelLabel = "Cancel"
+            confirmLabel = "Confirm"
+            on:confirm={handleModalConfirm}
+            on:cancel={handleModalCancel}
+        />
+        {/if}
+       
       </div>
     </div>
   </div>

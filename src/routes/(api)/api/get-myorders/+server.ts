@@ -1,13 +1,12 @@
 
 import { fail, redirect } from '@sveltejs/kit';
 import { json } from '@sveltejs/kit';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '$lib/server/prisma';
 
 export const GET = async ({locals}) => {
-  const prisma = new PrismaClient();
   const session = await locals.validateUser();
   console.log("USERSESSION")
-  console.log(session.user?.userEmail)
+  console.log("GETTINGORDER:"+session.user?.userEmail)
   let name = session.user?.userEmail;
   
   // insert code here

@@ -17,6 +17,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 };
 
 export const actions: Actions = {
+
   default: async ({ request }) => {
     const {
       firstName,
@@ -29,7 +30,7 @@ export const actions: Actions = {
       postalCode,
       password
     } = Object.fromEntries(await request.formData()) as Record<string, string>;
-
+   
     try {
       // Create a new user in the Prisma database
      

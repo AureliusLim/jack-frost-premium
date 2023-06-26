@@ -6,6 +6,7 @@
 	export let confirmationDetails: string;
 	export let cancelLabel: string;
 	export let confirmLabel: string;
+
 	// export let confirmBtnHoverColor = 'bg-primary-red'
 
 	const dispatch = createEventDispatcher();

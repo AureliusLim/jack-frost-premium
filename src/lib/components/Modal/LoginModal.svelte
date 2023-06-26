@@ -76,9 +76,6 @@
  
 </TemplateModal>
 <style lang="postcss">
-  .form-container{
-    @apply w-full flex flex-col gap-5;
-  }
 
 	h1 {
 		@apply block font-IstokWeb text-navy-blue 
@@ -89,17 +86,29 @@
     margin-bottom: 25px;
   }
 
-  label {
-    color: #352F75;
-    font-weight: 700;
+  .form-container{
+    @apply w-full flex flex-col gap-8;
   }
 
+  label {
+    color: #383D55;
+    font-weight: 700;
+  }
+  
   input {
     height: 40px;
     width: 350px;
     border-radius: 15px;
     background: #F1F1F1;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    text-indent: 15px;
+    color: #383D55;
+    font-weight: 500;
+  }
+
+  input:focus {
+    outline: 3px solid #CDD5EB;
   }
 
   .button-container {

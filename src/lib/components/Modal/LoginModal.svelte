@@ -49,35 +49,72 @@
   };
 </script>
 
-<TemplateModal width="w-full max-w-7xl" on:closeModal={close} bgColor="bg-white">
+<TemplateModal width="max-w-7xl" on:closeModal={close} bgColor="bg-white">
   <div slot="header">
 		<h1>Login</h1>
-		<hr />
 	</div>
     <div slot="body">
       {#if loginFailed}
         <p>Login failed. Please check your email and password.</p>
       {/if}
       <form on:submit|preventDefault={handleSubmit}>
-        <label>
-          Email:
-          <input type="email" bind:value={email} />
-        </label>
-        <label>
-          Password:
-          <input type="password" bind:value={password} />
-        </label>
-        <button type="submit">Login</button>
+        <div class="form-container">
+          <label>
+            Email <br>
+            <input type="email" bind:value={email} />
+          </label>
+          <label>
+            Password <br>
+            <input type="password" bind:value={password} />
+          </label>
+          <div class="button-container">
+            <button type="submit">Login</button>
+          </div>
+        </div>
       </form>
     </div>
  
 </TemplateModal>
 <style lang="postcss">
-  input{
-    border:1px solid black;
+  .form-container{
+    @apply w-full flex flex-col gap-5;
   }
-  button{
-    border:1px solid black;
-    padding:5px;
+
+	h1 {
+		@apply block font-IstokWeb text-navy-blue 
+      font-bold text-5xl text-center pb-4;
+	}
+  
+  p {
+    margin-bottom: 25px;
+  }
+
+  label {
+    color: #352F75;
+    font-weight: 700;
+  }
+
+  input {
+    height: 40px;
+    width: 350px;
+    border-radius: 15px;
+    background: #F1F1F1;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .button-container {
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    margin-top: 30px;
+  }
+
+  button {
+    width: 150px;
+    padding: 5px;
+    border-radius: 20px;
+    color: #FFFFFF;
+    background: #F70B21;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   }
 </style>

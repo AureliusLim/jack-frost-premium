@@ -162,16 +162,16 @@
   <title>My Orders | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 
-<div class="container">
-  <div class="content-wrapper">
-    <div class="left-box">
+<div class = "max-w-full flex flex-col min-h-min">
+  <div class="main-container">
+    <div class="side-menu">
       <button on:click={() => goto('/profile')}>Profile Information</button>
       <button>Change Password</button>
       <button on:click={() => goto('/myorders')}>My Orders</button>
       <button on:click={handleLogout}>Sign Out</button>
     </div>
 
-    <div class="right-box">
+    <div class="info-container">
       <div class="profile-wrapper">
         <form id="userinfo">
         <h1>Profile Information</h1>
@@ -279,3 +279,82 @@
     </div>
   </div>
 </div>
+
+
+<style>
+  .main-container {
+    width: 1920px;
+    height: 720px;
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    padding: 40px;
+    background: #CDD5EB;
+  }
+
+  .side-menu {
+    width: 250px;
+    height: 423px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+    font-weight: 700;
+  }
+
+  .info-container {
+    width: 1620px;
+    height: max;
+    border: 1px solid white;
+    padding: 10px;
+
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+    font-weight: 700;
+  }
+
+  .profile-wrapper {
+    padding: 30px;
+    font-size: 17px;
+  }
+
+  h1 {
+    font-size: 29px;
+    font-weight: bold;
+  }
+
+  .info-grid {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .info-item {
+    margin-bottom: 40px;
+    flex-basis: 50%;
+  }
+  
+  .detail {
+    font-weight: 400;
+  }
+
+ .button-container {
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    margin-top: 30px;
+  }
+
+  .edit-button {
+    width: 180px;
+    padding: 5px;
+    border-radius: 20px;
+    background: #383D55;
+    color: #FFF;
+  }
+</style>

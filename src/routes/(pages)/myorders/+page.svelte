@@ -78,49 +78,200 @@
     }
   });
 </script>
+
+<div class="max-w-full flex flex-col min-h-min">
+  <div class="main-container">
+    <div class="side-menu">
+      <button on:click={()=> goto('/profile')}>Profile Information</button>
+      <button >Change Password</button>
+      <button on:click={() => goto('/myorders')}>My Orders</button>
+      <button on:click={(handleLogout)} >Sign Out</button>
+    </div>
+    
+    <div class="info-container">
+      <h1>My Orders</h1>
+      <div class="tabs-container">
+        <button class="tabs" on:click={(allOrder)}>All Orders</button>
+        <button class="tabs" on:click={(onProcess)}>On Process</button>
+        <button class="tabs" on:click={(completedOrder)}>Completed</button>
+      </div>
+
+      {#if orders.length > 0}      
+        <table class="ordertable">
+          <thead>
+            <tr>
+              <th>Order No.</th>
+              <th>Date Ordered</th>
+              <th>Status</th>
+              <th>Qty</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {#each filteredOrders as order}
+              <tr on:click={() => selectOrder(order)}>
+                <td>#{Number(order.orderNumber).toString().padStart(5, '0') ?? '*****'}</td>
+                <td>{formatDate(order.created_at)}</td>
+                <td>
+                  {#if order.payment_status === 'SS'}
+                    Completed
+                  {:else}
+                    On Process
+                  {/if}
+                </td>
+                <td>{getQuantity(order.order_details)}</td>
+                <td>{order.total_price}</td>
+              </tr>
+            {/each}
+
+          </tbody>
+        </table>
+      {:else}
+        <p>No Orders Found.</p>
+      {/if}
+    </div>
+    <div class="breakdown-container">
+      {#if selectedOrder}
+        
+        <h3>Order No.</h3>
+        <h2>#{Number(selectedOrder.orderNumber).toString().padStart(5, '0') ?? '*****'}</h2>
+        <h3>Date Ordered</h3>
+        <h4>{formatDate(selectedOrder.created_at)}</h4>
+
+        <table class="breakdown">
+          <thead>
+            <th><h3>Item</h3></th>
+            <th><h3>Price</h3></th>
+          </thead>
+          {#each items as item}
+            <tr>
+              <td>{item.product.name}</td>
+              <td>Php {item.offering.price * item.quantity}</td>
+            </tr>
+          {/each}
+        </table>
+        
+      {:else}
+        <div class="empty-breakdown">
+          <p>Select an order.</p>
+        </div>
+      {/if}
+    </div>
+  </div>
+</div>
+
+
 <style>
-  .container {
+  .main-container {
+    width: 1920px;
+    height: 720px;
     display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .content-wrapper {
-    flex-grow: 1;
-    min-height: 200px;
-    overflow-y: auto;
-    display: flex;
+    gap: 40px;
     justify-content: center;
-    align-items: flex-start;
+    padding: 40px;
+    background: #CDD5EB;
   }
-
-  .left-box {
-    width: 25%;
-    border: 1px solid black;
-    padding: 10px;
+  .side-menu {
+    width: 250px;
+    height: 423px;
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
+
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
   }
 
+  .info-container {
+    width: 1181px;
+    height: max;
+
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+  }
+
+  h1 {
+    font-size: 29px;
+    font-weight: bold;
+    margin-top: 40px;
+    margin-left: 40px;
+  }
+
+  .tabs-container {
+    margin-top: 30px;
+    margin-left: 40px;
+    display: flex;
+    gap: 50px;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.25);
+  }
+
+  .tabs:hover {
+    text-decoration: underline;
+  }
+  
   .ordertable {
-    width: 50%;
-    border: 1px solid black;
-    margin:5px;
-  }
-  .ordertable th {
-    text-align: left; 
-  }
-
-  .right-box {
-    width: 25%;
-    border: 1px solid black;
-    margin:10px;
+    width: 1181px;
+    margin-top: 5px;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
-  tr{
+  .ordertable th{
+    background-color: #F2F2F2;
+    padding: 1rem 2.5rem;
+  }
+
+  .ordertable tr{
     height:50px;
     width:50px;
     cursor: pointer;
+  }
+
+  .ordertable td{
+    padding: 1rem 2.5rem;
+  }
+
+  .ordertable tr:nth-child(even) {
+    background-color: #F2F2F2;
+  }
+  
+  .breakdown-container {
+    height: max;
+    width: 400px;
+    padding: 30px;
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+  }
+
+  h4{
+    color: #383D55;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  h3{
+    color: rgba(0, 0, 0, 0.25);
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  h2 {
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .breakdown{
+    width: 100%;
+    text-align: left;
   }
   .breakdown th:nth-child(1) {
     width: 70%;
@@ -129,93 +280,28 @@
   .breakdown th:nth-child(2) {
     width: 30%;
   }
-  .tabs {
-    font-weight: lighter;
-    
+
+  .breakdown td:nth-child(1) {
+    width: 70%;
   }
 
-  .tabs:hover {
-    text-decoration: underline;
+  .breakdown td:nth-child(2) {
+    width: 30%;
   }
+
+  p{
+    margin-top: 180px;
+    color: rgba(0, 0, 0, 0.25);
+    font-weight: 700;
+    font-size: 20px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
 </style>
 <svelte:head>
   <title>My Orders | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 
 
-<div class="container">
-  <div class="content-wrapper">
-    <div class="left-box">
-      <button on:click={()=> goto('/profile')}>Profile Information</button>
-      <button >Change Password</button>
-      <button on:click={() => goto('/myorders')}>My Orders</button>
-      <button on:click={(handleLogout)} >Sign Out</button>
-    </div>
-    
-    {#if orders.length > 0}
-    
-      <table class="ordertable">
-       
-        <thead>
-          <tr>
-            <th><button class="tabs" on:click={(allOrder)}>All Orders</button></th>
-            <th><button class="tabs" on:click={(onProcess)}>On Process</button></th>
-            <th><button class="tabs" on:click={(completedOrder)}>Completed</button></th>
-          </tr>
-
-          <tr>
-            <th>Order No</th>
-            <th>Date Ordered</th>
-            <th>Status</th>
-            <th>Qty</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {#each filteredOrders as order}
-
-            <tr on:click={() => selectOrder(order)}>
-              <td>#{Number(order.orderNumber).toString().padStart(5, '0') ?? '*****'}</td>
-              <td>{formatDate(order.created_at)}</td>
-              <td>
-                {#if order.payment_status === 'SS'}
-                  Completed
-                {:else}
-                  On Process
-                {/if}
-              </td>
-              <td>{getQuantity(order.order_details)}</td>
-              <td>{order.total_price}</td>
-            </tr>
-          {/each}
-        </tbody>
-      </table>
-    {:else}
-      <table class="ordertable"><thead><tr><th>No Orders Found.</th></tr></thead></table>
-    {/if}
-    <div class="right-box">
-      {#if selectedOrder}
-        
-        <p>Order No: #{Number(selectedOrder.orderNumber).toString().padStart(5, '0') ?? '*****'}</p>
-        <table class="breakdown">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          {#each items as item}
-            <tr>
-              <td>{item.product.name}</td>
-              <td>{item.offering.price * item.quantity}</td>
-            </tr>
-
-          {/each}
-        </table>
-        
-      {:else}
-        <p>Select an order to view its details</p>
-      {/if}
-    </div>
-  </div>
-</div>

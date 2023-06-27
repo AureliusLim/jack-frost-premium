@@ -167,7 +167,7 @@
   <div class="main-container">
     <div class="side-menu">
       <button on:click={() => goto('/profile')}>Profile Information</button>
-      <button>Change Password</button>
+      <button on:click={()=> goto('/changepassword')}>Change Password</button>
       <button on:click={() => goto('/myorders')}>My Orders</button>
       <button on:click={handleLogout}>Sign Out</button>
     </div>

@@ -1,214 +1,214 @@
 <script lang="ts">
-	import { enhance, type SubmitFunction } from '$app/forms';
-	import type { ActionData } from './$types';
-	import { goto } from '$app/navigation';
-	import Logo from '$lib/components/Logo.svelte';
-	import AlertSuccess from '$lib/components/Alert/Success.svelte';
-	import AlertLoading from '$lib/components/Alert/Loading.svelte';
-	import AlertError from '$lib/components/Alert/Error.svelte';
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+  import ConfirmationModal from '$lib/components/Modal/Confirmation.svelte';
 
-	export let form: ActionData;
+  let pass = {};
+  let isEditing = false;
+  let modalOn = false;
+  let status = "";
+  onMount(async () => {
+    console.log("MOUNTING");
+    status = "";
+    try {
+      const response = await fetch('api/get-userdetails');
+      const data = await response.json();
+      userdetails = data;
+      // Fetch the orders from the API
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
-	let isAuthenticating = false;
-	let isSuccess = false;
-	let isAuthError = false;
-	let isPasswordError = false;
-	let isConfirmError = false;
+  const handleLogout = async () => {
+    const response = await fetch('api/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: 'Logged out',
+    });
 
-	const removePasswordError = () => {
-		if (isAuthError) {
-			isAuthError = false;
-		}
-		if (isPasswordError) {
-			isPasswordError = false;
-		}
-	};
+    console.log('LOGGED OUT');
+    goto('/');
+  };
 
-	const removeConfirmError = () => {
-		if (isAuthError) {
-			isAuthError = false;
-		}
-		if (isConfirmError) {
-			isConfirmError = false;
-		}
-	};
+  const handleConfirm = () => {
+    modalOn = true;
+  };
 
-	const submitUpdate: SubmitFunction = ({ form }) => {
-		// Validation in server-side
-		isAuthenticating = true;
-		return async ({ result, update }) => {
-			form.reset(); // Force reset form
-			isAuthenticating = false;
-			switch (result.type) {
-				case 'redirect':
-					isSuccess = true;
-					// Reset form
-					form.reset();
-					setTimeout(() => {
-						goto('/admin/login');
-					}, 2000);
-					break;
-				case 'failure':
-					// Update form message
-					isAuthError = true;
-					isPasswordError = true;
-					isConfirmError = true;
-					break;
-			}
-			await update();
-		};
-	};
+  const handleModalConfirm = async () => {
+    modalOn = false;
+    isEditing = false;
+
+    // Create the request body
+    const requestBody = {
+      old: pass.old,
+      new: pass.new,
+      confirmation: pass.confirm
+    }
+
+    try {
+      const response = await fetch('api/edit-password',{
+        method: 'POST',
+        headers:{
+          'Content-type':'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+      let data = await response.json();
+      status = data.message
+      console.log(data)
+
+      // location.reload();
+    } catch (error) {
+     console.log(error)
+    }
+  };
+
+  const handleModalCancel = () => {
+    modalOn = false;
+  };
 </script>
 
 <style>
-  .container {
+  .main-container {
+    width: 1920px;
+    height: 720px;
     display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .content-wrapper {
-    flex-grow: 1;
-    min-height: 200px;
-    overflow-y: auto;
-    display: flex;
+    gap: 40px;
     justify-content: center;
-    align-items: flex-start;
+    padding: 40px;
+    background: #CDD5EB;
   }
 
-  .left-box {
-    width: 25%;
-    border: 1px solid black;
-    padding: 10px;
+  .side-menu {
+    width: 250px;
+    height: 423px;
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+    font-weight: 700;
   }
 
-  .right-box {
-    margin: 0px 0px 0px 10px;
-    flex-grow: 1;
-    border: 1px solid black;
-    height: 500px;
+  .info-container {
+    width: 1620px;
+    height: max-content; /* Change height to max-content to adjust based on content size */
+    border: 1px solid white;
     padding: 10px;
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+    font-weight: 700;
   }
 
   .profile-wrapper {
-    margin: 20px;
+    padding: 30px;
+    font-size: 17px;
   }
 
   h1 {
-    font-size: 24px;
+    font-size: 29px;
     font-weight: bold;
   }
 
+  .form-input {
+    border: 1px solid black;
+  }
+
   .info-grid {
+    margin-top: 20px;
+    margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
-    margin: 15px;
   }
 
   .info-item {
+    margin-bottom: 40px;
     flex-basis: 50%;
-    padding: 5px;
-    
   }
 
-  
+  .password-fields {
+    display: flex;
+    gap: 10px;
+  }
+
+  .button-container {
+    display: flex;
+    align-items: flex-end; /* Change align-items to flex-end to align buttons at the bottom */
+    justify-content: flex-end; /* Change justify-content to flex-end to align buttons at the bottom */
+    margin-top: 30px;
+  }
+
+  .form-button {
+    width: 180px;
+    padding: 5px;
+    border-radius: 20px;
+    background: #383D55;
+    color: #FFF;
+  }
 </style>
+
 <svelte:head>
-  <title>Change Password | Jack Frost Premium Ice Cream</title>
+  <title>My Orders | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 
-<div class="container">
-  <div class="content-wrapper">
-    <div class="left-box">
-      <button on:click={()=> goto('/profile')}>Profile Information</button>
-      <button on:click={()=> goto('/changepassword')}>Change Password</button>
+<div class="max-w-full flex flex-col min-h-min">
+  <div class="main-container">
+    <div class="side-menu">
+      <button on:click={() => goto('/profile')}>Profile Information</button>
+      <button on:click={() => goto('/changepassword')}>Change Password</button>
       <button on:click={() => goto('/myorders')}>My Orders</button>
-      <button on:click={(handleLogout)} >Sign Out</button>
+      <button on:click={handleLogout}>Sign Out</button>
     </div>
 
-    <div class="right-box">
+    <div class="info-container">
       <div class="profile-wrapper">
-        <form method = "POST">
+        <form id="userinfo">
           <h1>Change Password</h1>
+          <p class="message">{status}</p>
 
-        {#if form?.message && isAuthError}
-          <AlertError padding="pb-4 font-semibold" message={form?.message} />
-        {:else if isAuthenticating}
-          <AlertLoading padding="pb-4 font-semibold" message="Validating..." />
-        {:else if isSuccess}
-          <AlertSuccess padding="pb-4 font-semibold" message="Password successfully updated" />
-        {/if}
+          <div class="info-grid">
+            <div class="info-item">
+              <p class="label">Old Password</p>
+              <input class="form-input" type="password" id="oldpass" bind:value={pass.old} />
+            </div>
+
+            <div class="info-item">
+              <!-- i dont know how else to force create space -->
+            </div>
+
+            <div class="info-item">
+              <p class="label">New Password</p>
+              <input class="form-input" type="password" id="newpass" bind:value={pass.new}/>
+            </div>
+            <div class="info-item">
+              <p class="label">Confirm Password</p>
+              <input class="form-input" type="password" id="confirmpass" bind:value={pass.confirm}/>
+            </div>
+
+            <div class="button-container">
+              <button class="form-button" on:click={handleConfirm}>Change Password</button>
+            </div>
+          </div>
+
           
-          <div class="info-grid">
-            <div class="info-item">				
-              <label for="old_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Old Password
-              <input
-                type="password"
-                placeholder="Enter your old password"
-                class="input input-info input-bordered text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                id="old_password"
-                name="old_password"
-                value={undefined ?? ''}
-                on:keypress={removePasswordError}
-                disabled={isAuthenticating || isSuccess}
-                required
-              />
-            </label>
-            </div>
-          </div>
+        </form>
 
-          <div class="info-grid">
-            <div class="info-item">				
-              <label for="new_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                New Password
-              <input
-                type="password"
-                placeholder="Enter your new password"
-                class="input input-info input-bordered text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                id="new_password"
-                name="new_password"
-                value={undefined ?? ''}
-                on:keypress={removePasswordError}
-                disabled={isAuthenticating || isSuccess}
-                required
-              />
-              </label>
-            </div>
-          </div>
-
-          <div class="info-grid">
-            <div class="info-item">				
-              <label for="confirm_newpassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Confirm New Password
-                <input
-                  type="password"
-                  placeholder="Confirm your new password"
-                  class="input input-info input-bordered text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  id="confirm_newpassword"
-                  name="confirm_newpassword"
-                  value={undefined ?? ''}
-                  on:keypress={removePasswordError}
-                  disabled={isAuthenticating || isSuccess}
-                  required
-                />
-              </label>
-            </div>
-          </div>
-
-          <button
-          class="btn btn-button text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-          type="submit" 
-          disabled={isAuthenticating || isSuccess}>
-          Change password
-          </button>
-          </form>
-        </div>
-      </div>     
+        {#if modalOn}
+          <ConfirmationModal
+            confirmationHeader=""
+            confirmationDetails="Are you sure you want to make the changes?"
+            cancelLabel="Cancel"
+            confirmLabel="Confirm"
+            on:confirm={handleModalConfirm}
+            on:cancel={handleModalCancel}
+          />
+        {/if}
+      </div>
     </div>
   </div>
-
-
- 
+</div>

@@ -80,81 +80,82 @@
 </script>
 
 <style>
-  .container {
+  .main-container {
+    width: 1920px;
+    height: 720px;
     display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .content-wrapper {
-    flex-grow: 1;
-    min-height: 200px;
-    overflow-y: auto;
-    display: flex;
+    gap: 40px;
     justify-content: center;
-    align-items: flex-start;
+    padding: 40px;
+    background: #CDD5EB;
   }
 
-  .left-box {
-    width: 25%;
-    border: 1px solid black;
-    padding: 10px;
+  .side-menu {
+    width: 250px;
+    height: 423px;
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
+
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+    font-weight: 700;
   }
 
-  .right-box {
-    margin: 0px 0px 0px 10px;
-    flex-grow: 1;
-    border: 1px solid black;
-    height: 600px;
+  .info-container {
+    width: 1620px;
+    height: max;
+    border: 1px solid white;
     padding: 10px;
+
+    background: #FFF;
+    color: #383D55;
+    font-family: Istok Web;
+    font-weight: 700;
   }
 
   .profile-wrapper {
-    margin: 20px;
+    padding: 30px;
+    font-size: 17px;
   }
 
   h1 {
-    font-size: 24px;
+    font-size: 29px;
     font-weight: bold;
   }
-
-  .label {
-    font-weight: bold;
+  .form-input{
+    border:1px solid black;
   }
-
   .info-grid {
+    margin-top: 20px;
+    margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
-    margin: 15px;
   }
 
   .info-item {
+    margin-bottom: 40px;
     flex-basis: 50%;
-    padding: 5px;
-    
+  }
+  
+  .detail {
+    font-weight: 400;
   }
 
-  .form-input {
-      border: 1px solid gray;
-     
-      
-      width: 40%; 
-      box-sizing: border-box; 
-  }
-
-  .edit {
+ .button-container {
     display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
+    align-items: right;
+    justify-content: right;
+    margin-top: 30px;
   }
 
-  .edit button {
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-left: 5px;
-    border: 1px solid black;
+  .edit-button {
+    width: 180px;
+    padding: 5px;
+    border-radius: 20px;
+    background: #383D55;
+    color: #FFF;
   }
 </style>
 
@@ -281,80 +282,3 @@
 </div>
 
 
-<style>
-  .main-container {
-    width: 1920px;
-    height: 720px;
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    padding: 40px;
-    background: #CDD5EB;
-  }
-
-  .side-menu {
-    width: 250px;
-    height: 423px;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-
-    background: #FFF;
-    color: #383D55;
-    font-family: Istok Web;
-    font-weight: 700;
-  }
-
-  .info-container {
-    width: 1620px;
-    height: max;
-    border: 1px solid white;
-    padding: 10px;
-
-    background: #FFF;
-    color: #383D55;
-    font-family: Istok Web;
-    font-weight: 700;
-  }
-
-  .profile-wrapper {
-    padding: 30px;
-    font-size: 17px;
-  }
-
-  h1 {
-    font-size: 29px;
-    font-weight: bold;
-  }
-
-  .info-grid {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .info-item {
-    margin-bottom: 40px;
-    flex-basis: 50%;
-  }
-  
-  .detail {
-    font-weight: 400;
-  }
-
- .button-container {
-    display: flex;
-    align-items: right;
-    justify-content: right;
-    margin-top: 30px;
-  }
-
-  .edit-button {
-    width: 180px;
-    padding: 5px;
-    border-radius: 20px;
-    background: #383D55;
-    color: #FFF;
-  }
-</style>

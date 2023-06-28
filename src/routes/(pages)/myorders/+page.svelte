@@ -214,7 +214,6 @@
   
   .ordertable {
     width: 100%;
-    
     margin-top: 5px;
     justify-content: center;
     align-items: center;
@@ -230,7 +229,7 @@
 
   .ordertable tr{
     height:50px;
-    width:50px;
+    width:100%;
     cursor: pointer;
   }
 

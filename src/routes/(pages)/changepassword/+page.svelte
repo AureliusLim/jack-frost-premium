@@ -2,11 +2,16 @@
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import ConfirmationModal from '$lib/components/Modal/Confirmation.svelte';
+	import CustomerSuccess from '$lib/components/Alert/CustomerSuccess.svelte';
+  import CustomerError from '$lib/components/Alert/CustomerError.svelte';
 
   let pass = {};
   let isEditing = false;
   let modalOn = false;
-  let status = "";
+  let alertOn = false;
+  let status;
+  let msg = "";
+  
   onMount(async () => {
     console.log("MOUNTING");
     status = "";
@@ -40,6 +45,7 @@
   const handleModalConfirm = async () => {
     modalOn = false;
     isEditing = false;
+    alertOn = true;
 
     // Create the request body
     const requestBody = {
@@ -57,7 +63,8 @@
         body: JSON.stringify(requestBody),
       });
       let data = await response.json();
-      status = data.message
+      status = data.success
+      msg = data.message
       console.log(data)
 
       // location.reload();
@@ -69,12 +76,17 @@
   const handleModalCancel = () => {
     modalOn = false;
   };
+
+  const handleAlertClose = () => {
+    alertOn = false;
+    console.log(alertOn)
+  }
+
 </script>
 
 <style>
   .main-container {
-    width: 1920px;
-    height: 720px;
+    height: max-content;
     display: flex;
     gap: 40px;
     justify-content: center;
@@ -83,7 +95,7 @@
   }
 
   .side-menu {
-    width: 250px;
+    width: 20%;
     height: 423px;
     padding-top: 20px;
     display: flex;
@@ -95,7 +107,7 @@
   }
 
   .info-container {
-    width: 1620px;
+    width: 80%;
     height: max-content; /* Change height to max-content to adjust based on content size */
     border: 1px solid white;
     padding: 10px;
@@ -110,13 +122,40 @@
     font-size: 17px;
   }
 
+  .top-container {
+    width: max;
+    display: flex;
+  }
+  .h1-container{
+    width: 50%;
+  }
+
+  .prompt-container{
+    width: 50%;
+    display: flex;
+    align-items: right;
+    justify-content: right;
+  }
+
   h1 {
     font-size: 29px;
     font-weight: bold;
   }
 
-  .form-input {
-    border: 1px solid black;
+  .form-input{
+    height: 29px;
+    width: 350px;
+    border-radius: 15px;
+    background: #F1F1F1;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    text-indent: 15px;
+    color: #383D55;
+    font-weight: 500;
+  }
+
+  .form-input:focus {
+    outline: 3px solid #CDD5EB;
   }
 
   .info-grid {
@@ -131,15 +170,10 @@
     flex-basis: 50%;
   }
 
-  .password-fields {
-    display: flex;
-    gap: 10px;
-  }
-
   .button-container {
     display: flex;
-    align-items: flex-end; /* Change align-items to flex-end to align buttons at the bottom */
-    justify-content: flex-end; /* Change justify-content to flex-end to align buttons at the bottom */
+    align-items: right;
+    justify-content: right;
     margin-top: 30px;
   }
 
@@ -168,8 +202,28 @@
     <div class="info-container">
       <div class="profile-wrapper">
         <form id="userinfo">
-          <h1>Change Password</h1>
-          <p class="message">{status}</p>
+          <div class="top-container">
+            <div class="h1-container"><h1>Change Password</h1></div>
+
+            <!-- for successful/error prompts -->
+            <div class="prompt-container">
+              {#if alertOn == true} 
+                {#if status == true}
+                  <CustomerSuccess
+                  message={msg}
+                  on:closeAlert={handleAlertClose}
+                  />
+                {/if}
+
+                {#if status == false}
+                  <CustomerError
+                  message={msg}
+                  on:closeAlert={handleAlertClose}
+                  />
+                {/if}
+              {/if}
+            </div>
+          </div>
 
           <div class="info-grid">
             <div class="info-item">
@@ -178,7 +232,7 @@
             </div>
 
             <div class="info-item">
-              <!-- i dont know how else to force create space -->
+              <!-- empty space -->
             </div>
 
             <div class="info-item">
@@ -186,28 +240,29 @@
               <input class="form-input" type="password" id="newpass" bind:value={pass.new}/>
             </div>
             <div class="info-item">
-              <p class="label">Confirm Password</p>
+              <p class="label">Confirm New Password</p>
               <input class="form-input" type="password" id="confirmpass" bind:value={pass.confirm}/>
-            </div>
-
-            <div class="button-container">
-              <button class="form-button" on:click={handleConfirm}>Change Password</button>
             </div>
           </div>
 
           
         </form>
 
+        <div class="button-container">
+          <button class="form-button" on:click={handleConfirm}>Change Password</button>
+        </div>
+
         {#if modalOn}
           <ConfirmationModal
             confirmationHeader=""
             confirmationDetails="Are you sure you want to make the changes?"
             cancelLabel="Cancel"
-            confirmLabel="Confirm"
+            confirmLabel="Change Password"
             on:confirm={handleModalConfirm}
             on:cancel={handleModalCancel}
           />
         {/if}
+        
       </div>
     </div>
   </div>

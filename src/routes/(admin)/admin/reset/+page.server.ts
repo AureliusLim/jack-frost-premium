@@ -8,9 +8,9 @@ import { env } from '$env/dynamic/private';
 
 // Protect logged in user from accessing login page
 export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.validate();
+	const session = await locals.validateUser();
 	console.log(session);
-	if (session) {
+	if (session && session.user?.userRole === 'ADMIN') {
 		// Redirect to admin home page
 		throw redirect(302, '/admin');
 	}

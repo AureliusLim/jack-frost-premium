@@ -1,7 +1,7 @@
 <script lang="ts">
   export let message: string;
   import { createEventDispatcher } from 'svelte';
-	import { fade, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	const dispatch = createEventDispatcher();
 
@@ -11,7 +11,7 @@
 </script>
 
 
-<div class="alert-base">
+<div class="alert-base" in:fly={{ y: 100, duration: 500 }}>
   <div class="prompt-container">
     <span>{message}</span>
   </div>

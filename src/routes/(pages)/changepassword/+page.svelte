@@ -11,6 +11,7 @@
   let alertOn = false;
   let status;
   let msg = "";
+  
   onMount(async () => {
     console.log("MOUNTING");
     status = "";
@@ -75,8 +76,6 @@
   const handleModalCancel = () => {
     modalOn = false;
   };
-
-  // still confused with how this works :<
 
   const handleAlertClose = () => {
     alertOn = false;
@@ -208,19 +207,20 @@
 
             <!-- for successful/error prompts -->
             <div class="prompt-container">
-              {#if alertOn == true && status == true}
-                <CustomerSuccess
-                message={msg}
-                on:closeAlert={handleAlertClose}
-                />
-              {/if}
+              {#if alertOn == true} 
+                {#if status == true}
+                  <CustomerSuccess
+                  message={msg}
+                  on:closeAlert={handleAlertClose}
+                  />
+                {/if}
 
-              <!-- does not work -->
-              {#if alertOn == true && status == false}
-                <CustomerError
-                message={msg}
-                on:closeAlert={handleAlertClose}
-                />
+                {#if status == false}
+                  <CustomerError
+                  message={msg}
+                  on:closeAlert={handleAlertClose}
+                  />
+                {/if}
               {/if}
             </div>
           </div>

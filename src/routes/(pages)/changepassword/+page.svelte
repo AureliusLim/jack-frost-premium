@@ -9,7 +9,7 @@
   let isEditing = false;
   let modalOn = false;
   let alertOn = false;
-  let status = "";
+  let status;
   let msg = "";
   onMount(async () => {
     console.log("MOUNTING");
@@ -80,6 +80,7 @@
 
   const handleAlertClose = () => {
     alertOn = false;
+    console.log(alertOn)
   }
 
 </script>
@@ -207,15 +208,15 @@
 
             <!-- for successful/error prompts -->
             <div class="prompt-container">
-              {#if status}
+              {#if alertOn == true && status == true}
                 <CustomerSuccess
                 message={msg}
-                on:cancel={handleAlertClose}
+                on:closeAlert={handleAlertClose}
                 />
               {/if}
 
               <!-- does not work -->
-              {#if status === "false"}
+              {#if alertOn == true && status == false}
                 <CustomerError
                 message={msg}
                 on:closeAlert={handleAlertClose}

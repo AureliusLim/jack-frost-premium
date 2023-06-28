@@ -3,9 +3,8 @@ import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals, fetch }) => {
-	const session = await locals.validate();
-	if (!session) {
-		// throw error(401, 'Unauthorized user.'); // 401 error page
+	const session = await locals.validateUser();
+	if (!session || session.user?.userRole === "USER") {
 		throw redirect(303, '/'); // Redirect landing page
 	}
 

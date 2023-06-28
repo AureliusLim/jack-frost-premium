@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { goto } from '$app/navigation';
 	import ConfirmationModal from '$lib/components/Modal/Confirmation.svelte';
   let userdetails = {};
@@ -11,11 +11,13 @@
       const response = await fetch('api/get-userdetails');
       const data = await response.json();
       userdetails = data;
-      // Fetch the orders from the API
+      
+     
     } catch (error) {
       console.error(error);
     }
   });
+  
   const handleLogout = async () => {
     const response = await fetch('api/logout', {
       method: 'POST',

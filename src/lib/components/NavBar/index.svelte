@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Logo from '$lib/components/Logo.svelte';
 	import CartButton from '$lib/components/NavBar/CartButton.svelte';
+	import ProfileIcon from '$lib/components/NavBar/ProfileIcon.svelte';
 	import NavLinks from '$lib/components/NavBar/NavLinks.svelte';
 	import LogoutButton from '$lib/components/Buttons/Logout.svelte';
 	import type { LayoutData } from '../../../routes/$types';
@@ -17,10 +18,16 @@
 		dispatch('open');
 	};
 
+	const hoveroverProfileIcon = () => {
+		dispatch('open');
+	};
+
 	let showMenu = false;
 
 	export let data: LayoutData;
 	export let hasCartItem = false;
+	export let currentlyhoveringoverProfileIcon = false;
+
 
 	console.log(JSON.stringify(data));
 </script>
@@ -58,13 +65,23 @@
 			<div class="flex justify-center col-start-2 col-span-1">
 				<Logo width="w-2/3" />
 			</div>
-			<div class="flex flex-row-reverse col-span-1 pr-4 md:pr-12">
+			<div class="flex flex-row-reverse col-span-1 pr-4 md:pr-12" style="margin-top: 50px;">
+				<div style = "margin-top: 14px;">
 				<CartButton
 					placement="self-center"
 					width="w-8"
 					{hasCartItem}
 					on:open={openShoppingCartModal}
 				/>
+				</div>
+				<div style="margin-right: 30px;">
+				<ProfileIcon
+					placement="self-center"
+					width="w-8"
+					{currentlyhoveringoverProfileIcon}
+					on:open={hoveroverProfileIcon}
+				/>
+				</div>
 			</div>
 			<div class="flex md:hidden">
 				<button

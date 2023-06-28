@@ -13,7 +13,7 @@
 		"test:unit:watch": "vitest --reporter verbose",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"test": "jest",
+		"test": "jest --config=jest.config.json",
 		"test:watch": "jest --watch"
 	},
 	"devDependencies": {
@@ -47,12 +47,16 @@
 		"@lucia-auth/sveltekit": "^0.6.3",
 		"@prisma/client": "^4.10.0",
 		"@supabase/supabase-js": "^2.10.0",
+		"@testing-library/jest-dom": "^5.16.5",
+		"babel-jest": "^29.5.0",
 		"daisyui": "^2.50.0",
 		"jest": "^29.5.0",
 		"jsonwebtoken": "^9.0.0",
 		"lucia-auth": "^0.6.0",
 		"nodemailer": "^6.9.1",
 		"remix": "^1.17.1",
+		"svelte-jester": "^2.3.2",
+		"ts-jest": "^29.1.0",
 		"zod": "^3.20.3"
 	}
 }

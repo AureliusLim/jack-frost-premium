@@ -4,12 +4,10 @@ on:
   push:
     branches:
       - main
-      - master
       - dev
   pull_request:
     branches:
       - main
-      - master
       - dev
 
 jobs:
@@ -56,3 +54,18 @@ jobs:
 
       - name: Run linter
         run: pnpm lint
+
+        name: Execute tests
+        run: npm run test
+
+        name: Build project
+        run: npm run build
+        
+        name: Deploy to Vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-project-id: prj_q6YR02OQOQaao3YoKVBDW05NR9eP
+          build-dir: ./build
+
+

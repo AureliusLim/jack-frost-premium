@@ -6,15 +6,15 @@ import { prisma } from '$lib/server/prisma';
 
 //const prisma = new PrismaClient();
 
-export const load: PageServerLoad = async ({ locals }) => {
-  const {user,session} = await locals.validateUser()
+// export const load: PageServerLoad = async ({ locals }) => {
+//   const {user,session} = await locals.validateUser()
   
-  if (user && session) {
+//   if (user && session) {
     
-    throw redirect(302, '/'); // "/admin/login"
-  }
+//     throw redirect(302, '/'); // "/admin/login"
+//   }
   
-};
+// };
 
 export const actions: Actions = {
 

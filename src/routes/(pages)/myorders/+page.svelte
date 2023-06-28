@@ -164,7 +164,6 @@
 
 <style>
   .main-container {
-    width: 1920px;
     height: 720px;
     display: flex;
     gap: 40px;
@@ -173,7 +172,7 @@
     background: #CDD5EB;
   }
   .side-menu {
-    width: 250px;
+    width: 20%;
     height: 423px;
     padding-top: 20px;
     display: flex;
@@ -185,7 +184,7 @@
   }
 
   .info-container {
-    width: 1181px;
+    width: 60%;
     height: max;
 
     background: #FFF;
@@ -214,7 +213,8 @@
   }
   
   .ordertable {
-    width: 1181px;
+    width: 100%;
+    
     margin-top: 5px;
     justify-content: center;
     align-items: center;
@@ -244,7 +244,7 @@
   
   .breakdown-container {
     height: max;
-    width: 400px;
+    width: 20%;
     padding: 30px;
     background: #FFF;
     color: #383D55;

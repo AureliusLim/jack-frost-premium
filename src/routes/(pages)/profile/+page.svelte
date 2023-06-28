@@ -97,7 +97,7 @@
   <title>My Orders | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 
-<div class = "max-w-full flex flex-col min-h-min bg-teal-400">
+<div class = "max-w-full flex flex-col min-h-min">
   <div class="main-container">
     <div class="side-menu">
       <button on:click={() => goto('/profile')}>Profile Information</button>

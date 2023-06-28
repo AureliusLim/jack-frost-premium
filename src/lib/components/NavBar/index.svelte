@@ -74,7 +74,7 @@
 					on:open={openShoppingCartModal}
 				/>
 				</div>
-				<div style="margin-right: 30px;">
+				<div style="margin-right: 30px; margin-top: 14px;">
 				<ProfileIcon
 					placement="self-center"
 					width="w-8"

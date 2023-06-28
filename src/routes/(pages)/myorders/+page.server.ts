@@ -4,7 +4,7 @@ import type { PageServerLoad } from './$types';
 
 export const load = (async ({ locals, fetch }) => {
 	const session = await locals.validateUser();
-	if (!session || session.user?.userRole === "ADMIN") {
+	if (!session.user?.userEmail || session.user?.userRole === "ADMIN") {
 		// throw error(401, 'Unauthorized user.'); // 401 error page
 		throw redirect(303, '/'); // Redirect landing page
 	}

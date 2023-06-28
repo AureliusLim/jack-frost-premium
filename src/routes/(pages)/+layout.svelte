@@ -102,7 +102,7 @@
 	export let data: LayoutData;
 	
 </script>
-{#if !email}
+<!-- {#if !email}
 <button on:click={openLogin}>Login</button>
 {/if}
 {#if email}
@@ -110,12 +110,12 @@
 <button on:click={() => goto('/myorders')}>My Orders</button>
 <button on:click={() => goto('/profile')}>My Profile</button>
 {/if}
-<button on:click={openRegister}>Register</button>
-<p>{email}</p>
+<button on:click={openRegister}>Register</button> -->
+<!-- <p>{email}</p> -->
 
 <Toasts />
 
-<NavBar {data} on:open={openCart} hasCartItem={$CartStore.count > 0}/>
+<NavBar {data} on:open={openCart} hasCartItem={$CartStore.count > 0} on:loggingin={openLogin}/>
 
 	<slot />
 {#if $page.url.pathname !== '/contact' && $page.url.pathname !== '/order/confirmation' && $page.url.pathname.search('checkout') === -1}

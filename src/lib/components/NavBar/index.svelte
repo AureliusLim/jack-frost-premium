@@ -21,6 +21,9 @@
 	const hoveroverProfileIcon = () => {
 		dispatch('open');
 	};
+	const pressedLogin = () =>{
+		dispatch('loggingin')
+	}
 
 	let showMenu = false;
 
@@ -80,6 +83,7 @@
 					width="w-8"
 					{currentlyhoveringoverProfileIcon}
 					on:open={hoveroverProfileIcon}
+					on:loginmodal={pressedLogin}
 				/>
 				</div>
 			</div>

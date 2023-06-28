@@ -33,6 +33,7 @@
 	const openLogin = () => {
 		loginForm = true;
 		registerForm = false;
+		dispatch('loginmodal')
 		console.log('opening login');};
 	const closeLogin =async() => {
 		loginForm = false;

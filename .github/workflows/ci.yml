@@ -67,7 +67,7 @@ jobs:
         run: npm install -g vercel
 
       - name: Deploy to Vercel
-        run: npx vercel --target=preview --confirm
+        run: npx vercel --prod --confirm
 
         
      

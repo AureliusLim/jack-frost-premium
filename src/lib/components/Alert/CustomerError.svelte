@@ -8,10 +8,19 @@
 	const closeAlert = () => {
 		dispatch('closeAlert');
 	}
+
+  var hide = function() {
+    if (message == "") {
+      document.getElementById("alert-base").style.display = "none"
+    }
+  };
+
+  var checker = hide();
+
 </script>
 
 
-<div class="alert-base" in:fly={{ y: 100, duration: 500 }}>
+<div id="alert-base" class="alert-base" in:fly={{ y: 100, duration: 500 }}>
   <div class="prompt-container">
     <span>{message}</span>
   </div>

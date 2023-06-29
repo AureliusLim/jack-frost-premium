@@ -1,13 +1,22 @@
 <script lang="ts">
   export let message: string;
   import { createEventDispatcher } from 'svelte';
-	import { fly } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 
 	const dispatch = createEventDispatcher();
 
 	const closeAlert = () => {
 		dispatch('closeAlert');
 	}
+
+  var hide = function() {
+    if (message == "") {
+      document.getElementById("alert-base").style.display = "none"
+    }
+  };
+
+  var checker = hide();
+
 </script>
 
 

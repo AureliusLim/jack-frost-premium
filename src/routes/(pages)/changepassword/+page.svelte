@@ -45,7 +45,6 @@
   const handleModalConfirm = async () => {
     modalOn = false;
     isEditing = false;
-    alertOn = true;
 
     // Create the request body
     const requestBody = {
@@ -65,6 +64,7 @@
       let data = await response.json();
       status = data.success
       msg = data.message
+      alertOn = true;
       console.log(data)
 
       // location.reload();
@@ -127,11 +127,11 @@
     display: flex;
   }
   .h1-container{
-    width: 50%;
+    width: 30%;
   }
 
   .prompt-container{
-    width: 50%;
+    width: 70%;
     display: flex;
     align-items: right;
     justify-content: right;

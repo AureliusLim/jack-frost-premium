@@ -69,7 +69,7 @@
 		</div>
 		<div class="w-3/5">
 			<p class="heading">Customer Details</p>
-			<ul class="text-indigo-900 mt-4 ">
+			<ul class="text-indigo-900 mt-4">
 				<li>Name: {order?.name}</li>
 				<li>Contact Number: {order.primary_contact}</li>
 				<li>Delivery Address: {order.delivery_address}</li>

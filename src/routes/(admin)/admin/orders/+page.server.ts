@@ -4,7 +4,7 @@ import type { Order } from '$lib/types/order';
 
 export const load = (async ({ locals, fetch }) => {
 	const session = await locals.validateUser();
-	if (!session.user?.userEmail || session.user?.userRole === "USER") {
+	if (!session.user?.userEmail || session.user?.userRole === 'USER') {
 		throw redirect(303, '/'); // Redirect landing page
 	}
 

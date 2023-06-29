@@ -7,19 +7,17 @@ const orderSchema = z.object({
 	first_name: z
 		.string({ required_error: 'First name is required' })
 		.min(1, { message: 'first name is required' }),
-		last_name: z
+	last_name: z
 		.string({ required_error: 'Last name is required' })
 		.min(1, { message: 'last name is required' }),
 	contact_number: z
 		.string({ required_error: 'Contact number is required' })
 		.min(1, { message: 'Contact number is required' }),
-		street: z
+	street: z
 		.string({ required_error: 'Street is required' })
 		.min(1, { message: 'Street is required' }),
-		city: z
-		.string({ required_error: 'City is required' })
-		.min(1, { message: 'City is required' }),
-		postal_code: z
+	city: z.string({ required_error: 'City is required' }).min(1, { message: 'City is required' }),
+	postal_code: z
 		.string({ required_error: 'postal code is required' })
 		.min(1, { message: 'postal code is required' }),
 	payment_method: z
@@ -58,10 +56,16 @@ export const actions = {
 		const user = await fetch('/api/get-session');
 		let userresponse = await user.json();
 		const email = userresponse.name;
-		console.log("EMAIL:",email)
+		console.log('EMAIL:', email);
 		const order = {
-			name: formData.first_name as string + " " + formData.last_name,
-			delivery_address: "#" + formData.building_number as string + " " + formData.street as string + ", " + formData.city as string + " City, " + formData.postal_code as string,
+			name: (formData.first_name as string) + ' ' + formData.last_name,
+			delivery_address: ((((((('#' + formData.building_number) as string) +
+				' ' +
+				formData.street) as string) +
+				', ' +
+				formData.city) as string) +
+				' City, ' +
+				formData.postal_code) as string,
 			email: email as string,
 			contact: formData.contact_number as string,
 			payment: formData.payment_method as string,

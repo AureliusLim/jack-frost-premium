@@ -11,18 +11,25 @@
 		<a href="/" class="flex items-center mb-6">
 			<img class="w-100 h-20" src={jfpLogo} alt="JackFrostlogo" />
 		</a>
-		<div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+		<div
+			class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+		>
 			<div class="p-6 space-y-4 md:space-y-6 sm:p-8">
 				<form method="POST">
 					<hgroup class="mb-5">
-						<h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl dark:text-white">
+						<h2
+							class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl dark:text-white"
+						>
 							Register
 						</h2>
 					</hgroup>
 
 					<!-- First Name -->
 					<div class="mb-5">
-						<label for="firstName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="firstName"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							First Name
 						</label>
 						<input
@@ -37,7 +44,10 @@
 
 					<!-- Last Name -->
 					<div class="mb-5">
-						<label for="lastName" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="lastName"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							Last Name
 						</label>
 						<input
@@ -67,7 +77,10 @@
 
 					<!-- Password -->
 					<div class="mb-5">
-						<label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="password"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							Password
 						</label>
 						<input
@@ -82,7 +95,10 @@
 
 					<!-- Contact Number -->
 					<div class="mb-5">
-						<label for="contactNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="contactNumber"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							Contact Number
 						</label>
 						<input
@@ -97,7 +113,10 @@
 
 					<!-- Street -->
 					<div class="mb-5">
-						<label for="street" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="street"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							Street
 						</label>
 						<input
@@ -112,7 +131,10 @@
 
 					<!-- City/Province -->
 					<div class="mb-5">
-						<label for="cityProvince" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="cityProvince"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							City/Province
 						</label>
 						<input
@@ -127,7 +149,10 @@
 
 					<!-- Building Number -->
 					<div class="mb-5">
-						<label for="buildingNumber" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="buildingNumber"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							Building Number
 						</label>
 						<input
@@ -142,7 +167,10 @@
 
 					<!-- Postal Code -->
 					<div class="mb-5">
-						<label for="postalCode" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+						<label
+							for="postalCode"
+							class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+						>
 							Postal Code
 						</label>
 						<input

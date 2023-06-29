@@ -8,7 +8,7 @@ import { z } from 'zod';
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.validateUser();
 	console.log(session);
-	if (session && session.user?.userRole === "ADMIN") {
+	if (session && session.user?.userRole === 'ADMIN') {
 		// Redirect to admin home page
 		throw redirect(302, '/admin/products');
 	}

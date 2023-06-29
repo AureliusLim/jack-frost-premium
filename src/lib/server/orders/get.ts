@@ -33,13 +33,13 @@ const getOrderNumber = async (order_id: string) => {
 		}
 	});
 	const updatedOrder = await prisma.order.update({
-    where: {
-      id: order_id,
-    },
-    data: {
-      orderNumber: JSON.stringify(result.number),
-    },
-  });
+		where: {
+			id: order_id
+		},
+		data: {
+			orderNumber: JSON.stringify(result.number)
+		}
+	});
 	// for debugging purposes
 	console.log('ACQUIRED ORDER NUMBER: ', JSON.stringify(result));
 

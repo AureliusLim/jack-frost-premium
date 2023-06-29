@@ -4,7 +4,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.validateUser();
-	if (session && session.user?.userRole === "ADMIN") {
+	if (session && session.user?.userRole === 'ADMIN') {
 		throw redirect(302, '/admin'); // "/admin/login"
 	}
 };

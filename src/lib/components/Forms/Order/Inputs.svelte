@@ -3,33 +3,32 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { ActionData } from './$types';
 	import { onMount } from 'svelte';
-	let first_name="";
-	let last_name="";
-	let contact_number="";
-	let street="";
-	let building_number="";
-	let city="";
-	let postal_code="";
+	let first_name = '';
+	let last_name = '';
+	let contact_number = '';
+	let street = '';
+	let building_number = '';
+	let city = '';
+	let postal_code = '';
 
-	onMount(async()=>{
+	onMount(async () => {
 		const response = await fetch('../api/get-session');
-      const data = await response.json();
-			if(data.name){
-				console.log(data.name)
-				const acc_response = await fetch('../api/get-userdetails')
-				const userdata = await acc_response.json();
-				first_name = userdata.firstName;
-				last_name = userdata.lastName;
-				contact_number = userdata.contactNumber;
-				street = userdata.street;
-				city = userdata.cityProvince;
-				building_number = userdata.buildingNumber;
-				postal_code = userdata.postalCode;
-			}
-			else{
-				console.log("NOT LOGGED IN")
-			}
-	})
+		const data = await response.json();
+		if (data.name) {
+			console.log(data.name);
+			const acc_response = await fetch('../api/get-userdetails');
+			const userdata = await acc_response.json();
+			first_name = userdata.firstName;
+			last_name = userdata.lastName;
+			contact_number = userdata.contactNumber;
+			street = userdata.street;
+			city = userdata.cityProvince;
+			building_number = userdata.buildingNumber;
+			postal_code = userdata.postalCode;
+		} else {
+			console.log('NOT LOGGED IN');
+		}
+	});
 	const dispatch = createEventDispatcher();
 
 	const closeForm = () => {
@@ -51,15 +50,14 @@
 	<div class="input-container">
 		<div class="important-inputs">
 			<label for="first_name" class="input-label"> First Name: </label>
-				<input
-					type="text"
-					name="first_name"
-					id="first_name"
-					class={form?.errors?.first_name ? 'border-primary-red' : 'border-navy-blue'}
-					form={formName}
-					bind:value={first_name}
-					
-				/>
+			<input
+				type="text"
+				name="first_name"
+				id="first_name"
+				class={form?.errors?.first_name ? 'border-primary-red' : 'border-navy-blue'}
+				form={formName}
+				bind:value={first_name}
+			/>
 
 			<label for="last_name" class="input-label"> Last Name: </label>
 			<input
@@ -70,7 +68,6 @@
 				form={formName}
 				bind:value={last_name}
 			/>
-
 
 			<label for="contact_number" class="input-label"> Contact Number: </label>
 			<input
@@ -109,14 +106,14 @@
 			/>
 
 			<label for="building_number" class="input-label"> Building Number: </label>
-				<input
-					type="text"
-					name="building_number"
-					id="building_number"
-					class={form?.errors?.building_number ? 'border-primary-red' : 'border-navy-blue'}
-					form={formName}
-					bind:value={building_number}
-				/>
+			<input
+				type="text"
+				name="building_number"
+				id="building_number"
+				class={form?.errors?.building_number ? 'border-primary-red' : 'border-navy-blue'}
+				form={formName}
+				bind:value={building_number}
+			/>
 
 			<label for="postal_code" class="input-label"> Postal Code: </label>
 			<input

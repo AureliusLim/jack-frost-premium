@@ -21,16 +21,15 @@
 	const hoveroverProfileIcon = () => {
 		dispatch('open');
 	};
-	const pressedLogin = () =>{
-		dispatch('loggingin')
-	}
+	const pressedLogin = () => {
+		dispatch('loggingin');
+	};
 
 	let showMenu = false;
 
 	export let data: LayoutData;
 	export let hasCartItem = false;
 	export let currentlyhoveringoverProfileIcon = false;
-
 
 	console.log(JSON.stringify(data));
 </script>
@@ -69,22 +68,22 @@
 				<Logo width="w-2/3" />
 			</div>
 			<div class="flex flex-row-reverse col-span-1 pr-4 md:pr-12" style="margin-top: 50px;">
-				<div style = "margin-top: 14px;">
-				<CartButton
-					placement="self-center"
-					width="w-8"
-					{hasCartItem}
-					on:open={openShoppingCartModal}
-				/>
+				<div style="margin-top: 14px;">
+					<CartButton
+						placement="self-center"
+						width="w-8"
+						{hasCartItem}
+						on:open={openShoppingCartModal}
+					/>
 				</div>
 				<div style="margin-right: 30px; margin-top: 14px;">
-				<ProfileIcon
-					placement="self-center"
-					width="w-8"
-					{currentlyhoveringoverProfileIcon}
-					on:open={hoveroverProfileIcon}
-					on:loginmodal={pressedLogin}
-				/>
+					<ProfileIcon
+						placement="self-center"
+						width="w-8"
+						{currentlyhoveringoverProfileIcon}
+						on:open={hoveroverProfileIcon}
+						on:loginmodal={pressedLogin}
+					/>
 				</div>
 			</div>
 			<div class="flex md:hidden">
@@ -112,7 +111,7 @@
 		</div>
 
 		<div
-			class="flex-col col-span-3 mt-9 space-y-4 md:flex md:space-y-0 
+			class="flex-col col-span-3 mt-9 space-y-4 md:flex md:space-y-0
 								md:items-center md:space-x-10 md:mt-4
 								{showMenu ? 'flex' : 'hidden'}"
 		>

@@ -13,7 +13,6 @@ const addOrder = async (
 	details: string,
 	items: CartItem[]
 ) => {
-	
 	// console.log('order items to add: ', JSON.stringify(items.map(item => ({
 	//   product_id: item.product.id,
 	//   offering_id: item.offering.id,

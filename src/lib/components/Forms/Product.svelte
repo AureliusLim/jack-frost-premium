@@ -92,8 +92,8 @@
 			}
 
 			const file = event.target.files[0];
-			console.log("FILE:")
-			console.log(file)
+			console.log('FILE:');
+			console.log(file);
 			imagePath = `${Date.now()}-${file.name}`;
 
 			const { data, error } = await supabase.storage.from('images').upload(imagePath, file, {
@@ -102,7 +102,7 @@
 			});
 
 			if (error) {
-				console.log(error)
+				console.log(error);
 				throw error;
 			}
 			if (data) {

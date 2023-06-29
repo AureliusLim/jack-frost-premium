@@ -4,7 +4,6 @@ import instagramIcon from '$lib/assets/icons/instagram.svg';
 import phoneIcon from '$lib/assets/icons/phone.svg';
 
 export const load = (() => {
-	
 	return {
 		// Navigation links
 		pages: [
@@ -36,5 +35,3 @@ export const load = (() => {
 		navbar: 'default'
 	};
 }) satisfies LayoutLoad;
-
-

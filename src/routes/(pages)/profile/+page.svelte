@@ -6,6 +6,8 @@
   let isEditing = false;
   let editModalOn = false;
   let cancelModalOn = false;
+  let successEdit;
+  let message;
   onMount(async () => {
     console.log("MOUNTING")
     try {
@@ -66,11 +68,27 @@
         body: JSON.stringify(requestBody),
       });
       let data = await response.json();
-      console.log(data.message);
-      if(data.success == false){
-        alert('The email is already registered to another account.');
+      //console.log(data.message);
+      successEdit = data.success;
+  
+      if(successEdit == false){
+        message = "The email is already registered to another account.";
+        //reset all fields back
+        try {
+          const response = await fetch('api/get-userdetails');
+          const data = await response.json();
+          userdetails = data;
+          
+        
+        } catch (error) {
+          console.error(error);
+        }
       }
-      location.reload()
+      else{
+        message = "Details successfully updated."
+      }
+     
+      
     }
     catch(error){
       
@@ -112,7 +130,9 @@
       <div class="profile-wrapper">
         <form id="userinfo">
         <h1>Profile Information</h1>
-
+        {#if message}
+          <p>{message}</p>
+        {/if}
         <div class="info-grid">
           <div class="info-item">
             <p>First Name</p>

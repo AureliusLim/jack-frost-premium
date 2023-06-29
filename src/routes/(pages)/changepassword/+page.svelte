@@ -201,7 +201,6 @@
 
     <div class="info-container">
       <div class="profile-wrapper">
-        <form id="userinfo">
           <div class="top-container">
             <div class="h1-container"><h1>Change Password</h1></div>
 
@@ -245,37 +244,24 @@
             </div>
           </div>
 
-				{#if modalOn}
-					<ConfirmationModal
-						confirmationHeader=""
-						confirmationDetails="Are you sure you want to make the changes?"
-						cancelLabel="Cancel"
-						confirmLabel="Confirm"
-						on:confirm={handleModalConfirm}
-						on:cancel={handleModalCancel}
-					/>
-				{/if}
+					<div class="button-container">
+						<button class="form-button" on:click={handleConfirm}>Change Password</button>
+					</div>
+	
+					{#if modalOn}
+						<ConfirmationModal
+							confirmationHeader=""
+							confirmationDetails="Are you sure you want to make the changes?"
+							cancelLabel="Cancel"
+							confirmLabel="Change Password"
+							on:confirm={handleModalConfirm}
+							on:cancel={handleModalCancel}
+						/>
+					{/if}
 			</div>
 		</div>
 	</div>
 </div>
 
-        <div class="button-container">
-          <button class="form-button" on:click={handleConfirm}>Change Password</button>
-        </div>
 
-        {#if modalOn}
-          <ConfirmationModal
-            confirmationHeader=""
-            confirmationDetails="Are you sure you want to make the changes?"
-            cancelLabel="Cancel"
-            confirmLabel="Change Password"
-            on:confirm={handleModalConfirm}
-            on:cancel={handleModalCancel}
-          />
-        {/if}
-        
-      </div>
-    </div>
-  </div>
-</div>
+    

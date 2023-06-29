@@ -271,16 +271,16 @@
                 {/if}
               {/if}
             </div>
-          </div>
+        </div>
         <div class="info-grid">
-          <div class="info-item">
-            <p>First Name</p>
-            {#if isEditing}
-              <input class="form-input" type="text" id="firstName" bind:value={userdetails.firstName} />
-            {:else}
-              <p class="details">{userdetails.firstName}</p>
-            {/if}
-          </div>
+						<div class="info-item">
+							<p>First Name</p>
+							{#if isEditing}
+								<input class="form-input" type="text" id="firstName" bind:value={userdetails.firstName} />
+							{:else}
+								<p class="details">{userdetails.firstName}</p>
+							{/if}
+						</div>
 
 						<div class="info-item">
 							<p>Last Name</p>

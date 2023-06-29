@@ -249,16 +249,6 @@
         <button id="onProcess" class="tabs" on:click={(onProcess)}>On Process</button>
         <button id="completed" class="tabs" on:click={(completedOrder)}>Completed</button>
       </div>
-		</div>
-
-		<div class="info-container">
-			<h1>My Orders</h1>
-			<div class="tabs-container">
-				<button class="tabs" on:click={allOrder}>All Orders</button>
-				<button class="tabs" on:click={onProcess}>On Process</button>
-				<button class="tabs" on:click={completedOrder}>Completed</button>
-			</div>
-
 			{#if orders.length > 0}
 				<table class="ordertable">
 					<thead>

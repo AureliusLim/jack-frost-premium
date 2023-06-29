@@ -28,9 +28,15 @@ export const actions: Actions = {
       cityProvince,
       buildingNumber,
       postalCode,
-      password
+      password,
+      confirmPassword
     } = Object.fromEntries(await request.formData()) as Record<string, string>;
    
+    if (!(password === confirmPassword)) {
+      console.log('Passwords do not match.');
+      return fail(400, { message: 'Passwords do not match.' });
+    }
+
     try {
       // Create a new user in the Prisma database
      
@@ -39,7 +45,7 @@ export const actions: Actions = {
       await auth.createUser({
         key: {
           providerId: 'email',
-          providerUserId: email,
+          providerUserId: email.toLowerCase(),
           password,
         },
         attributes: {

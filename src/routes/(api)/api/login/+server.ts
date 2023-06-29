@@ -8,7 +8,7 @@ export const POST = async ({ request, locals }) => {
   try {
     const account = await request.json();
     console.log(account.email); // Verify the provided email value
-    let keyUser = await auth.getKeyUser('email',account.email)
+    let keyUser = await auth.getKeyUser('email', account.email.toLowerCase())
     if(keyUser.user.userRole !== 'USER'){
       return new Response('Incorrect email or password', {
         status: 400,

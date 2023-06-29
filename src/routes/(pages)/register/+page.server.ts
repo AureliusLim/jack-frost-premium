@@ -16,34 +16,41 @@ import { prisma } from '$lib/server/prisma';
 // };
 
 export const actions: Actions = {
-	default: async ({ request }) => {
-		const {
-			firstName,
-			lastName,
-			email,
-			contactNumber,
-			street,
-			cityProvince,
-			buildingNumber,
-			postalCode,
-			password
-		} = Object.fromEntries(await request.formData()) as Record<string, string>;
+  default: async ({ request }) => {
+    const {
+      firstName,
+      lastName,
+      email,
+      contactNumber,
+      street,
+      cityProvince,
+      buildingNumber,
+      postalCode,
+      password,
+      confirmPassword
+    } = Object.fromEntries(await request.formData()) as Record<string, string>;
+   
+    if (!(password === confirmPassword)) {
+      console.log('Passwords do not match.');
+      return fail(400, { message: 'Passwords do not match.' });
+    }
 
-		try {
-			// Create a new user in the Prisma database
+    try {
+      // Create a new user in the Prisma database
+     
 
-			// Create a new user in the authentication system
-			await auth.createUser({
-				key: {
-					providerId: 'email',
-					providerUserId: email,
-					password
-				},
-				attributes: {
-					email,
-					role: 'USER'
-				}
-			});
+      // Create a new user in the authentication system
+      await auth.createUser({
+        key: {
+          providerId: 'email',
+          providerUserId: email.toLowerCase(),
+          password,
+        },
+        attributes: {
+          email,
+          role: 'USER',
+        },
+      });
 			await prisma.user.updateMany({
 				where: { email: email },
 				data: {

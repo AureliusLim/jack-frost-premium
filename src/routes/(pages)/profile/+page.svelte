@@ -2,12 +2,17 @@
   import { onMount, onDestroy } from 'svelte';
   import { goto } from '$app/navigation';
 	import ConfirmationModal from '$lib/components/Modal/Confirmation.svelte';
+  import CustomerSuccess from '$lib/components/Alert/CustomerSuccess.svelte';
+  import CustomerError from '$lib/components/Alert/CustomerError.svelte';
+
   let userdetails = {};
   let isEditing = false;
   let editModalOn = false;
   let cancelModalOn = false;
+  let alertOn = false;
   let successEdit;
-  let message;
+  let message = "";
+
   onMount(async () => {
     console.log("MOUNTING")
     try {
@@ -87,11 +92,9 @@
       else{
         message = "Details successfully updated."
       }
-     
-      
+      alertOn = true;
     }
     catch(error){
-      
       console.log(error)
     }
    
@@ -109,6 +112,11 @@
   const handleModalCancelCancel = ()=>{
     cancelModalOn = false;
     isEditing = true;
+  }
+
+  const handleAlertClose = () => {
+    alertOn = false;
+    console.log(alertOn)
   }
  
 </script>
@@ -129,10 +137,28 @@
     <div class="info-container">
       <div class="profile-wrapper">
         <form id="userinfo">
-        <h1>Profile Information</h1>
-        {#if message}
-          <p>{message}</p>
-        {/if}
+        <div class="top-container">
+            <div class="h1-container"><h1>Profile Information</h1></div>
+
+            <!-- for successful/error prompts -->
+            <div class="prompt-container">
+              {#if alertOn == true} 
+                {#if successEdit == true}
+                  <CustomerSuccess
+                  message={message}
+                  on:closeAlert={handleAlertClose}
+                  />
+                {/if}
+
+                {#if successEdit == false}
+                  <CustomerError
+                  message={message}
+                  on:closeAlert={handleAlertClose}
+                  />
+                {/if}
+              {/if}
+            </div>
+          </div>
         <div class="info-grid">
           <div class="info-item">
             <p>First Name</p>
@@ -290,6 +316,21 @@
   .profile-wrapper {
     padding: 30px;
     font-size: 17px;
+  }
+
+  .top-container {
+    width: max;
+    display: flex;
+  }
+  .h1-container{
+    width: 30%;
+  }
+
+  .prompt-container{
+    width: 70%;
+    display: flex;
+    align-items: right;
+    justify-content: right;
   }
 
   h1 {

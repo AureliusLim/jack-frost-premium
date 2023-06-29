@@ -61,6 +61,11 @@ jobs:
       # - name: Execute tests
       #   run: npm run test
 
+      - name: Set environment variables
+        run: |
+          echo "PUBLIC_SUPABASE_URL= https://fnfeloobddyomdlepjjn.supabase.co" >> $GITHUB_ENV
+          echo "PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZuZmVsb29iZGR5b21kbGVwampuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODY2NDU5NjMsImV4cCI6MjAwMjIyMTk2M30.4Su4At0rgoeS1417sE6WUj5gHiMYsuVIQmKrhyooX34" >> $GITHUB_ENV
+
       - name: Build project
         run: npm run build
 

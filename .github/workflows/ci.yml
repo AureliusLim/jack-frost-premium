@@ -55,13 +55,13 @@ jobs:
       - name: Run linter
         run: pnpm lint
 
-        name: Execute tests
+      - name: Execute tests
         run: npm run test
 
-        name: Build project
+      -  name: Build project
         run: npm run build
         
-        name: Deploy to Vercel
+      -  name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}

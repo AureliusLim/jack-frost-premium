@@ -37,10 +37,20 @@
     console.log(selectedOrder)
   }
   const allOrder = ()=>{
+    document.getElementById(selectedTab).style.color = "rgba(0, 0, 0, 0.25)"; // change prev tab color
+    document.getElementById(selectedTab).style.textDecoration = "none";
+    document.getElementById("all").style.color = "rgba(247, 11, 33, 1)"; // change curr tab color
+    document.getElementById("all").style.textDecoration = "underline";
+
     selectedTab = "all";
     filteredOrders = orders;
   }
   const onProcess = ()=>{
+    document.getElementById(selectedTab).style.color = "rgba(0, 0, 0, 0.25)"; // change prev tab color
+    document.getElementById(selectedTab).style.textDecoration = "none";
+    document.getElementById("onProcess").style.color = "rgba(247, 11, 33, 1)"; // change curr tab color
+    document.getElementById("onProcess").style.textDecoration = "underline";
+
     selectedTab = "onProcess";
     filteredOrders= [];
     let count = 0;
@@ -53,6 +63,11 @@
     console.log(filteredOrders);
   }
   const completedOrder = ()=>{
+    document.getElementById(selectedTab).style.color = "rgba(0, 0, 0, 0.25)"; // change prev tab color
+    document.getElementById(selectedTab).style.textDecoration = "none";
+    document.getElementById("completed").style.color = "rgba(247, 11, 33, 1)"; // change curr tab color
+    document.getElementById("completed").style.textDecoration = "underline";
+
     selectedTab = "completed";
     filteredOrders= [];
     let count = 0;
@@ -91,9 +106,9 @@
     <div class="info-container">
       <h1>My Orders</h1>
       <div class="tabs-container">
-        <button class="tabs" on:click={(allOrder)}>All Orders</button>
-        <button class="tabs" on:click={(onProcess)}>On Process</button>
-        <button class="tabs" on:click={(completedOrder)}>Completed</button>
+        <button id="all" class="tabs" on:click={(allOrder)} style="color:rgba(247, 11, 33, 1); text-decoration:underline">All Orders</button>
+        <button id="onProcess" class="tabs" on:click={(onProcess)}>On Process</button>
+        <button id="completed" class="tabs" on:click={(completedOrder)}>Completed</button>
       </div>
 
       {#if orders.length > 0}      
@@ -151,6 +166,11 @@
             </tr>
           {/each}
         </table>
+
+        <div class="total">
+          <div><h3>Overall Total</h3></div>
+          <div><h4>Php {selectedOrder.total_price}</h4></div>
+        </div>
         
       {:else}
         <div class="empty-breakdown">
@@ -209,6 +229,7 @@
   }
 
   .tabs:hover {
+    color: rgba(247, 11, 33, 1);
     text-decoration: underline;
   }
   
@@ -242,7 +263,7 @@
   }
   
   .breakdown-container {
-    height: max;
+    height: 100%;
     width: 20%;
     padding: 30px;
     background: #FFF;
@@ -286,6 +307,16 @@
 
   .breakdown td:nth-child(2) {
     width: 30%;
+  }
+
+  .total {
+    margin-top: 40px;
+  }
+
+  .total div{
+    display: flex;
+    align-items: right;
+    justify-content: right;
   }
 
   p{

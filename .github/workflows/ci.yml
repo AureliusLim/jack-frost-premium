@@ -5,12 +5,10 @@ on:
     branches:
       - main
       - dev
-      - ci_experiment
   pull_request:
     branches:
       - main
       - dev
-      - ci_experiment
 
 jobs:
   ci:
@@ -58,8 +56,8 @@ jobs:
         run: pnpm run format
 
 
-      # - name: Execute tests
-      #   run: npm run test
+      - name: Execute tests
+        run: npm run test
 
       - name: Set environment variables
         run: |

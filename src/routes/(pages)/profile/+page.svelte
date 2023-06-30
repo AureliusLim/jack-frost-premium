@@ -185,7 +185,7 @@
 
 	input {
 		height: 29px;
-		width: 350px;
+		width: 470px;
 		border-radius: 15px;
 		background: #f1f1f1;
 		box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);

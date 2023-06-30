@@ -1,5 +1,24 @@
 <script lang="ts">
 	import jfpLogo from '$lib/assets/logos/jack-frost-premium.png';
+	import type { PageData, ActionData } from './$types';
+  import { goto } from '$app/navigation';
+	export let form: ActionData;
+	let passwordFail = false;
+	let emailFail = false;
+	console.log(form)
+	try{
+			if(form.message === 'Passwords do not match.'){
+			passwordFail = true;
+		}
+		else if(form.message === 'Email is already registered.'){
+			emailFail = true;
+		}
+	}catch(err){
+
+	}
+
+	console.log("Email:" + emailFail)
+	console.log("Pass:" + passwordFail)
 </script>
 
 <svelte:head>
@@ -13,7 +32,7 @@
 			</div>
 		</div>
 		<div class="main-container">
-			
+	
 			<div class="form-container">
 				
 				<form method="POST">
@@ -142,11 +161,20 @@
 							</div>
 						</div>
 					</div>
+					{#if emailFail}
+								<p class="error">{form.message}</p>
+						{/if}
+
+						{#if passwordFail}
+								<p class="error">{form.message}</p>
+						{/if}
 					<div class="button-container">
-						<button class="cancel-button">Cancel</button>
+						
+						<button class="cancel-button" on:click={() => goto('/profile')}>Cancel</button>
 						<button class="reg-button">Register</button>
 					</div>
 				</form>
+				
 			</div>
 		</div>
 	</div>
@@ -256,6 +284,10 @@
 		background: #fff;
 		color: #383d55;
 	}
+	.error {
+    text-align: right;
+    color: red;
+  }
 	
 
 </style>

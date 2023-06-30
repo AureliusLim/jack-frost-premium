@@ -66,10 +66,10 @@ export const actions: Actions = {
 			});
 
 			console.log(`${email} - ${password}`);
-			throw redirect(302, '/');
+			return fail(400, {message:'Account Registered'});
 		} catch (err) {
 			console.error(err);
-			return fail(400, { message: 'Could not register user' });
+			return fail(400, { message: 'Email is already registered.' });
 		}
 	}
-};
+} satisfies Actions;

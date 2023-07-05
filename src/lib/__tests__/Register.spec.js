@@ -1,0 +1,1 @@
+import Register from '../../routes/(pages)/register/+page.svelte'

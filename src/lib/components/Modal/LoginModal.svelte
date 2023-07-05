@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import TemplateModal from '$lib/components/Modal/Template.svelte';
-	import { fail, redirect } from '@sveltejs/kit';
+	//import { fail, redirect } from '@sveltejs/kit';
 
 	export let isOpen = false;
 	export let onClose = () => {};
@@ -41,7 +41,7 @@
 		} catch (err) {
 			console.log(err);
 			loginFailed = true;
-			return fail(400, { message: 'Could not login' });
+			//return fail(400, { message: 'Could not login' });
 		}
 	};
 </script>

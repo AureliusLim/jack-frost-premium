@@ -20,7 +20,7 @@
   })
   const search = async () => {
     // Simulating asynchronous behavior with a delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 250));
     
     if(searchTerm){
       searchResults = fullName.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -28,7 +28,7 @@
   };
 
   // Debounce the search function to reduce API calls
-  const debouncedSearch = debounce(search, 300);
+  const debouncedSearch = debounce(search, 150);
 
   // Handler for search input changes
   const handleSearchInput = (event) => {

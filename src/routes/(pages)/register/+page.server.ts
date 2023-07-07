@@ -29,7 +29,11 @@ export const actions: Actions = {
       password,
       confirmPassword
     } = Object.fromEntries(await request.formData()) as Record<string, string>;
-   
+    const phoneRegex = /^09\d{9}$/;
+    if (!phoneRegex.test(contactNumber)) {
+      console.log("Phone number is invalid");
+      return fail(400, {message: 'Phone number is invalid.'});
+    }
     if (!(password === confirmPassword)) {
       console.log('Passwords do not match.');
       return fail(400, { message: 'Passwords do not match.' });
@@ -66,7 +70,12 @@ export const actions: Actions = {
 			});
 
 			console.log(`${email} - ${password}`);
-			return fail(400, {message:'Account Registered'});
+			return {
+        status: 302,
+        headers: {
+          location: '/'
+        }
+      };
 		} catch (err) {
 			console.error(err);
 			return fail(400, { message: 'Email is already registered.' });

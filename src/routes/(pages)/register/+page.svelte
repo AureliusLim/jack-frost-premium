@@ -5,6 +5,7 @@
 	export let form: ActionData;
 	let passwordFail = false;
 	let emailFail = false;
+	let phoneFail = false;
 	console.log(form)
 	try{
 			if(form.message === 'Passwords do not match.'){
@@ -13,12 +14,23 @@
 		else if(form.message === 'Email is already registered.'){
 			emailFail = true;
 		}
+		else if(form.message === 'Phone number is invalid.'){
+			phoneFail = true;
+		}
 	}catch(err){
 
 	}
 
 	console.log("Email:" + emailFail)
 	console.log("Pass:" + passwordFail)
+	console.log("phone:" + phoneFail)
+	try{
+		if(form?.headers.location == '/'){
+			goto('/')
+		}
+	}catch(err){
+
+	}
 </script>
 
 <svelte:head>
@@ -117,7 +129,7 @@
 								<!-- Postal Code -->
 								<div class="w-1/3">
 									<input
-									type="text"
+									type="number"
 									id="postalCode"
 									name="postalCode"
 									placeholder="Postal Code"
@@ -161,13 +173,10 @@
 							</div>
 						</div>
 					</div>
-					{#if emailFail}
+					{#if emailFail || passwordFail || phoneFail}
 								<p class="error">{form.message}</p>
-						{/if}
+					{/if}
 
-						{#if passwordFail}
-								<p class="error">{form.message}</p>
-						{/if}
 					<div class="button-container">
 						
 						<button class="cancel-button" on:click={() => goto('/profile')}>Cancel</button>

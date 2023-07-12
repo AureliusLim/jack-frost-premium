@@ -79,22 +79,7 @@
 		console.log('opening register');
 	};
 
-	const closeRegister = () => {
-		registerForm = false;
-		console.log('closing register');
-	};
-	const handleLogout = async () => {
-		const response = await fetch('api/logout', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: 'Logged out'
-		});
-		email = '';
-		console.log('LOGGED OUT');
-		goto('/');
-	};
+	
 	let isViewingCart = false;
 	let loginForm = false;
 	let registerForm = false;
@@ -102,19 +87,8 @@
 	export let data: LayoutData;
 </script>
 
-<!-- {#if !email}
-<button on:click={openLogin}>Login</button>
-{/if}
-{#if email}
-<button on:click={handleLogout}>Logout</button>
-<button on:click={() => goto('/myorders')}>My Orders</button>
-<button on:click={() => goto('/profile')}>My Profile</button>
-{/if}
-<button on:click={openRegister}>Register</button> -->
-<!-- <p>{email}</p> -->
 
 <Toasts />
-
 <NavBar {data} on:open={openCart} hasCartItem={$CartStore.count > 0} on:loggingin={openLogin} />
 
 <slot />

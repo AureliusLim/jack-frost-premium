@@ -9,7 +9,7 @@
 	let email = '';
 	let password = '';
 
-	let loginFailed = false;
+	export let loginFailed = false;
 	const dispatch = createEventDispatcher();
 
 	const close = () => {

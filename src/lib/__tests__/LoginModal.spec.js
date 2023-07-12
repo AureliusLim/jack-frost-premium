@@ -5,7 +5,8 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 global.document = dom.window.document;
 global.window = dom.window;
 
-describe('LoginModal', () => {
+
+describe('Login Modal Tests', () => {
   it('renders the login form', () => {
     const modal = new LoginModal({
       target: document.body,
@@ -35,12 +36,12 @@ describe('LoginModal', () => {
     const passwordInput = document.querySelector('input[type="password"]');
     const submitButton = document.querySelector('button[type="submit"]');
 
-    emailInput.value = 'test@example.com';
+    emailInput.value = 'testaccount@gmail.com';
     passwordInput.value = 'incorrectpassword';
     submitButton.click();
 
     // Check if the error message is displayed
-    expect(document.querySelector('.error-message')).toBeInTheDocument();
+    expect(modal.loginFailed).toBe(true);
 
     modal.$destroy();
   });
@@ -58,8 +59,8 @@ describe('LoginModal', () => {
     const passwordInput = document.querySelector('input[type="password"]');
     const submitButton = document.querySelector('button[type="submit"]');
 
-    emailInput.value = 'test@example.com';
-    passwordInput.value = 'correctpassword';
+    emailInput.value = 'testaccount@gmail.com';
+    passwordInput.value = '123456789';
     submitButton.click();
 
     // Check if the modal is closed

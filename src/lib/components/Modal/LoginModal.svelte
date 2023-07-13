@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher, reactive } from 'svelte';
+	import { createEventDispatcher} from 'svelte';
 	import TemplateModal from '$lib/components/Modal/Template.svelte';
 	//import { fail, redirect } from '@sveltejs/kit';
 

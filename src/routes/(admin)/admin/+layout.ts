@@ -6,7 +6,8 @@ export const load = (() => {
 		pages: [
 			{ title: 'PRODUCTS', href: '/admin/products' },
 			{ title: 'CATEGORIES', href: '/admin/categories' },
-			{ title: 'ORDERS', href: '/admin/orders' }
+			{ title: 'ORDERS', href: '/admin/orders' },
+			{title: "SECTIONS", href: '/admin/sections'}
 		],
 		navbar: 'admin'
 	};

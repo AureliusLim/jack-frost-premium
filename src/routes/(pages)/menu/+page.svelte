@@ -35,6 +35,7 @@
 	let product: Product = {} as Product;
 	let offerings: Offering[] = [] as Offering[];
 	export let data: PageData;
+	console.log(data)
 </script>
 
 <svelte:head>
@@ -46,6 +47,13 @@
 
 {#if !searchTerm}
 	<div class="product-list-container">
+		{#if data.sections.length > 0}
+			{#each data.sections as section}
+				<h1 class="header">{section.name}</h1>
+				<ProductList width="w-full md:max-w-[90%]" products={section.products} on:showItem={showProductInfo}/>
+			{/each}
+			<h1 class="header">Complete Ice Cream Collection</h1>
+		{/if}
 		<ProductList
 			width="w-full md:max-w-[90%]"
 			products={data.products}
@@ -76,9 +84,10 @@
 		@apply w-full bg-white flex flex-col justify-center items-center;
 	}
 
-	@media screen and (min-width: 768px) {
-		.product-list-container {
-			@apply flex-row;
-		}
-	}
+	.header {
+    color: red;
+    text-align: left;
+    font-size: larger;
+    font-weight: bold;
+  }
 </style>

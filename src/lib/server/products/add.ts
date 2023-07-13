@@ -15,6 +15,11 @@ const addProduct = async (product: Product) => {
 				connect: {
 					id: product.category_id
 				}
+			},
+			section: {
+				connect: {
+					id: "cljy1q6dy0000zmrktkkduyqd"
+				}
 			}
 		},
 		// For debugging purposes, we can include the offerings in the result

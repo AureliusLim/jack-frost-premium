@@ -90,7 +90,7 @@
 			if (imagePath && imagePath.split('/')[0] !== 'products') {
 				await deleteImage(imagePath);
 			}
-
+			
 			const file = event.target.files[0];
 			console.log('FILE:');
 			console.log(file);

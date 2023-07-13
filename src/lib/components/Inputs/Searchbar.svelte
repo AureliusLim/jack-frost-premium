@@ -49,6 +49,11 @@
   const handleResultClick = (result) =>{
     dispatch('search', result)
   }
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearchClick();
+    }
+  };
   // Hide search results when clicking outside the search container
   const handleClickOutside = (event) => {
     const searchContainer = document.querySelector('.input-box');
@@ -76,7 +81,7 @@
     
   </span>
 
-  <input class="input-box" type="text" placeholder="Search..." bind:value={searchTerm} on:input={handleSearchInput} on:click={listenOnClick}/>
+  <input class="input-box" type="text" placeholder="Search..." bind:value={searchTerm} on:input={handleSearchInput} on:click={listenOnClick} on:keydown={handleKeyDown}/>
 
   
 </div>

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { createEventDispatcher, reactive } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
 	import TemplateModal from '$lib/components/Modal/Template.svelte';
-	//import { fail, redirect } from '@sveltejs/kit';
+	import { fail, redirect } from '@sveltejs/kit';
 
 	export let isOpen = false;
 	export let onClose = () => {};
@@ -9,7 +9,7 @@
 	let email = '';
 	let password = '';
 
-	export let loginFailed = false;
+	let loginFailed = false;
 	const dispatch = createEventDispatcher();
 
 	const close = () => {
@@ -28,7 +28,6 @@
 
 			console.log(response);
 			if (!response.ok) {
-				loginFailed = true
 				throw new Error('Login failed');
 			}
 
@@ -42,7 +41,7 @@
 		} catch (err) {
 			console.log(err);
 			loginFailed = true;
-			//return fail(400, { message: 'Could not login' });
+			return fail(400, { message: 'Could not login' });
 		}
 	};
 </script>
@@ -53,7 +52,7 @@
 	</div>
 	<div slot="body">
 		{#if loginFailed}
-			<p class="error">Login failed. Please check your email and password.</p>
+			<p>Login failed. Please check your email and password.</p>
 		{/if}
 		<form on:submit|preventDefault={handleSubmit}>
 			<div class="form-container">

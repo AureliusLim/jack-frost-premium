@@ -10,10 +10,10 @@
 
 	let isLoading = true;
 
-	export let width;
-	export let bgColor;
+	export let width: string;
+	export let bgColor: string;
 	export let hasCloseIcon = true;
-	export let zIndex;
+	export let zIndex: 0 | 20 | 10 | 30 | 40 | 50 = 30;
 </script>
 
 <div class="modal-backdrop z-{zIndex}" transition:fade>

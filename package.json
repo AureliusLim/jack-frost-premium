@@ -54,6 +54,7 @@
 		"daisyui": "^2.52.0",
 		"encoding": "^0.1.13",
 		"jest": "^29.5.0",
+		"jsdom": "^22.1.0",
 		"jsonwebtoken": "^9.0.0",
 		"lodash": "^4.17.21",
 		"lucia-auth": "^0.6.2",

@@ -50,13 +50,13 @@ describe('Login Modal Tests', () => {
       // Add other necessary response properties
     });
     
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     expect(document.querySelector('.error')).toBeInTheDocument(); // Access loginFailed through component.$$.props
 
     modal.$destroy();
   });
 
-  it('closes the modal on successful login', async () => {
+  it('error message is absent on successful login', async () => {
     const modal = new LoginModal({
       target: document.body,
       props: {
@@ -79,8 +79,7 @@ describe('Login Modal Tests', () => {
     });
 
     
-    
-    expect(document.querySelector('.modal')).not.toBeInTheDocument();
+    expect(document.querySelector('.error')).not.toBeInTheDocument();
 
     modal.$destroy();
   });

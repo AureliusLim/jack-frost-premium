@@ -50,7 +50,7 @@
 			</div>
 			<div class="flex item-stretch h-full col-span-3">
 				{#if $page.url.pathname.split('/').length < 4}
-					<NavLinks {data} />
+					<NavLinks {data} class="flex flex-nowrap"/>
 				{/if}
 			</div>
 			<div class="flex justify-center items-stretch col-span-1">

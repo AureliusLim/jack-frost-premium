@@ -9,7 +9,7 @@
 	import type { CartItem } from '$lib/types/cart';
 	import type { ActionData } from './$types';
 	import { enhance, type SubmitFunction } from '$app/forms';
-
+	let enableSubmit = true;
 	const dispatch = createEventDispatcher();
 
 	const remove = () => {
@@ -19,6 +19,20 @@
 	const closeForm = () => {
 		dispatch('close');
 	};
+
+	const handleNotEmpty = () =>{
+		enableSubmit = false;
+	}
+	const handleEmptyCoupon = ()=>{
+		enableSubmit = true;
+	}
+	const handleCoupon = (event)=>{
+		enableSubmit = true;
+		let eventholder = event.detail
+		value = eventholder.x  
+		let couponid = eventholder.y
+		value = event.detail
+	}
 
 	export let handleSubmit: SubmitFunction;
 	export let formaction: string;
@@ -31,7 +45,8 @@
 	export let hasHeader = false;
 	export let isCheckout = false;
 	export let label = 'Order Status';
-
+	let value;
+	let couponid;
 	let orderStatus = order?.payment_status ?? '';
 	let formName = 'order-form';
 </script>
@@ -60,9 +75,16 @@
 			{/if}
 			<div class="info-container">
 				<div class="flex items-stretch justify-start w-full max-w-2xl">
-					<OrderDetailsList {items} {totalPrice} />
+					<OrderDetailsList {items} {totalPrice} on:couponMatch={handleCoupon} on:empty={handleEmptyCoupon} on:notempty={handleNotEmpty}/>
+					
 				</div>
-				<CustomerInputs {formName} {formaction} {form} {order} {isCheckout} on:close={closeForm} />
+				{#if value}
+				
+						<CustomerInputs {formName} {formaction} {form} {order} {isCheckout} newprice={value} couponid={couponid} enableSubmit={enableSubmit} on:close={closeForm} />
+				{:else}
+
+						<CustomerInputs {formName} {formaction} {form} {order} {isCheckout} enableSubmit={enableSubmit} on:close={closeForm} />
+				{/if}
 			</div>
 		</form>
 	</TemplateForm>

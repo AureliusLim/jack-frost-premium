@@ -57,6 +57,12 @@ export const actions = {
 		let userresponse = await user.json();
 		const email = userresponse.name;
 		console.log('EMAIL:', email);
+		let finalprice =  Number(formData.totalprice);
+		
+		if(Number(formData.newprice) > 0){
+			finalprice = Number(formData.newprice)
+		}
+		console.log("THEFINALPRICE:"+finalprice)
 		const order = {
 			name: (formData.first_name as string) + ' ' + formData.last_name,
 			delivery_address: ((((((('#' + formData.building_number) as string) +
@@ -69,7 +75,7 @@ export const actions = {
 			email: email as string,
 			contact: formData.contact_number as string,
 			payment: formData.payment_method as string,
-			total: Number(formData.totalprice),
+			total: finalprice,
 			details: formData.additional_details as string,
 			items: orderitems as CartItem[]
 		};

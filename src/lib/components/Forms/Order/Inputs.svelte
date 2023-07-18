@@ -10,7 +10,11 @@
 	let building_number = '';
 	let city = '';
 	let postal_code = '';
-
+	export let enableSubmit;
+	export let newprice;
+	export let couponid;
+	console.log(enableSubmit)
+	
 	onMount(async () => {
 		const response = await fetch('../api/get-session');
 		const data = await response.json();
@@ -173,10 +177,25 @@
 			</label>
 		</div>
 	</div>
-
+	{#if newprice}
+		<input
+			type="hidden"
+			name="newprice"
+			id="newprice"
+			form={formName}
+			bind:value={newprice}
+		/>
+		<input
+			type="hidden"
+			name="couponid"
+			id="couponid"
+			form={formName}
+			bind:value={couponid}
+		/>
+	{/if}
 	{#if isCheckout}
 		<div class="buttons-container">
-			<button class="checkout-btn" type="submit" form={formName} {formaction}>Checkout</button>
+			<button class="checkout-btn" type="submit" form={formName} {formaction} disabled={!enableSubmit}>Checkout</button>
 			<button class="cancel-btn" type="button" on:click={closeForm}>Cancel</button>
 		</div>
 	{/if}
@@ -244,4 +263,11 @@
 	textarea {
 		@apply resize-none overflow-y-scroll border-navy-blue;
 	}
+	.checkout-btn {
+    @apply bg-navy-blue hover:bg-dark-blue;
+  }
+
+  .checkout-btn[disabled] {
+    @apply bg-gray-400 cursor-not-allowed;
+  }
 </style>

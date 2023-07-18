@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { CartItem } from '$lib/types/cart';
 	import type { OrderDetails } from '$lib/types/order';
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
 	const toProduct = (item: CartItem | OrderDetails) => {
 		switch (item.offering?.size_name.toLowerCase()) {
 			case 'pint':
@@ -18,10 +20,40 @@
 				return item.product?.name;
 		}
 	};
-
+	const handleCouponCodeInput = async(event: InputEvent) => {
+		const input = event.target as HTMLInputElement;
+		couponCode = input.value;
+		if(couponCode === ''){
+			dispatch('empty')
+		}
+		else{
+			dispatch('notempty')
+		}
+		console.log('Coupon Code:', couponCode);
+		const response = await fetch('/api/coupons')
+		const data = await response.json()
+		if(data.success){
+			isSatisfied = false;
+			rate = 0;
+			for (const element of data.coupons) {
+				if (element.code === couponCode) {
+					isSatisfied = true;
+					rate = element.rate / 100;
+					newprice = totalPrice - (totalPrice * rate)
+				
+					dispatch('couponMatch', {x:newprice, y:element.id})
+					break;
+				}
+			}
+		}
+	};
 	export let items: CartItem[] | OrderDetails[];
 	export let totalPrice = 0;
 	export let listLabel = 'Order Details';
+	let couponCode = "";
+	let isSatisfied = false;
+	let rate;
+	let newprice
 </script>
 
 <div class="order-details-container">
@@ -44,7 +76,17 @@
 			{/each}
 		</table>
 	</div>
-	<p>Total: &#8369;{totalPrice}</p>
+	<div class="form-container">
+		<label for="coupon-code">Coupon Code:</label>
+		<input type="text" id="coupon-code" placeholder="Enter coupon code" bind:value={couponCode} on:input={handleCouponCodeInput} />
+	</div>
+	{#if isSatisfied}
+			<p>COUPON MATCHED</p>
+			<p>Total: &#8369;{totalPrice - (totalPrice * rate)}</p>
+	{:else}
+			<p>Total: &#8369;{totalPrice}</p>
+	{/if}
+	
 </div>
 
 <style lang="postcss">
@@ -75,5 +117,16 @@
 
 	.table-container {
 		@apply w-full max-h-[450px] overflow-y-auto mb-auto;
+	}
+	.form-container {
+		@apply mt-4;
+	}
+
+	.form-container label {
+		@apply block text-2xl text-navy-blue mb-2;
+	}
+
+	.form-container input[type="text"] {
+		@apply block h-12 px-4 text-2xl border border-navy-blue rounded outline-none focus:outline-none focus:border-blue-500;
 	}
 </style>

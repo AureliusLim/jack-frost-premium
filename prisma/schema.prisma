@@ -24,7 +24,7 @@ model User {
   cityProvince    String?
   buildingNumber  String?
   postalCode      String?
-
+  redeemedCoupons Coupon[]  
   @@map("user")
 }
 
@@ -185,6 +185,19 @@ model Section {
   isActivated   Boolean
   products    Product[]
   @@map("section")
+}
+
+//Coupon Model
+model Coupon{
+  id            String @id @unique @default (cuid())
+  name          String @unique
+  code          String @unique
+  isActivated   Boolean
+  prodRequirement String[]
+  quantRequirement Int
+  rate          Int
+  redeemedBy    User[]        
+  @@map("coupon")
 }
 
 /// Enums for payment mode

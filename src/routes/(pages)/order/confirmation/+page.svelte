@@ -56,6 +56,9 @@
 		statusHeader = 'ORDER SUBMITTED';
 		statusInfo = "The order you've made has been submitted";
 	};
+	const discount = ()=>{
+
+	}
 
 	const confirmOrder: SubmitFunction = ({ data, form }) => {
 		submittingOrder();
@@ -63,6 +66,7 @@
 		console.log(data);
 		data.append('orderitems', JSON.stringify(items));
 		data.append('totalprice', totalPrice.toString());
+		
 		return async ({ result, update }) => {
 			// form.reset();
 			switch (result.type) {

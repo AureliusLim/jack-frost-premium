@@ -2,6 +2,7 @@ import type { Actions } from './$types';
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { CartItem } from '$lib/types/cart';
 import { z } from 'zod';
+import { prisma } from '$lib/server/prisma';
 
 const orderSchema = z.object({
 	first_name: z
@@ -53,16 +54,43 @@ export const actions = {
 			});
 		}
 		// Add order
-		const user = await fetch('/api/get-session');
+		const user = await fetch('../api/get-session');
 		let userresponse = await user.json();
 		const email = userresponse.name;
+		const userid = userresponse.userid;
 		console.log('EMAIL:', email);
 		let finalprice =  Number(formData.totalprice);
 		
+		console.log("THE ANNOYING NEW PRICE:"+ Number(formData.newprice))
+		console.log("THE ANNOYING USERID:"+ formData.couponid as string)
+		console.log("THE ANNOYING COUPONID:"+ userid)
 		if(Number(formData.newprice) > 0){
+			let couponId = formData.couponid as string
 			finalprice = Number(formData.newprice)
+			// Connect the user to the coupon
+			let userupdate = await prisma.user.update({
+				where: { id: userid },
+				data: {
+					redeemedCoupons: {
+						connect: { id: couponId },
+					},
+				},
+			})
+			console.log("THIS IS USER UPDATE")
+			console.log(userupdate)
+			// Connect the coupon to the user
+			let couponupdate = await prisma.coupon.update({
+				where: { id: couponId },
+				data: {
+					redeemedBy: {
+						connect: { id: userid },
+					},
+				},
+			})
+			console.log("THIS IS COUPON UPDATE")
+			console.log(couponupdate)
 		}
-		console.log("THEFINALPRICE:"+finalprice)
+		
 		const order = {
 			name: (formData.first_name as string) + ' ' + formData.last_name,
 			delivery_address: ((((((('#' + formData.building_number) as string) +

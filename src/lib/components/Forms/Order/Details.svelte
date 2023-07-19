@@ -1,8 +1,21 @@
 <script lang="ts">
 	import type { CartItem } from '$lib/types/cart';
 	import type { OrderDetails } from '$lib/types/order';
-	import { createEventDispatcher } from 'svelte';
-
+	import { createEventDispatcher,onMount } from 'svelte';
+	let name;
+	let prodSatisfied = false;
+	let ordSatisfied = false;
+	let userFirst = false;
+	let couponMatch = false;
+	onMount(async()=>{
+		console.log('mounting')
+		const response = await fetch('../api/get-session')
+		const data = await response.json()
+		if(data.success){
+			name = data.name
+			console.log(data)
+		}
+	})
 	const dispatch = createEventDispatcher();
 	const toProduct = (item: CartItem | OrderDetails) => {
 		switch (item.offering?.size_name.toLowerCase()) {
@@ -23,6 +36,10 @@
 	const handleCouponCodeInput = async(event: InputEvent) => {
 		const input = event.target as HTMLInputElement;
 		couponCode = input.value;
+		couponMatch = false;
+		prodSatisfied = false;
+		ordSatisfied = false;
+		userFirst = false;
 		if(couponCode === ''){
 			dispatch('empty')
 		}
@@ -33,15 +50,58 @@
 		const response = await fetch('/api/coupons')
 		const data = await response.json()
 		if(data.success){
-			isSatisfied = false;
+			
 			rate = 0;
 			for (const element of data.coupons) {
-				if (element.code === couponCode) {
-					isSatisfied = true;
-					rate = element.rate / 100;
-					newprice = totalPrice - (totalPrice * rate)
-				
-					dispatch('couponMatch', {x:newprice, y:element.id})
+				if (element.code === couponCode && name && element.isActivated) { 
+					console.log(element)
+					couponMatch = true;
+					let prodreq = element.prodRequirement;
+					let ordreq = element.quantRequirement;
+					prodSatisfied = false;
+					ordSatisfied = false;
+					userFirst = false;
+					//check prodreq
+					let prodChecker = 0
+					for(let counter = 0; counter < items.length; counter++){
+						for(let productname of prodreq){
+							if(productname === items[counter].product.name){
+								prodChecker += 1
+							}
+						}
+					}
+					if(prodChecker === prodreq.length){
+						prodSatisfied = true;
+					}
+
+					//check ordreq
+					let ordChecker = 0;
+					for(let counter = 0; counter < items.length; counter++){
+						ordChecker += items[counter].quantity
+					}
+					if(ordChecker >= ordreq){
+						ordSatisfied = true;
+					}
+
+					//check if user hasn't redeemed it
+					let userChecker = 0;
+					for(userChecker = 0; userChecker < element.redeemedBy.length; userChecker++){
+						if(name === element.redeemedBy[userChecker].email){
+							break;
+						}
+					}
+
+					if(userChecker === element.redeemedBy.length){
+						userFirst = true;
+					}
+		
+					if(prodSatisfied && ordSatisfied && userFirst){
+							
+							rate = element.rate / 100;
+							newprice = totalPrice - (totalPrice * rate)
+						
+							dispatch('couponMatch', {x:newprice, y:element.id})
+					}
 					break;
 				}
 			}
@@ -78,11 +138,28 @@
 	</div>
 	<div class="form-container">
 		<label for="coupon-code">Coupon Code:</label>
-		<input type="text" id="coupon-code" placeholder="Enter coupon code" bind:value={couponCode} on:input={handleCouponCodeInput} />
+		{#if name}
+			<input type="text" id="coupon-code" placeholder="Enter coupon code" bind:value={couponCode} on:input={handleCouponCodeInput} />
+		{:else}
+			<input type="text" id="coupon-code" placeholder="Log in to use coupon" bind:value={couponCode} on:input={handleCouponCodeInput} disabled={true} />
+		{/if}
 	</div>
-	{#if isSatisfied}
-			<p>COUPON MATCHED</p>
+	{#if prodSatisfied && ordSatisfied && userFirst}
+			<p>Coupon Available</p>
 			<p>Total: &#8369;{totalPrice - (totalPrice * rate)}</p>
+
+	{:else if !prodSatisfied && !ordSatisfied && !userFirst && !couponMatch}
+		<p>Total: &#8369;{totalPrice}</p>
+
+
+	{:else if (!prodSatisfied || !ordSatisfied) && couponMatch}
+			<p>You don't meet order requirements</p>
+			<p>Total: &#8369;{totalPrice}</p>
+
+	{:else if !userFirst && couponMatch}
+		<p>You already redeemed this coupon</p>
+		<p>Total: &#8369;{totalPrice}</p>
+
 	{:else}
 			<p>Total: &#8369;{totalPrice}</p>
 	{/if}

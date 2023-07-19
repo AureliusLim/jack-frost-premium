@@ -147,7 +147,6 @@
 
 	.ordertable {
 		width: 100%;
-
 		margin-top: 5px;
 		justify-content: center;
 		align-items: center;
@@ -231,6 +230,10 @@
 		align-items: center;
 		text-align: center;
 	}
+	.orders-container{
+		height:500px;
+		overflow:auto;
+	}
 </style>
 
 <div class="max-w-full flex flex-col min-h-min">
@@ -249,38 +252,41 @@
         <button id="onProcess" class="tabs" on:click={(onProcess)}>On Process</button>
         <button id="completed" class="tabs" on:click={(completedOrder)}>Completed</button>
       </div>
-			{#if orders.length > 0}
-				<table class="ordertable">
-					<thead>
-						<tr>
-							<th>Order No.</th>
-							<th>Date Ordered</th>
-							<th>Status</th>
-							<th>Qty</th>
-							<th>Total</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each filteredOrders as order}
-							<tr on:click={() => selectOrder(order)}>
-								<td>#{Number(order.orderNumber).toString().padStart(5, '0') ?? '*****'}</td>
-								<td>{formatDate(order.created_at)}</td>
-								<td>
-									{#if order.payment_status === 'SS'}
-										Completed
-									{:else}
-										On Process
-									{/if}
-								</td>
-								<td>{getQuantity(order.order_details)}</td>
-								<td>{order.total_price}</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{:else}
-				<p>No Orders Found.</p>
-			{/if}
+			<div class="orders-container">
+					{#if orders.length > 0}
+						<table class="ordertable">
+							<thead>
+								<tr>
+									<th>Order No.</th>
+									<th>Date Ordered</th>
+									<th>Status</th>
+									<th>Qty</th>
+									<th>Total</th>
+								</tr>
+							</thead>
+								<tbody>
+									{#each filteredOrders as order}
+										<tr on:click={() => selectOrder(order)}>
+											<td>#{Number(order.orderNumber).toString().padStart(5, '0') ?? '*****'}</td>
+											<td>{formatDate(order.created_at)}</td>
+											<td>
+												{#if order.payment_status === 'SS'}
+													Completed
+												{:else}
+													On Process
+												{/if}
+											</td>
+											<td>{getQuantity(order.order_details)}</td>
+											<td>{order.total_price}</td>
+										</tr>
+									{/each}
+								</tbody>
+						</table>
+					{:else}
+						<p>No Orders Found.</p>
+					{/if}
+				</div>
+		
 		</div>
 		
     <div class="breakdown-container">

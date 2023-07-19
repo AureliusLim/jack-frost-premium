@@ -30,8 +30,8 @@
 		enableSubmit = true;
 		let eventholder = event.detail
 		value = eventholder.x  
-		let couponid = eventholder.y
-		value = event.detail
+	  couponid = eventholder.y
+
 	}
 
 	export let handleSubmit: SubmitFunction;

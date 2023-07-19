@@ -13,7 +13,7 @@ export const GET = async ({ locals }) => {
 
   // Retrieve coupons from the database
   const coupons = await prisma.coupon.findMany({
-    
+    include: { redeemedBy: true },
   });
   
   return json({

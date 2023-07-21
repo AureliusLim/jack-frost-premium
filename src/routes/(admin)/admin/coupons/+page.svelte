@@ -4,6 +4,7 @@
 	import type { PageServerData } from './$types';
   import { createEventDispatcher } from 'svelte';
   import CouponsTable from '$lib/components/Coupons/CouponsTable.svelte'
+  import AddIcon from '$lib/components/Buttons/Add.svelte';
 
 
   export let data: PageServerData;
@@ -40,32 +41,73 @@
   <title>Sections | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 
-<div class="coupon-page-container">
-  <button class="add-coupon-button" on:click={()=>{goto('/admin/coupons/form')}}>Add Coupon</button>
-  <CouponsTable data={couponslist} on:delete={deleteCoupon} on:edit={editCoupon}/>
+<div class="main-container">
+  <div class="info-container">
+    <div class="header-container">
+      <h1>My Orders</h1>
+      <button on:click={()=>{goto('/admin/coupons/form')}}>
+        <AddIcon label='' iconSize = 'w-11 h-11'/>
+      </button>
+    </div>
+    <div class="table-container">
+      <CouponsTable class="table" data={couponslist} on:delete={deleteCoupon} on:edit={editCoupon}/>
+    </div>
+  </div>
 </div>
 
+
 <style>
-  .coupon-page-container {
+  .main-container {
     width: 100vw;
     min-height: 100vh;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     background-color: #CDD5EB;
     overflow: hidden;
     overflow-y: auto;
-  }
-  .add-coupon-button {
-    margin: 20px 0px 20px 0px;
 
+    color: #383d55;
+		font-family: Istok Web;
+  }
+
+  .info-container {
+		width: 70%;
+		height: max;
+    margin-top: 28px;
+		color: #383d55;
+		font-family: Istok Web;
+	}
+  
+  .header-container {
+    display: flex;
+    gap: 20px;
+  }
+
+  h1 {
+		font-size: 29px;
+		font-weight: bold;
+    margin-top: 5px;
+    text-align: left;
+	}
+
+  .table-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  /* .add-coupon-button {
+    margin: 20px 0px 20px 0px;
     padding: 8px 16px;
     border: none;
     border-radius: 4px;
     background-color: #333;
     color: #fff;
     cursor: pointer;
-  }
+  } */
+
 
 </style>

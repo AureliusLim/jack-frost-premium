@@ -25,7 +25,7 @@
 
 <style lang="postcss">
 	.edit-btn {
-		@apply p-0 bg-transparent min-w-max max-w-max h-auto text-gray-800/[.8] hover:text-gray-700 cursor-pointer;
+		@apply p-0 bg-transparent min-w-max max-w-max h-auto text-gray-800/[.8] hover:text-[#F6162E] cursor-pointer;
 	}
 
 	.icon {

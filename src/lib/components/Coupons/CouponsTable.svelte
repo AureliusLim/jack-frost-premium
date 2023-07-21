@@ -2,6 +2,8 @@
   import { goto } from '$app/navigation';
   import { onMount, onDestroy } from 'svelte';
   import { createEventDispatcher } from 'svelte';
+  import DeleteIcon from '$lib/components/Buttons/Delete.svelte';
+  import EditIcon from '$lib/components/Buttons/Edit.svelte';
 	
   export let data;
 
@@ -27,7 +29,6 @@
   <title>Coupons | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 
-<div class="coupon-page-container">
   <table class="coupons-table">
     <thead>
       <tr>
@@ -37,7 +38,8 @@
         <th>Amount</th>
         <th>Requirements</th>
         <th>Redeemed</th>
-        <th></th> <!-- Empty header for edit column -->
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -61,42 +63,33 @@
           {:else}
             <td>0</td>
           {/if}
-          
-          <td>
-            
+            <td>
               <button on:click={() => editCoupon(coupon.name)}>      
-                Edit
+                <EditIcon label='' iconSize = 'w-8 h-8'/>
               </button>
-            
-          </td>
-          <td>
-           
+            </td>
+            <td>
               <button on:click={() => deleteCoupon(coupon.id)}>
-                Delete
+                <DeleteIcon label='' iconSize = 'w-6 h-6'/>
               </button>
-            
-          </td>
+            </td>
         </tr>
       {/each}
     </tbody>
   </table>
-</div>
 
 <style>
-
-
   .coupons-table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
-    border: 1px solid #ddd;
+    padding: 1rem 2.5rem;
   }
 
   .coupons-table th,
   .coupons-table td {
-    padding: 8px;
+    padding: 8px 20px;
     text-align: left;
-    border: 1px solid #ddd;
   }
 
   .coupons-table th {
@@ -104,11 +97,17 @@
     font-weight: bold;
   }
 
-  .coupons-table button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: blue;
-    text-decoration: underline;
+  .coupons-table tr:nth-child(even) {
+		background-color: #f2f2f2;
+	}
+
+  .coupons-table td:nth-child(7),
+  .coupons-table td:nth-child(8),
+  .coupons-table th:nth-child(7),
+  .coupons-table th:nth-child(8) {
+    border :none;
+    background-color: #CDD5EB;
+    text-align: right;
   }
+
 </style>

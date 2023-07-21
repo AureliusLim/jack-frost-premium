@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import { onMount, onDestroy } from 'svelte';
-
+	import Logo from '$lib/components/Logo.svelte';
   
   let products = [];
   let viewProducts = false;
@@ -116,77 +116,113 @@
   };
 </script>
 
-<div class="add-coupon-container">
-  <button class="back-button" on:click={goBack}>X</button>
-  <h2>Add Coupon</h2>
-  <div class="form">
-    <label for="coupon-name">Coupon Name</label>
-    <input type="text" id="coupon-name" bind:value={couponName} required/>
-
-    <label for="code">Code</label>
-    <input type="text" id="code" bind:value={code} required/>
-
-    <label for="discounted-amount">Discounted Amount</label>
-    <input type="number" id="discounted-amount" bind:value={discountedAmount} required min="1" max="99"/>
-
-    <div class="requirements-section">
-      <h3>Requirements:</h3>
-      <div class="dropdown-container">
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="dropdown-button" on:click={() => (viewProducts = !viewProducts)}>
-          Set Product Requirements
-        </div>
-      </div>
-      {#if viewProducts}
-      <div class="form-group">
-        <div class="product-grid">
-          {#each products as product, index}
-            <div class="product-item">
-              <p>{product}</p>
-              <input
-                    type="checkbox"
-                    checked={selectedProducts[product] && selectedProducts[product].status}
-                    on:change={() => toggleProductSelection(product)}
-                  />
-            </div>
-            {#if (index + 1) % 3 === 0}
-              <div class="product-grid"/>
-            {/if}
-          {/each}
-        </div>
-      </div>
-      {/if}
-    
-      <label for="order-count-requirement">Order Count Requirement</label>
-      <select id="order-count-requirement" bind:value={orderCountRequirement} required>
-        {#each orderCounts as count}
-          <option value={count}>{count}</option>
-        {/each}
-      </select>
+<nav class="w-screen h-screen bg-white px-4 pt-4 pb-2">
+  <div class="grid grid-cols-5 gap-5">
+    <div class="flex justify-center items-center col-span-1">
+      <Logo width="w-2/3" />
     </div>
-
-    <div class="activation-switch">
-      <label>Activate</label>
-      <input type="checkbox" bind:checked={isActivated} />
-    </div>
-    {#if variable===""}
-    <button class="save-button" on:click={saveCoupon}>Save</button>
-    {:else}
-    <button class="save-button" on:click={editCoupon}>Save</button>
-    {/if}
+    <button class="back-button" on:click={goBack}>X</button>
   </div>
-</div>
 
-<style>
-  .logo{
-    width: 100%;
-  }
-  .add-coupon-container {
+  <div class="info-container">
+    <div class="form">
+      {#if variable===""}
+      <h2>Add Coupon</h2>
+      {:else}
+      <h2>Edit Coupon</h2>
+      {/if}
+      <div class="column-container">
+        <div class="column">
+          <div class="input-grid">
+            <label for="coupon-name">Coupon Name</label>
+            <input type="text" id="coupon-name" bind:value={couponName} required/>
+          </div>
+
+          <div class="input-grid">
+            <label for="code">Code</label>
+            <input type="text" id="code" bind:value={code} required/>
+          </div>
+
+          <div class="input-grid">
+            <label for="discounted-amount">Discounted Amount</label>
+            <input type="number" id="discounted-amount" bind:value={discountedAmount} required min="1" max="99"/>
+          </div>
+
+        </div>
+        
+        <div class="column">
+          <div class="requirements-section">
+            <h3>Products</h3>
+            <div class="dropdown-container">
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <div class="dropdown-button" on:click={() => (viewProducts = !viewProducts)}>
+                Set Product Requirements
+              </div>
+            </div>
+            {#if viewProducts}
+            <div class="product-container">
+              <div class="product-grid">
+                {#each products as product, index}
+                  <div class="product-item">
+                    <p>{product}</p>
+                    <input
+                          type="checkbox"
+                          checked={selectedProducts[product] && selectedProducts[product].status}
+                          on:change={() => toggleProductSelection(product)}
+                        />
+                  </div>
+                  {#if (index + 1) % 3 === 0}
+                    <div class="product-grid"/>
+                  {/if}
+                {/each}
+              </div>
+            </div>
+            {/if}
+          
+            <div class="input-grid">
+              <label for="order-count-requirement">Order Count Requirement</label>
+              <select id="order-count-requirement" bind:value={orderCountRequirement} required>
+                {#each orderCounts as count}
+                  <option value={count}>{count}</option>
+                {/each}
+              </select>
+            </div>
+            
+          </div>
+        
+          <div class="activation-switch">
+            <label>Activate</label>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" value="" class="sr-only peer" bind:checked={isActivated}>
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-sky-400 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-sky-400"></div>
+            </label>
+          </div>
+          
+          <div class="button-container">
+            {#if variable===""}
+            <button class="save-button" on:click={saveCoupon}>Save</button>
+            {:else}
+            <button class="save-button" on:click={editCoupon}>Save</button>
+            {/if}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+
+
+<style lang="postcss">
+  .info-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+
+    color: #383d55;
+		font-family: Istok Web;
   }
 
   .back-button {
@@ -200,31 +236,71 @@
   }
 
   h2 {
-    margin-bottom: 20px;
   }
 
   .form {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 1000px;
+    width: 80%;
     padding: 20px;
-    border: 1px solid #ccc;
+    margin-top: 30px;
+    /* border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color: #f9f9f9; */
   }
 
-  label {
-    margin-bottom: 5px;
+  .column {
+		margin-top: 20px;
+		margin-bottom: 10px;
+		flex-wrap: wrap;
+		width: 50%;
+		flex-basis: 50%;
+	}
+
+	.column-container{
+		display: flex;
+		flex-direction: row;
+		gap: 200px;
+    width: 100%;
   }
 
-  input,
+  .input-grid {
+    margin-top: 20px;
+    /* gap: 5px; */
+  }
+
+
+  /* input,
   select {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
     border-radius: 4px;
+    background: #ECEBFA;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  } */
+
+  label, h3{
+		@apply text-start align-bottom text-xl text-[#352F75];
+	}
+
+  h2{
+    @apply text-start align-bottom text-3xl font-extrabold text-[#352F75];
+  }
+
+  input[type=text],
+  input[type=number],
+  select {
+		@apply w-full px-4 py-2 mt-4 text-lg text-[#666666] bg-[#ECEBFA] border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent;
+	}
+
+  .dropdown-button {
+		@apply w-full px-4 py-2 mt-4 cursor-pointer text-lg text-[#666666] bg-[#ECEBFA] border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent; 
+  }
+
+  .dropdown-button {
+    curser: point;
   }
 
   .requirements-section {
@@ -239,36 +315,38 @@
     display: flex;
     align-items: center;
     margin-top: 15px;
+    gap: 20px;
   }
 
-  .activation-switch label {
-    margin-right: 5px;
-  }
 
   .save-button {
     width: 100px;
-    margin-top: 15px;
+    margin-top: 25px;
     padding: 8px;
     border: none;
     border-radius: 4px;
-    background-color: #333;
+    background-color: #383d55;
     color: #fff;
     cursor: pointer;
   }
-  .form-group {
-    margin-bottom: 1rem;
+
+  .product-container{
+    background: #ECEBFA;
   }
+
   .product-grid {
     display: flex;
     flex-wrap: wrap;
-    margin-top: 0.5rem;
+    /* margin-top: 0.5rem; */
   }
 
   .product-item {
+    display: inline-flex;
     flex-basis: 33.33%;
-    padding: 5px;
+    justify-content: space-between;
+    padding: 8px;
   }
-  .dropdown-button {
+  /* .dropdown-button {
     position: relative;
     display: inline-block;
     padding: 8px 12px;
@@ -278,6 +356,10 @@
     color: #fff;
     cursor: pointer;
     margin:10px
-  }
+  } */
   
+  .button-container{
+    display:flex;
+    justify-content: right;
+  }
 </style>

@@ -235,9 +235,6 @@
     cursor: pointer;
   }
 
-  h2 {
-  }
-
   .form {
     display: flex;
     flex-direction: column;

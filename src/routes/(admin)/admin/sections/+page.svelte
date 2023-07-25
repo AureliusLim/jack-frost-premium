@@ -4,6 +4,8 @@
 	import type { PageServerData } from './$types';
   import { createEventDispatcher } from 'svelte';
   import SectionTable from '$lib/components/Sections/SectionTable.svelte';
+  import AddIcon from '$lib/components/Buttons/Add.svelte';
+
   let sections = []
   let name = "";
   // Sample section data
@@ -82,14 +84,16 @@
     <!-- Input Form -->
     <div class="input-container">
       <input type="text" placeholder="Enter Section Name Here" class="section-input" bind:value={name} />
-      <button class="add-section-btn" on:click={createSection}>Add Section</button>
+      <button class="add-section-btn" on:click={createSection}>
+        <AddIcon label='Add Section' iconSize = 'w-11 h-11' labelStyle = 'pl-3 text-xl'/>
+      </button>
     </div>
   </div>
   <!-- SectionTable-->
   <SectionTable sections={sections} on:delete={handleDelete}/>
 </div>
 
-<style>
+<style lang="postcss">
   .section-page-container {
     width: 100vw;
     min-height: 100vh;
@@ -112,23 +116,25 @@
     align-items: center;
   }
 
+  input{
+    width: 40%;
+  }
+
   .section-input {
-    width: 20rem;
-    height: 2rem;
+    width: 25rem;
+    height: 2.5rem;
     border-radius: 0.25rem;
     padding: 0.5rem;
     font-size: 1rem;
+    background: #ECEBFA;
+    color:#4a5568;
+    font-weight: 400;
+    @apply focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent
   }
 
   .add-section-btn {
     margin-left: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.25rem;
-    background-color: #4a5568;
-    color: white;
-    font-size: 1rem;
+    padding: 0rem 1rem;
     cursor: pointer;
   }
-
 </style>

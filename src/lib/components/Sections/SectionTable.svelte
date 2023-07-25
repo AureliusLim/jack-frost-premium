@@ -2,6 +2,9 @@
   import { onMount, onDestroy } from 'svelte';
   import { createEventDispatcher } from 'svelte';
   import SectionEditor from '../Modal/SectionEditor.svelte';
+  import DeleteIcon from '$lib/components/Buttons/Delete.svelte';
+  import EditIcon from '$lib/components/Buttons/Edit.svelte';
+
   export let sections;
   let editing = false;
   let sectionToBeEdited;
@@ -42,74 +45,61 @@
 
 <style>
   .section-table {
-    width: 80%;
-    border-collapse: collapse;
-  }
-
-  .section-table th,
-  .section-table td {
-    padding: 0.5rem;
-    text-align: center;
-    border: 1px solid #ccc;
+    width: 125vh;
+    border-collapse:separate;
+    border-spacing:0 35px;
   }
 
   .section-table th {
-    background-color: #f2f2f2;
+    padding: 0.5rem;
+    background: none;
+    text-align: left;
+    color: #352F75;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 36px;
-    height: 20px;
+  .section-table td {
+    padding-left: 10px;
+    text-align: left;
   }
 
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
+  .section-table td:nth-child(1){
+    width: 60%;
   }
 
-  .slider:before {
-    position: absolute;
-    content: '';
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
+  .section-table td:nth-child(2){
+    width: 5%;
   }
 
-  .display-switch:checked + .slider {
-    background-color: #4CAF50;
+  .section-table td:nth-child(3){
+    width: 10%;
   }
 
-  .display-switch:checked + .slider:before {
-    transform: translateX(16px);
+  .section-table td:nth-child(4){
+    width: 15%;
   }
 
-
-  .delete-btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.25rem;
-    background-color: #2196F3;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
+  .section-table td:nth-child(5){
+    width: 10%;
   }
-  .edit-icon{
-    cursor:pointer;
+
+  .section-table td:nth-child(1),
+  .section-table td:nth-child(2){
+    background: white;
+    color: #383d55;
+    font-weight: 600;
+    font-size: large;
+    box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.25), 0px 4px 0px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .section-table td:nth-child(2){
+    justify-items: right;
+    align-content: right;
   }
 </style>
+
+
 {#if editing}
   <SectionEditor on:close={()=>{editing = !editing}}  sectionName={sectionToBeEdited}/>
 {/if}  
@@ -117,7 +107,8 @@
   <thead>
     <tr>
       <th>Section Name</th>
-      <th>Edit</th>
+      <th></th>
+      <th></th>
       <th>Display</th>
       <th>Delete</th>
     </tr>
@@ -128,16 +119,21 @@
         <td>{section.name}</td>
         <td>
           <!-- svelte-ignore a11y-click-events-have-key-events -->
-          <svg class="edit-icon" on:click={handleEdit(section.name)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg>
+          <button on:click={handleEdit(section.name)}>      
+            <EditIcon label='' iconSize = 'w-6 h-6'/>
+          </button>
         </td>
+        <td></td>
         <td>
-          <label class="switch">
-            <input type="checkbox" bind:checked={section.isActivated} on:change={() => toggleDisplay(section)} class="display-switch" />
-            <span class="slider"></span>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" value="" class="sr-only peer" bind:checked={section.isActivated} on:change={() => toggleDisplay(section)}/>
+            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-sky-400 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-sky-400"></div>
           </label>
         </td>
         <td>
-          <button on:click={() => deleteSection(section.id)} class="delete-btn">Delete</button>
+          <button on:click={() => deleteSection(section.id)}>
+            <DeleteIcon label='' iconSize = 'w-6 h-6'/>
+          </button>
         </td>
       </tr>
     {/each}

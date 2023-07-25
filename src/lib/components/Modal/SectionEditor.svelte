@@ -93,42 +93,44 @@
 </script>
 <div class='modal-wrapper'>
   <TemplateModal width="max-w-7xl" on:closeModal={close} bgColor="bg-white">
-    <div slot="header">
-      <h1>Section Editor</h1>
-    </div>
-    <div slot="body">
-      <form on:submit={handleSubmit}>
-        <div class="form-group">
-          <label for="sectionName">Section Name:</label>
-          <input type="text" id="sectionName" bind:value={newSectionName} class="form-input" />
-        </div>
-        <div class="form-group">
-          <h3>Select Products:</h3>
-          <div class="product-grid">
-            {#each list as product, index}
-              <div class="product-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={selectedProducts[product] && selectedProducts[product].status}
-                    on:change={() => toggleProductSelection(product)}
-                  />
-                  {product}
-                </label>
-              </div>
-              {#if (index + 1) % 3 === 0}
-                <div class="product-grid"/>
-              {/if}
-            {/each}
+      <div slot="header">
+        <h1>Section Editor</h1>
+      </div>
+      <div slot="body">
+        <form on:submit={handleSubmit}>
+          <div class="form-group">
+            <h3>Section Name:</h3>
+            <input type="text" id="sectionName" bind:value={newSectionName} class="form-input" />
           </div>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+          <div class="form-group">
+            <h3>Select Products:</h3>
+            <div class="product-grid">
+              {#each list as product, index}
+                <div class="product-item">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedProducts[product] && selectedProducts[product].status}
+                      on:change={() => toggleProductSelection(product)}
+                    />
+                    {product}
+                  </label>
+                </div>
+                {#if (index + 1) % 3 === 0}
+                  <div class="product-grid"/>
+                {/if}
+              {/each}
+            </div>
+          </div>
+          <div class="button-container">
+            <button class="save-button" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
   </TemplateModal>
 </div>
 
-<style>
+<style lang="postcss">
   .modal-wrapper {
     position: fixed;
     top: 0;
@@ -140,12 +142,6 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  h1 {
-    color: #4a5568;
-    font-size: larger;
-    font-weight: bold;
   }
 
   .form-group {
@@ -169,4 +165,45 @@
     flex-basis: 33.33%;
     padding: 0.5rem;
   }
+
+  input[type=text]{
+		@apply mb-1 ml-5 mr-5 w-96 px-4 py-2 mt-4 text-lg text-[#666666] bg-[#ECEBFA] border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent;
+	}
+
+  input[type=checkbox]{
+		@apply ml-5
+  }
+
+
+  h1{
+    @apply ml-5 mr-5 text-start align-bottom text-3xl font-bold text-[#352F75];
+  }
+
+  h3{
+		@apply mt-1 ml-5 mr-5 text-start align-bottom text-xl text-[#352F75];
+	}
+
+  label{
+    margin-left: 1.25rem;
+    margin-right: 1.25rem;
+    color: #383d55;
+  }
+
+  .save-button {
+    width: 100px;
+    margin-top: 25px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #383d55;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .button-container{
+    display:flex;
+    justify-content: right;
+    margin-right: 1.25rem;
+  }
+
 </style>

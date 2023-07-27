@@ -5,7 +5,7 @@
   import Couponform from '$lib/components/Forms/Couponform.svelte';
   let products = [];
   const orderCounts = [0, 1, 2, 3, 4, 5];
-
+  let modalMsg = ""
   let couponName = '';
   let code = '';
   let discountedAmount = '';
@@ -16,6 +16,7 @@
   let variable;
   let couponObj = {};
   onMount(async() => {
+    modalMsg = "";
     const urlParams = new URLSearchParams(window.location.search);
     variable = urlParams.get('variable') || '';
     console.log(variable)
@@ -43,8 +44,14 @@
       body:JSON.stringify({coupon:coupon})
     })
     const data = await response.json();
-    console.log("COUPON ADDED")
-    goto('/admin/coupons')
+    if(data.success){
+      console.log("COUPON ADDED")
+      goto('/admin/coupons')
+    }
+    else{
+      modalMsg = "Input Fields are Invalid"
+    }
+   
   };
 
   const editCoupon = async(event)=>{
@@ -59,9 +66,13 @@
     const data = await response.json();
     if(data.success){
       console.log("COUPON edited")
+      goto('/admin/coupons')
+    }
+    else{
+      modalMsg = "Input Fields are Invalid"
     }
    
-    goto('/admin/coupons')
+    
   }
   
 
@@ -73,13 +84,13 @@
 </script>
 
 {#if variable}
-  <Couponform couponName={couponObj.name} code={couponObj.code}  discountedAmount={couponObj.rate} productRequirement={couponObj.prodRequirement} orderCountRequirement={couponObj.quantRequirement} isActivated={couponObj.isActivated} variable={variable}
+  <Couponform modalMsg = {modalMsg} couponName={couponObj.name} code={couponObj.code}  discountedAmount={couponObj.rate} productRequirement={couponObj.prodRequirement} orderCountRequirement={couponObj.quantRequirement} isActivated={couponObj.isActivated} variable={variable}
   on:save={saveCoupon}
   on:back={goBack}
   on:edit={editCoupon}
   />
 {:else}
-  <Couponform couponName='' code=''  discountedAmount=0 productRequirement='' orderCountRequirement='' isActivated={false} variable={variable}
+  <Couponform modalMsg = {modalMsg} couponName='' code=''  discountedAmount=0 productRequirement='' orderCountRequirement='' isActivated={false} variable={variable}
     on:save={saveCoupon}
     on:back={goBack}
     on:edit={editCoupon}

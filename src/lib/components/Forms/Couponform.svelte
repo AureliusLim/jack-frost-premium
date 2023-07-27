@@ -6,6 +6,7 @@
   let products = [];
   let viewProducts = false;
   const orderCounts = [0, 1, 2, 3, 4, 5];
+  export let modalMsg;
   export let variable;
   export let couponName;
   export let code;
@@ -13,7 +14,7 @@
   export let productRequirement;
   export let orderCountRequirement;
   export let isActivated;
- 
+  
   let selectedProducts = {};
   const dispatch = createEventDispatcher();
   onMount(async()=>{
@@ -123,7 +124,9 @@
     </div>
     <button class="back-button" on:click={goBack}>X</button>
   </div>
-
+  {#if modalMsg}
+    <p>{modalMsg}</p>
+  {/if}
   <div class="info-container">
     <div class="form">
       {#if variable===""}

@@ -38,13 +38,13 @@
 </script>
 
 <svelte:head>
-  <title>Sections | Jack Frost Premium Ice Cream</title>
+  <title>Coupons | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 
 <div class="main-container">
   <div class="info-container">
     <div class="header-container">
-      <h1>My Orders</h1>
+      <h1>My Coupons</h1>
       <button on:click={()=>{goto('/admin/coupons/form')}}>
         <AddIcon label='' iconSize = 'w-11 h-11'/>
       </button>

@@ -5,12 +5,13 @@
   import { createEventDispatcher } from 'svelte';
   import SectionTable from '$lib/components/Sections/SectionTable.svelte';
   import AddIcon from '$lib/components/Buttons/Add.svelte';
-
+  let modalMsg = "";
   let sections = []
   let name = "";
   // Sample section data
  onMount(()=>{
   console.log(data.sections)
+  modalMsg = "";
   let c = 0;
   for(let counter = 0; counter < data.sections.length; counter++){
     if(data.sections[counter].name !== "Unassigned"){
@@ -31,9 +32,13 @@
       })
       const data = await response.json();
       console.log("SECTION ADDED")
+      modalMsg = "Section Added"
       console.log(data.section)
       if(data.success){
         sections[sections.length] = data.section
+      }
+      else{
+        modalMsg = "Invalid Section Name"
       }
     }
   }
@@ -80,6 +85,9 @@
 </svelte:head>
 
 <div class="section-page-container">
+  {#if modalMsg}
+      <p>{modalMsg}</p>
+    {/if}
   <div class="form-container">
     <!-- Input Form -->
     <div class="input-container">

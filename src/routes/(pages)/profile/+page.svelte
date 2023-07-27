@@ -105,7 +105,7 @@
 
   const handleModalCancelCancel = ()=>{
     cancelModalOn = false;
-    isEditing = true;
+    isEditing = false;
   }
 
   const handleAlertClose = () => {

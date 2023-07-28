@@ -48,8 +48,8 @@
 			<div class="flex justify-center items-center col-span-1">
 				<Logo width="w-2/3" />
 			</div>
-			<div class="flex item-stretch h-full col-span-3">
-				{#if $page.url.pathname.split('/').length < 4}
+			<div class="flex item-stretch h-full col-span-3 pl-10">
+				{#if $page.url.pathname.split('/').length < 6}
 					<NavLinks {data} class="flex flex-nowrap"/>
 				{/if}
 			</div>

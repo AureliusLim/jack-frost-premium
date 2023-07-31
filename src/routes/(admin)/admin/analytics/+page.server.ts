@@ -14,10 +14,28 @@ export const load = (async ({ locals, params, fetch }) => {
   
 	const order = await orderRes.json();
   
+	const o = order.orders
+	let salesdata = [];
+	let date, orderquantity, product, paymentstatus, price
+	for (let orders of o){
+		date = orders.created_at;
+		paymentstatus = orders.payment_status;
+		orderquantity = 0
+		price = 0
+		for(let items of orders.order_details){
+				orderquantity += items.quantity;
+				product = items.product.name;
+				price = items.offering.price
+		}
+	
+		salesdata.push({date:date, sales:orderquantity, product:product, paymentstatus: paymentstatus,price: price * orderquantity })
+	}
+
 	if (order.success) {
     
 		return {
-			order: order.orders
+			order: order.orders,
+			salesdata: salesdata
 		};
 	}
 	

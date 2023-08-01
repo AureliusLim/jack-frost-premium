@@ -73,7 +73,7 @@
   }
 
   .info-container {
-		width: 70%;
+		width: 80%;
 		height: max;
     margin-top: 28px;
 		color: #383d55;

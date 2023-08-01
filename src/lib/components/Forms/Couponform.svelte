@@ -72,6 +72,8 @@
     };
     dispatch('save', coupon)
   };
+
+
   const editCoupon = async() => {
     const selectedProductNames = [];
     const unselectedProductNames = [];

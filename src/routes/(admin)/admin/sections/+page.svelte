@@ -5,7 +5,12 @@
   import { createEventDispatcher } from 'svelte';
   import SectionTable from '$lib/components/Sections/SectionTable.svelte';
   import AddIcon from '$lib/components/Buttons/Add.svelte';
+  import CustomerSuccess from '$lib/components/Alert/CustomerSuccess.svelte';
+  import CustomerError from '$lib/components/Alert/CustomerError.svelte';
+
   let modalMsg = "";
+  let successCreate;
+  let alertOn;
   let sections = []
   let name = "";
   // Sample section data
@@ -32,16 +37,25 @@
       })
       const data = await response.json();
       console.log("SECTION ADDED")
-      modalMsg = "Section Added"
       console.log(data.section)
       if(data.success){
         sections[sections.length] = data.section
+        modalMsg = "Successfully added a New Secton"
+        successCreate = true;
       }
       else{
-        modalMsg = "Invalid Section Name"
+        modalMsg = "Section Name already exists. Try addingk a new one."
+        successCreate = false;
       }
+      alertOn = true;
     }
   }
+
+  const handleAlertClose = () => {
+    alertOn = false;
+    console.log(alertOn)
+  }
+
   const handleDelete = async(event) =>{
     const response = await fetch('/api/sections/delete',{
       method: 'POST',
@@ -65,8 +79,9 @@
         }
       }
     }
-  
   }
+
+  
 
 
   
@@ -77,6 +92,7 @@
   export let data: PageServerData;
 
   
+  
   console.log(sections)
 </script>
 
@@ -85,9 +101,25 @@
 </svelte:head>
 
 <div class="section-page-container">
-  {#if modalMsg}
-      <p>{modalMsg}</p>
-    {/if}
+    <!-- for successful/error prompts -->
+    <slot>
+      <div class="prompt-container">
+        {#if successCreate == true}
+          <CustomerSuccess
+          message={modalMsg}
+          on:closeAlert={handleAlertClose}
+          />
+        {/if}
+
+        {#if successCreate == false}
+          <CustomerError
+          message={modalMsg}
+          on:closeAlert={handleAlertClose}
+          />
+        {/if}
+      </div>
+    </slot>
+
   <div class="form-container">
     <!-- Input Form -->
     <div class="input-container">
@@ -112,6 +144,16 @@
     background-color: #CDD5EB;
     overflow: hidden;
     overflow-y: auto;
+  }
+
+  .prompt-container{
+    width: 30%;
+    margin-left: auto;
+    margin-right: 5%;
+    display: absolute;
+    align-items: right;
+    justify-content: right;
+    margin-top: 25px;
   }
 
   .form-container {

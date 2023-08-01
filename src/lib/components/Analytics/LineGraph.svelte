@@ -5,12 +5,64 @@
   import 'chartjs-adapter-date-fns';
   let canvas;
   let ctx;
-  // Sample data with actual date strings
   export let salesdata;
   export let selectedProductNames;
-  const dispatch = createEventDispatcher();
+  export let fromDate;
+  export let toDate;
+  export let selectedPayment;
+  export let selectedStatus;
+  const fromDateObj = new Date(fromDate);
+  const toDateObj = new Date(toDate);
+  const containsUnpaid = selectedPayment.includes('Unpaid');
+  const containsPaid = selectedPayment.includes('Fully Paid');
+  const containsCompleted = selectedStatus.includes('Completed');
+  const containsProcess = selectedStatus.includes('On Process');
+  
+
   onMount(async () => {
-    
+    // Filter the data based on the date range
+    let filteredData = [];
+    if(fromDate.length > 0 && toDate.length > 0){
+        filteredData = salesdata.filter((item) => {
+        const itemDateObj = new Date(item.date);
+        return itemDateObj >= fromDateObj && itemDateObj <= toDateObj;
+      });
+    }
+    else{
+      filteredData = salesdata;
+    }
+  
+    // Filter the data based on the conditions for payment status
+    filteredData = filteredData.filter((obj) => {
+      if (containsUnpaid && containsPaid) {
+        return true; // No need to filter, keep all data
+      } else if (containsUnpaid) {
+        return obj.paymentstatus === 'NP' || obj.paymentstatus === 'PP';
+      } else if (containsPaid) {
+        return obj.paymentstatus === 'FP' || obj.paymentstatus === 'SS';
+      } else {
+        return false;
+      }
+    });
+
+    // Filter the data based on the conditions for status
+    filteredData = filteredData.filter((obj) => {
+      if (containsCompleted && containsProcess) {
+        return true; // No need to filter, keep all data
+      } else if (containsCompleted) {
+        return obj.paymentstatus  === 'SS';
+      } else if (containsProcess) {
+        return obj.paymentstatus  === 'FP' || obj.paymentstatus  === 'NP' || obj.paymentstatus  === 'PP';
+      } else {
+        return false;
+      }
+    });
+
+    // Filter the data based on the selected products
+    filteredData = filteredData.filter((item) => selectedProductNames.includes(item.product));
+
+    // Update the salesdata with the filtered data for displaying the top stats
+    salesdata = filteredData;
     // Preprocess the data to merge sales for duplicate dates (ignoring time)
     const mergedData = salesdata.reduce((acc, curr) => {
       const dateOnly = curr.date.slice(0, 10); // Extract only the date part

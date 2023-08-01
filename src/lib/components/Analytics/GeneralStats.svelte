@@ -2,15 +2,70 @@
     import { onMount, createEventDispatcher } from 'svelte';
   export let selectedProductNames;
   export let salesdata;
-  
+  export let fromDate;
+  export let toDate;
+  export let selectedPayment;
+  export let selectedStatus;
+  const fromDateObj = new Date(fromDate);
+  const toDateObj = new Date(toDate);
+  const containsUnpaid = selectedPayment.includes('Unpaid');
+  const containsPaid = selectedPayment.includes('Fully Paid');
+  const containsCompleted = selectedStatus.includes('Completed');
+  const containsProcess = selectedStatus.includes('On Process');
   onMount(()=>{
-    console.log(salesdata)
-    salesdata = filterSalesData()
-    
+    console.log(selectedStatus)
+    // Filter the data based on the date range
+    let filteredData = [];
+    if(fromDate.length > 0 && toDate.length > 0){
+        filteredData = salesdata.filter((item) => {
+        const itemDateObj = new Date(item.date);
+        return itemDateObj >= fromDateObj && itemDateObj <= toDateObj;
+      });
+    }
+    else{
+      filteredData = salesdata;
+    }
+  
+  // Filter the data based on the conditions for payment status
+  filteredData = filteredData.filter((obj) => {
+    if (containsUnpaid && containsPaid) {
+      return true; // No need to filter, keep all data
+    } else if (containsUnpaid) {
+      return obj.paymentstatus === 'NP' || obj.paymentstatus === 'PP';
+    } else if (containsPaid) {
+      return obj.paymentstatus === 'FP' || obj.paymentstatus === 'SS';
+    } else {
+      return false;
+    }
+  });
+
+  // Filter the data based on the conditions for status
+  filteredData = filteredData.filter((obj) => {
+    if (containsCompleted && containsProcess) {
+      return true; // No need to filter, keep all data
+    } else if (containsCompleted) {
+      return obj.paymentstatus  === 'SS';
+    } else if (containsProcess) {
+      return obj.paymentstatus  === 'FP' || obj.paymentstatus  === 'NP' || obj.paymentstatus  === 'PP';
+    } else {
+      return false;
+    }
+  });
+
+  // Filter the data based on the selected products
+  filteredData = filteredData.filter((item) => selectedProductNames.includes(item.product));
+
+  // Calculate the analytics for the filtered data
+  const analytics = calculateAnalytics(filteredData);
+
+  // Update the salesdata with the filtered data for displaying the top stats
+  salesdata = filteredData;
+   
   })
-  function filterSalesData() {
-    return salesdata.filter((item) => selectedProductNames.includes(item.product));
-}
+  
+
+
+
 function calculateAnalytics(data) {
   let totalSales = 0;
   let totalRevenue = 0;

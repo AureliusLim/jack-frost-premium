@@ -5,6 +5,7 @@
   import { createEventDispatcher } from 'svelte';
   import SectionTable from '$lib/components/Sections/SectionTable.svelte';
   import AddIcon from '$lib/components/Buttons/Add.svelte';
+  import DeleteConfirmationModal from '$lib/components/Modal/Confirmation.svelte';
   import CustomerSuccess from '$lib/components/Alert/CustomerSuccess.svelte';
   import CustomerError from '$lib/components/Alert/CustomerError.svelte';
 
@@ -13,6 +14,14 @@
   let alertOn;
   let sections = []
   let name = "";
+
+  const confirmationHeader = 'DELETE SECTION?';
+	const confirmationDetails =
+		'The section you’ve selected will be deleted. This action cannot be undone.';
+	const cancelLabel = 'Cancel';
+	const confirmLabel = 'Confirm';
+  let isAboutToDelete = false;
+
   // Sample section data
  onMount(()=>{
   console.log(data.sections)
@@ -40,11 +49,11 @@
       console.log(data.section)
       if(data.success){
         sections[sections.length] = data.section
-        modalMsg = "Successfully added a New Secton"
+        modalMsg = "Successfully added a new secton"
         successCreate = true;
       }
       else{
-        modalMsg = "Section Name already exists. Try addingk a new one."
+        modalMsg = "Section name already exists. Try adding a new one."
         successCreate = false;
       }
       alertOn = true;
@@ -78,11 +87,18 @@
           c += 1;
         }
       }
+      isAboutToDelete = false;
+      goto('/admin/coupons')
     }
   }
 
-  
+  const deleteConfirmation = () => {
+    isAboutToDelete = true;
+  };
 
+  const cancelDelete = () => {
+		isAboutToDelete = false;
+	};
 
   
   // Clean up event listeners on component destruction
@@ -130,7 +146,19 @@
     </div>
   </div>
   <!-- SectionTable-->
-  <SectionTable sections={sections} on:delete={handleDelete}/>
+  <SectionTable sections={sections} on:delete={deleteConfirmation}/>
+
+  {#if isAboutToDelete}
+    <DeleteConfirmationModal
+    {confirmationHeader}
+    {confirmationDetails}
+    {cancelLabel}
+    {confirmLabel}
+    on:cancel={cancelDelete}
+    on:confirm={handleDelete}
+    />
+  {/if}
+
 </div>
 
 <style lang="postcss">

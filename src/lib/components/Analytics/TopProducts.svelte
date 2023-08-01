@@ -66,7 +66,7 @@ function calculateAnalytics(data) {
 </script>
 
 <div class='topProducts-container'>
-  <h2>Top Products</h2>
+  <h2>Top Products Sold</h2>
   {#each topProductsarr as product, index}
   <hr>
     <p>{index+1} {product.product}</p>

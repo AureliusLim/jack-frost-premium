@@ -23,12 +23,12 @@ export const load = (async ({ locals, params, fetch }) => {
 		orderquantity = 0
 		price = 0
 		for(let items of orders.order_details){
-				orderquantity += items.quantity;
+				orderquantity = items.quantity;
 				product = items.product.name;
-				price = items.offering.price
+				price = items.offering.price * orderquantity
+				salesdata.push({date:date, sales:orderquantity, product:product, paymentstatus: paymentstatus,price: price })
 		}
 	
-		salesdata.push({date:date, sales:orderquantity, product:product, paymentstatus: paymentstatus,price: price * orderquantity })
 	}
 
 	if (order.success) {

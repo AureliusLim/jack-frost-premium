@@ -67,7 +67,7 @@ function calculateAnalytics(data) {
 </div>
 <div class="top-stats">
   <h2>₱{calculateAnalytics(salesdata).topRevenue}</h2>
-  <p>Earned from Top Product</p>
+  <p>Highest Revenue from a Product</p>
 </div>
 
 <style>

@@ -17,9 +17,9 @@
   let isActivated = false;
   let variable;
  
-	const confirmationHeader = 'DISCARD CATEGORY?';
+	const confirmationHeader = 'DISCARD COUPON?';
 	const confirmationDetails =
-		'The category you’ve made will not be saved if you leave this page without saving.';
+		'The coupon you’ve added/edited will not be saved if you leave this page without saving.';
 	const cancelLabel = 'Stay on this Page';
 	const confirmLabel = 'Leave this Page';
 	let statusHeader = '';
@@ -72,7 +72,7 @@
   const editCoupon = async(event)=>{
     loading = true;
 		statusHeader = 'FOR A MOMENT...';
-		statusInfo = 'Adding category...';
+		statusInfo = 'Adding coupon...';
 
     let coupon = event.detail
     const response = await fetch('/api/coupons/edit',{

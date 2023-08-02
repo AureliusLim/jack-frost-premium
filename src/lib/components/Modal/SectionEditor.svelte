@@ -4,6 +4,7 @@
   import TemplateModal from '$lib/components/Modal/Template.svelte';
 
   const dispatch = createEventDispatcher();
+  let isSuccess = false;
   
   onMount(async()=>{
     //get all the products
@@ -33,11 +34,12 @@
           ...selectedProducts,
           [sectionObj.products[counter].name]: {status: true, original:true}
         }
-    }   
+    }
+
   })
 
   const close = () => {
-    dispatch('close');
+    dispatch('close', isSuccess);
   };
 
   export let sectionName;
@@ -85,6 +87,14 @@
     })
     let d = await resp.json();
     console.log(d.success);
+    if(d.success) {
+      isSuccess = true;
+    }
+    else {
+      isSuccess = false;
+    }
+    
+    
     location.reload()
     close()
 

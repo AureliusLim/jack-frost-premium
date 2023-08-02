@@ -11,10 +11,13 @@
 
   let modalMsg = "";
   let successCreate;
+  let successEdit;
+  let status;
   let alertOn;
   let sections = []
   let name = "";
   let deleteHolder = "";
+
   const confirmationHeader = 'DELETE SECTION?';
 	const confirmationDetails =
 		'The section you’ve selected will be deleted. This action cannot be undone.';
@@ -58,6 +61,19 @@
       }
       alertOn = true;
     }
+  }
+
+  const getEditStatus = (event) => {
+    status = event.detail
+    if(status){
+      modalMsg = "Successfully edited the secton"
+      successEdit = true;
+    }
+    else{
+      modalMsg = "Edit failed. Section name already exists."
+      successEdit = false;
+    }
+    alertOn = true;
   }
 
   const handleAlertClose = () => {
@@ -121,14 +137,14 @@
     <!-- for successful/error prompts -->
     <slot>
       <div class="prompt-container">
-        {#if successCreate == true}
+        {#if (successCreate == true || successEdit == true) && alertOn == true}
           <CustomerSuccess
           message={modalMsg}
           on:closeAlert={handleAlertClose}
           />
         {/if}
 
-        {#if successCreate == false}
+        {#if (successCreate == false || successEdit == false) && alertOn == true} 
           <CustomerError
           message={modalMsg}
           on:closeAlert={handleAlertClose}
@@ -147,7 +163,7 @@
     </div>
   </div>
   <!-- SectionTable-->
-  <SectionTable sections={sections} on:delete={deleteConfirmation}/>
+  <SectionTable sections={sections} on:delete={deleteConfirmation} on:close={getEditStatus}/>
 
   {#if isAboutToDelete}
     <DeleteConfirmationModal

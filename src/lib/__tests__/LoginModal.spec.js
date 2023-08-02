@@ -70,7 +70,7 @@ describe('Login Modal Tests', () => {
     const submitButton = document.querySelector('button[type="submit"]');
 
     emailInput.value = 'john@gmail.com';
-    passwordInput.value = '12345';
+    passwordInput.value = 'john\'spassword';
     submitButton.click();
     mockFetch.mockResolvedValue({ // pretend that the credentials are valid
       ok: true,

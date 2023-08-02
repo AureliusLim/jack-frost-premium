@@ -35,6 +35,27 @@
       viewingAll = false;
     }
   }
+  const resetView = async()=>{
+    const productresponse = await fetch('/api/products')
+    const productdata = await productresponse.json()
+    
+    product_object = productdata.products
+    let c = 0;
+    fromDate = '';
+    toDate = '';
+    
+    for(let counter = 0; counter < product_object.length; counter++){
+      selectedProductNames[counter] = product_object[counter].name;
+    }
+
+    filteredProducts = selectedProductNames;
+    selectedPayment = ['Unpaid', 'Fully Paid'];
+    filteredPayment = selectedPayment;
+    selectedStatus = ['On Process', 'Completed'];
+    filteredStatus = selectedStatus;
+    viewingAll = true;
+    findTopSellingProducts();
+  }
   onMount(async()=>{
     const productresponse = await fetch('/api/products')
     const productdata = await productresponse.json()
@@ -222,6 +243,11 @@ const filterOrder = (event)=>{
 
 </script>
 <style>
+  .header{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
   .title{
     text-align:center;
     font-weight: 700;
@@ -250,20 +276,44 @@ const filterOrder = (event)=>{
     right:0;
     cursor:pointer;
   }
+  #reset_icon{
+    cursor:pointer;
+  }
+ 
+
 </style>
 <svelte:head>
   <title>Analytics | Jack Frost Premium Ice Cream</title>
 </svelte:head>
 <div>
-  {#if viewingAll}
-    <h2 class="title">View Analytics From: All</h2>
-  {:else}
-    <h2 class="title">View Analytics From: Custom</h2>
-  {/if}
+  <div class="header">
+    {#if viewingAll}
+      <h2 class="title">View Analytics From: All</h2>
+    {:else}
+  
+      <h2 class="title">View Analytics From: Custom</h2>
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <svg id="reset_icon" on:click={resetView} width="40px" height="40px" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+
+        <g fill="none" fill-rule="evenodd" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0 1 1 0 2.5 2.5)">
+        
+        <path d="m3.98652376 1.07807068c-2.38377179 1.38514556-3.98652376 3.96636605-3.98652376 6.92192932 0 4.418278 3.581722 8 8 8s8-3.581722 8-8-3.581722-8-8-8"/>
+        
+        <path d="m4 1v4h-4" transform="matrix(1 0 0 -1 0 6)"/>
+        
+        </g>
+        
+        </svg>
+      
+    {/if}
+  </div>
+
   
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <svg on:click={openProduct} height="60px" width="60px" id="gear_icon" style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M424.5,216.5h-15.2c-12.4,0-22.8-10.7-22.8-23.4c0-6.4,2.7-12.2,7.5-16.5l9.8-9.6c9.7-9.6,9.7-25.3,0-34.9l-22.3-22.1  c-4.4-4.4-10.9-7-17.5-7c-6.6,0-13,2.6-17.5,7l-9.4,9.4c-4.5,5-10.5,7.7-17,7.7c-12.8,0-23.5-10.4-23.5-22.7V89.1  c0-13.5-10.9-25.1-24.5-25.1h-30.4c-13.6,0-24.4,11.5-24.4,25.1v15.2c0,12.3-10.7,22.7-23.5,22.7c-6.4,0-12.3-2.7-16.6-7.4l-9.7-9.6  c-4.4-4.5-10.9-7-17.5-7s-13,2.6-17.5,7L110,132c-9.6,9.6-9.6,25.3,0,34.8l9.4,9.4c5,4.5,7.8,10.5,7.8,16.9  c0,12.8-10.4,23.4-22.8,23.4H89.2c-13.7,0-25.2,10.7-25.2,24.3V256v15.2c0,13.5,11.5,24.3,25.2,24.3h15.2  c12.4,0,22.8,10.7,22.8,23.4c0,6.4-2.8,12.4-7.8,16.9l-9.4,9.3c-9.6,9.6-9.6,25.3,0,34.8l22.3,22.2c4.4,4.5,10.9,7,17.5,7  c6.6,0,13-2.6,17.5-7l9.7-9.6c4.2-4.7,10.2-7.4,16.6-7.4c12.8,0,23.5,10.4,23.5,22.7v15.2c0,13.5,10.8,25.1,24.5,25.1h30.4  c13.6,0,24.4-11.5,24.4-25.1v-15.2c0-12.3,10.7-22.7,23.5-22.7c6.4,0,12.4,2.8,17,7.7l9.4,9.4c4.5,4.4,10.9,7,17.5,7  c6.6,0,13-2.6,17.5-7l22.3-22.2c9.6-9.6,9.6-25.3,0-34.9l-9.8-9.6c-4.8-4.3-7.5-10.2-7.5-16.5c0-12.8,10.4-23.4,22.8-23.4h15.2  c13.6,0,23.3-10.7,23.3-24.3V256v-15.2C447.8,227.2,438.1,216.5,424.5,216.5z M336.8,256L336.8,256c0,44.1-35.7,80-80,80  c-44.3,0-80-35.9-80-80l0,0l0,0c0-44.1,35.7-80,80-80C301.1,176,336.8,211.9,336.8,256L336.8,256z"/></svg>
+  
 </div>
+
 {#if productModal}
   <ProductFilter on:filterproducts={filterProducts}  on:openTime={openTime} on:openPayment={openPayment} on:openOrder={openOrder} on:close={closeSettings} />
 {:else if timeModal}
@@ -320,5 +370,14 @@ const filterOrder = (event)=>{
   </div>
   
 </div>
-
-<OrdersTable />
+{#key filteredProducts}
+      {#key fromDate}
+        {#key toDate}
+          {#key filteredPayment}
+            {#key filteredStatus}
+            <OrdersTable salesdata = {data.salesdata} selectedProductNames={filteredProducts} fromDate = {fromDate} toDate = {toDate} selectedPayment={filteredPayment} selectedStatus={filteredStatus}/>
+            {/key}
+          {/key}
+        {/key}
+      {/key}
+    {/key}

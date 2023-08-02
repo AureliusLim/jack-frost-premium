@@ -1,85 +1,76 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	let selectedOrder;
-	let orders = [];
-	let filteredOrders = [];
-	let items;
-	let selectedTab = 'all';
+  export let selectedProductNames;
+  export let salesdata;
+  export let fromDate;
+  export let toDate;
+  export let selectedPayment;
+  export let selectedStatus;
+  const fromDateObj = new Date(fromDate);
+  const toDateObj = new Date(toDate);
+  const containsUnpaid = selectedPayment.includes('Unpaid');
+  const containsPaid = selectedPayment.includes('Fully Paid');
+  const containsCompleted = selectedStatus.includes('Completed');
+  const containsProcess = selectedStatus.includes('On Process');
+  
+	
+	
 	const formatDate = (dateString) => {
 		const options = { year: 'numeric', month: 'long', day: 'numeric' };
 		const date = new Date(dateString);
 		return new Intl.DateTimeFormat('en-US', options).format(date);
 	};
 
-  const getQuantity = (orderDetails)=>{
-    let ctr = 0;
-    for (let c = 0; c < orderDetails.length; c++){
-      ctr += orderDetails[c].quantity;
-    }
-    return ctr;
-  }
-  const selectOrder = (order) => {
-    selectedOrder = order;
-    items = selectedOrder.order_details;
-    console.log(selectedOrder)
-  }
-  const allOrder = ()=>{
-    document.getElementById(selectedTab).style.color = "rgba(0, 0, 0, 0.25)"; // change prev tab color
-    document.getElementById(selectedTab).style.textDecoration = "none";
-    document.getElementById("all").style.color = "rgba(247, 11, 33, 1)"; // change curr tab color
-    document.getElementById("all").style.textDecoration = "underline";
-
-    selectedTab = "all";
-    filteredOrders = orders;
-  }
-  const onProcess = ()=>{
-    document.getElementById(selectedTab).style.color = "rgba(0, 0, 0, 0.25)"; // change prev tab color
-    document.getElementById(selectedTab).style.textDecoration = "none";
-    document.getElementById("onProcess").style.color = "rgba(247, 11, 33, 1)"; // change curr tab color
-    document.getElementById("onProcess").style.textDecoration = "underline";
-
-    selectedTab = "onProcess";
-    filteredOrders= [];
-    let count = 0;
-    for(let c = 0; c < orders.length; c++){
-      if(orders[c].payment_status !== "SS"){
-        filteredOrders[count] = orders[c];
-        count++;
-      }
-    }
-    
-  }
-  const completedOrder = ()=>{
-    document.getElementById(selectedTab).style.color = "rgba(0, 0, 0, 0.25)"; // change prev tab color
-    document.getElementById(selectedTab).style.textDecoration = "none";
-    document.getElementById("completed").style.color = "rgba(247, 11, 33, 1)"; // change curr tab color
-    document.getElementById("completed").style.textDecoration = "underline";
-
-    selectedTab = "completed";
-    filteredOrders= [];
-    let count = 0;
-    for(let c = 0; c < orders.length; c++){
-      if(orders[c].payment_status === "SS"){
-        filteredOrders[count] = orders[c];
-        count++;
-      }
-    }
-   
-  }
-  onMount(async () => {
-    console.log("MOUNTING")
-    try {
-      const response = await fetch('/api/orders');
-      const data = await response.json();
-      orders = data.orders;
-      filteredOrders = orders;
   
-      // Fetch the orders from the API
-    } catch (error) {
-      console.error(error);
+  onMount(()=>{
+    console.log(salesdata)
+    // Filter the data based on the date range
+    let filteredData = [];
+    if(fromDate.length > 0 && toDate.length > 0){
+        filteredData = salesdata.filter((item) => {
+        const itemDateObj = new Date(item.date);
+        return itemDateObj >= fromDateObj && itemDateObj <= toDateObj;
+      });
+    }
+    else{
+      filteredData = salesdata;
+    }
+  
+  // Filter the data based on the conditions for payment status
+  filteredData = filteredData.filter((obj) => {
+    if (containsUnpaid && containsPaid) {
+      return true; // No need to filter, keep all data
+    } else if (containsUnpaid) {
+      return obj.paymentstatus === 'NP' || obj.paymentstatus === 'PP';
+    } else if (containsPaid) {
+      return obj.paymentstatus === 'FP' || obj.paymentstatus === 'SS';
+    } else {
+      return false;
     }
   });
+
+  // Filter the data based on the conditions for status
+  filteredData = filteredData.filter((obj) => {
+    if (containsCompleted && containsProcess) {
+      return true; // No need to filter, keep all data
+    } else if (containsCompleted) {
+      return obj.paymentstatus  === 'SS';
+    } else if (containsProcess) {
+      return obj.paymentstatus  === 'FP' || obj.paymentstatus  === 'NP' || obj.paymentstatus  === 'PP';
+    } else {
+      return false;
+    }
+  });
+
+  // Filter the data based on the selected products
+  filteredData = filteredData.filter((item) => selectedProductNames.includes(item.product));
+
+
+  // Update the salesdata with the filtered data for displaying the top stats
+  salesdata = filteredData;
+  console.log(salesdata)
+  })
 </script>
 
 
@@ -92,20 +83,9 @@
 		padding: 40px;
 		background: #cdd5eb;
 	}
-	.side-menu {
-		width: 20%;
-		height: 423px;
-		padding-top: 20px;
-		display: flex;
-		flex-direction: column;
-
-		background: #fff;
-		color: #383d55;
-		font-family: Istok Web;
-	}
 
 	.info-container {
-		width: 60%;
+		width: 80%;
 		height: max;
 
 		background: #fff;
@@ -120,18 +100,7 @@
 		margin-left: 40px;
 	}
 
-	.tabs-container {
-		margin-top: 30px;
-		margin-left: 40px;
-		display: flex;
-		gap: 50px;
-		font-weight: 700;
-		color: rgba(0, 0, 0, 0.25);
-	}
 
-	.tabs:hover {
-		text-decoration: underline;
-	}
 
 	.ordertable {
 		width: 100%;
@@ -151,7 +120,6 @@
 	.ordertable tr {
 		height: 50px;
 		width: 50px;
-		cursor: pointer;
 	}
 
 	.ordertable td {
@@ -160,53 +128,6 @@
 
 	.ordertable tr:nth-child(even) {
 		background-color: #f2f2f2;
-	}
-
-	.breakdown-container {
-		height: max;
-		width: 20%;
-		padding: 30px;
-		background: #fff;
-		color: #383d55;
-		font-family: Istok Web;
-	}
-
-	h4 {
-		color: #383d55;
-		font-weight: bold;
-		margin-bottom: 20px;
-	}
-
-	h3 {
-		color: rgba(0, 0, 0, 0.25);
-		font-weight: bold;
-		margin-top: 10px;
-	}
-
-	h2 {
-		font-size: 23px;
-		font-weight: bold;
-		margin-bottom: 8px;
-	}
-
-	.breakdown {
-		width: 100%;
-		text-align: left;
-	}
-	.breakdown th:nth-child(1) {
-		width: 70%;
-	}
-
-	.breakdown th:nth-child(2) {
-		width: 30%;
-	}
-
-	.breakdown td:nth-child(1) {
-		width: 70%;
-	}
-
-	.breakdown td:nth-child(2) {
-		width: 30%;
 	}
 
 	p {
@@ -226,38 +147,42 @@
 
 <div class="main-container">
   <div class="info-container">
-    <h1>My Orders</h1>
-    <div class="tabs-container">
-      <button id="all" class="tabs" on:click={(allOrder)} style="color:rgba(247, 11, 33, 1); text-decoration:underline">All Orders</button>
-      <button id="onProcess" class="tabs" on:click={(onProcess)}>On Process</button>
-      <button id="completed" class="tabs" on:click={(completedOrder)}>Completed</button>
-    </div>
+    <h1>Specific Order Items</h1>
+    
     <div class="orders-container">
-        {#if orders.length > 0}
+        {#if salesdata.length > 0}
           <table class="ordertable">
             <thead>
               <tr>
-                <th>Order No.</th>
-                <th>Date Ordered</th>
-                <th>Status</th>
-                <th>Qty</th>
-                <th>Total</th>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Product</th>
+                <th>Payment Status</th>
+                <th>Order Status</th>
+                <th>Amount</th>
               </tr>
             </thead>
               <tbody>
-                {#each filteredOrders as order}
-                  <tr on:click={() => selectOrder(order)}>
-                    <td>#{Number(order.orderNumber).toString().padStart(5, '0') ?? '*****'}</td>
-                    <td>{formatDate(order.created_at)}</td>
+                {#each salesdata as order}
+                  <tr>
+                    <td>{formatDate(order.date)}</td>
+                    <td>{order.sales}</td>
+                    <td>{order.product}</td>
                     <td>
-                      {#if order.payment_status === 'SS'}
+                      {#if order.paymentstatus == 'NP' || order.paymentstatus == 'PP'}
+                        Unpaid
+                      {:else if order.paymentstatus == 'FP' || order.paymentstatus == 'SS'}
+                        Paid
+                      {/if}
+                    </td>
+                    <td>
+                      {#if order.paymentstatus == 'SS'}
                         Completed
                       {:else}
                         On Process
                       {/if}
                     </td>
-                    <td>{getQuantity(order.order_details)}</td>
-                    <td>{order.total_price}</td>
+                    <td>{order.price}</td>
                   </tr>
                 {/each}
               </tbody>
@@ -269,36 +194,5 @@
   
   </div>
   
-  <div class="breakdown-container">
-    {#if selectedOrder}
-      
-      <h3>Order No.</h3>
-      <h2>#{Number(selectedOrder.orderNumber).toString().padStart(5, '0') ?? '*****'}</h2>
-      <h3>Date Ordered</h3>
-      <h4>{formatDate(selectedOrder.created_at)}</h4>
-  
-      <table class="breakdown">
-        <thead>
-          <th><h3>Item</h3></th>
-          <th><h3>Price</h3></th>
-        </thead>
-        {#each items as item}
-          <tr>
-            <td>{item.product.name}</td>
-            <td>Php {item.offering.price * item.quantity}</td>
-          </tr>
-        {/each}
-      </table>
-  
-      <div class="total">
-        <div><h3>Overall Total</h3></div>
-        <div><h4>Php {selectedOrder.total_price}</h4></div>
-      </div>
-      
-    {:else}
-      <div class="empty-breakdown">
-        <p>Select an order.</p>
-      </div>
-    {/if}
-  </div>
+ 
 </div>

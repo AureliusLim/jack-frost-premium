@@ -13,7 +13,7 @@
   const containsCompleted = selectedStatus.includes('Completed');
   const containsProcess = selectedStatus.includes('On Process');
   onMount(()=>{
-    console.log(selectedStatus)
+    
     // Filter the data based on the date range
     let filteredData = [];
     if(fromDate.length > 0 && toDate.length > 0){

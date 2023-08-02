@@ -14,7 +14,7 @@
   let alertOn;
   let sections = []
   let name = "";
-
+  let deleteHolder = "";
   const confirmationHeader = 'DELETE SECTION?';
 	const confirmationDetails =
 		'The section you’ve selected will be deleted. This action cannot be undone.';
@@ -65,13 +65,13 @@
     console.log(alertOn)
   }
 
-  const handleDelete = async(event) =>{
+  const handleDelete = async() =>{
     const response = await fetch('/api/sections/delete',{
       method: 'POST',
       headers:{
         'Content-type': 'application/json',
       },
-      body: JSON.stringify({ID: event.detail})
+      body: JSON.stringify({ID: deleteHolder})
     })
     const data = await response.json();
     console.log("SECTION Deleted")
@@ -88,11 +88,12 @@
         }
       }
       isAboutToDelete = false;
-      goto('/admin/coupons')
+      goto('/admin/sections')
     }
   }
 
-  const deleteConfirmation = () => {
+  const deleteConfirmation = (event) => {
+    deleteHolder  = event.detail
     isAboutToDelete = true;
   };
 

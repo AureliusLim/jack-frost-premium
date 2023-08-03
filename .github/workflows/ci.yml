@@ -5,12 +5,12 @@ on:
     branches:
       - main
       - dev
-      - test-integration
+     
   pull_request:
     branches:
       - main
       - dev
-      - test-integration
+    
 
 jobs:
   ci:

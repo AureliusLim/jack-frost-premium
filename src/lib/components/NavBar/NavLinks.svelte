@@ -21,7 +21,7 @@
 
 <style lang="postcss">
 	.navlinks {
-		@apply flex flex-wrap justify-between min-w-min min-h-min list-none gap-4;
+		@apply flex justify-between min-w-min min-h-min list-none gap-4;
 	}
 
 	.navlinks > li {
@@ -44,8 +44,8 @@
 	.active {
 		@apply text-primary-red !important;
 		@apply border-primary-red !important;
-	}
-	@media (max-width: 740px) {
+	} 
+	 @media (max-width: 740px) {
 		.navlinks {
 			@apply flex-col justify-center w-auto mr-40;
 		}

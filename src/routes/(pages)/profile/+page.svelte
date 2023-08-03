@@ -241,10 +241,10 @@
 <div class="max-w-full flex flex-col min-h-min bg-teal-400">
 	<div class="main-container">
 		<div class="side-menu">
-			<button on:click={() => goto('/profile')}>Profile Information</button>
-			<button on:click={() => goto('/changepassword')}>Change Password</button>
-			<button on:click={() => goto('/myorders')}>My Orders</button>
-			<button on:click={handleLogout}>Sign Out</button>
+			<button id = 'prof_info' on:click={() => goto('/profile')}>Profile Information</button>
+			<button id = 'chng_pw' on:click={() => goto('/changepassword')}>Change Password</button>
+			<button id = 'orders' on:click ={() => goto('/myorders')}>My Orders</button>
+			<button id = 'signout' on:click={handleLogout}>Sign Out</button>
 		</div>
 
     <div class="info-container">

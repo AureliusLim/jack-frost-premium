@@ -74,13 +74,13 @@
   <TemplateModal width="max-w-7xl" on:closeModal={close} bgColor="bg-white">
       <div slot="header">
         <h1>Analytics Configuration Settings</h1>
-        <div class="button-container">
+        <div class="tab-container">
           <button on:click={openProduct}>Product</button>
           <button on:click={openTime}>Time Range</button>
           <button on:click={openPayment}>Payment Status</button>
           <button id="currentTab">Order Status</button>
         </div>
-        <h3>OrderFilter</h3>
+        <h3>ORDER FILTER</h3>
       </div>
       <div slot="body">
         <form on:submit={handleSubmit}>
@@ -111,10 +111,51 @@
 </div>
 
 <style>
-  .button-container button {
-    padding:10px
+  h1 {
+    color: #352F75;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    margin-bottom: 15px;
   }
+
+  h3 {
+    color: #352F75;
+    font-weight: 500;
+  }
+
+  .tab-container {
+    display: flex;
+    border-bottom: 1px solid #B4B4B4;
+    margin-bottom: 15px;
+    gap: 5px;
+  }
+
+  .tab-container button {
+    padding:5px 10px;
+    color: #352F75;
+  }
+
   #currentTab{
-    background-color:aqua;
+    background-color: #CDD5EB;
+    border-bottom: 2px solid #352F75;
+  }
+
+  .form-group {
+    width: 400px;
+  }
+
+  .button-container{
+    display:flex;
+    justify-content: right;
+    margin-top: 15px;
+    color: #352F75;
+    font-weight: 600;
+    font-size: 16px;
+  } 
+
+  input {
+    color: #585858;
   }
 </style>

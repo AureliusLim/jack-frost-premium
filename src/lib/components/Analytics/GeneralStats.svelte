@@ -122,7 +122,7 @@ function calculateAnalytics(data) {
 </div>
 <div class="top-stats">
   <h2>₱{calculateAnalytics(salesdata).topRevenue}</h2>
-  <p>Highest Revenue from a Product</p>
+  <p>Highest Revenue from Product</p>
 </div>
 
 <style>
@@ -132,16 +132,24 @@ function calculateAnalytics(data) {
     align-items: center;
     padding: 20px;
     border: 1px solid #ccc;
-    max-width: 250px;
+    width: 225px;
+
+    border-radius: 25px;
+    background: white;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   }
 
   .top-stats h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #352F75;
+    
   }
 
   .top-stats p {
-    font-size: 14px;
-    color: #666;
+    font-size: 12px;
+    font-weight: 400;
+    color: #352F75;
   }
 </style>

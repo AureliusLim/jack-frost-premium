@@ -132,11 +132,11 @@
 </script>
 
 <div class='chart-container'>
-  <canvas id="myChart" bind:this={ctx} width="500px" height="300px"></canvas>
+  <canvas id="myChart" bind:this={ctx} width="80%" height="20%"></canvas>
 </div>
 
 <style>
   .chart-container{
-    width:500px;
+    width:100%;
   }
 </style>

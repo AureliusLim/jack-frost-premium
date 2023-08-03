@@ -87,7 +87,7 @@
 	.info-container {
 		width: 80%;
 		height: max;
-
+    border-radius: 25px;
 		background: #fff;
 		color: #383d55;
 		font-family: Istok Web;

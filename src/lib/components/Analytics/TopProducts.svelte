@@ -118,15 +118,43 @@ function calculateAnalytics(data) {
   <h2>Top Products Sold</h2>
   {#each topProductsarr as product, index}
   <hr>
-    <p>{index+1} {product.product}</p>
-    <p>(TSR): {product.totalSalesRevenue} (TIO): {product.totalQuantitySold} units</p>
-
+    <div class="product">
+      <p class="name">{index+1} {product.product}</p>
+      <p class="info">(TSR): {product.totalSalesRevenue} (TIO): {product.totalQuantitySold} units</p>
+    </div>
   {/each}
 </div>
 
 <style>
   .topProducts-container{
-    width:200px;
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #352F75;
+  }
+  
+  .product {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .name {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .info {
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  h2{
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 15px;
   }
   
 </style>

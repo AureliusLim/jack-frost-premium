@@ -13,7 +13,7 @@
 		"test:unit:watch": "vitest --reporter verbose",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"test": "jest --config=jest.config.json",
+		"test": "jest --config=jest.config.json " ,
 		"test:watch": "jest --watch"
 	},
 	"devDependencies": {

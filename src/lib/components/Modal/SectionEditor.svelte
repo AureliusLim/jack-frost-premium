@@ -86,18 +86,28 @@
       },
       body: JSON.stringify({ID:sectionObj.id, updatedName: newSectionName, selected: selectedProductNames, unselected: unselectedProductNames})
     })
-    let d = await resp.json();
-    console.log(d.success);
-    if(d.success) {
+    let d
+    try{
+      d = await resp.json();
+      console.log(d.success);
+      if(d.success) {
+        isSuccess = true;
+        // Delay the reload
+        setTimeout(() => {
+          location.reload();
+        }, 1500);
+      }
+      else {
+        isSuccess = false;
+      }
+    
+    }
+    catch{
       isSuccess = true;
-      // Delay the reload
-      setTimeout(() => {
-        location.reload();
-      }, 1500);
     }
-    else {
-      isSuccess = false;
-    }
+  
+      
+    
     
     
    

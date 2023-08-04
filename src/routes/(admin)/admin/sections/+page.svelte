@@ -64,16 +64,20 @@
   }
 
   const getEditStatus = (event) => {
-    status = event.detail
-    if(status){
-      modalMsg = "Successfully edited the secton"
-      successEdit = true;
+    status = event.detail.isSuccess
+    let neverEdited = event.detail.neverEdited
+    if(!neverEdited){
+      if(status){
+        modalMsg = "Successfully edited the secton"
+        successEdit = true;
+      }
+      else{
+        modalMsg = "Edit failed. Section name already exists."
+        successEdit = false;
+      }
+      alertOn = true;
     }
-    else{
-      modalMsg = "Edit failed. Section name already exists."
-      successEdit = false;
-    }
-    alertOn = true;
+    
   }
 
   const handleAlertClose = () => {

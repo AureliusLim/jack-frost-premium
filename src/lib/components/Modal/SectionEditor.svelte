@@ -4,8 +4,8 @@
   import TemplateModal from '$lib/components/Modal/Template.svelte';
 
   const dispatch = createEventDispatcher();
-  let isSuccess = false;
-  
+  export let isSuccess = false;
+  let neverEdited = true;
   onMount(async()=>{
     //get all the products
     list=[];
@@ -39,7 +39,7 @@
   })
 
   const close = () => {
-    dispatch('close', isSuccess);
+    dispatch('close', {isSuccess: isSuccess, neverEdited:neverEdited});
   };
 
   export let sectionName;
@@ -61,6 +61,7 @@
   const handleSubmit = async() => {
     const selectedProductNames = [];
     const unselectedProductNames = [];
+    neverEdited = false;
     console.log(selectedProducts)
     console.log(Object.entries(selectedProducts))
     for (const product in selectedProducts) {
@@ -89,13 +90,17 @@
     console.log(d.success);
     if(d.success) {
       isSuccess = true;
+      // Delay the reload
+      setTimeout(() => {
+        location.reload();
+      }, 1500);
     }
     else {
       isSuccess = false;
     }
     
     
-    location.reload()
+   
     close()
 
   };
@@ -140,80 +145,104 @@
   </TemplateModal>
 </div>
 
-<style lang="postcss">
+<style>
   .modal-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .form-group {
-    margin-bottom: 1rem;
-  }
+.form-group {
+  margin-bottom: 1rem;
+}
 
-  .form-input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 0.25rem;
-  }
+.form-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+}
 
-  .product-grid {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 0.5rem;
-  }
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
 
-  .product-item {
-    flex-basis: 33.33%;
-    padding: 0.5rem;
-  }
+.product-item {
+  flex-basis: 33.33%;
+  padding: 0.5rem;
+}
 
-  input[type=text]{
-		@apply mb-1 ml-5 mr-5 w-96 px-4 py-2 mt-4 text-lg text-[#666666] bg-[#ECEBFA] border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent;
-	}
+input[type="text"] {
+  margin-bottom: 1rem;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 96%;
+  padding: 4px 8px;
+  margin-top: 16px;
+  font-size: 16px;
+  color: #666666;
+  background-color: #ecebfa;
+  border: 2px solid #ccc;
+  border-radius: 0.25rem;
+  outline: none;
+  resize: vertical;
+}
 
-  input[type=checkbox]{
-		@apply ml-5
-  }
+input[type="checkbox"] {
+  margin-left: 5px;
+}
 
+h1 {
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: start;
+  align-items: bottom;
+  font-size: 3xl;
+  font-weight: bold;
+  color: #352f75;
+}
 
-  h1{
-    @apply ml-5 mr-5 text-start align-bottom text-3xl font-bold text-[#352F75];
-  }
+h3 {
+  margin-top: 1rem;
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: start;
+  align-items: bottom;
+  font-size: 16px;
+  color: #352f75;
+}
 
-  h3{
-		@apply mt-1 ml-5 mr-5 text-start align-bottom text-xl text-[#352F75];
-	}
+label {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  color: #383d55;
+}
 
-  label{
-    margin-left: 1.25rem;
-    margin-right: 1.25rem;
-    color: #383d55;
-  }
+.save-button {
+  width: 100px;
+  margin-top: 25px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #383d55;
+  color: #fff;
+  cursor: pointer;
+}
 
-  .save-button {
-    width: 100px;
-    margin-top: 25px;
-    padding: 8px;
-    border: none;
-    border-radius: 4px;
-    background-color: #383d55;
-    color: #fff;
-    cursor: pointer;
-  }
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 1.25rem;
+}
 
-  .button-container{
-    display:flex;
-    justify-content: right;
-    margin-right: 1.25rem;
-  }
 
 </style>

@@ -16,10 +16,10 @@ let isActivated = true;
 let rate = 20;
 let prodRequirement = ["White Rock"];
 let quantRequirement = 0;
-let redeemedBy = 0;
+let redeemedBy = "";
 
 describe('Coupons Test', () => {
-  it('renders the whole coupon page', () => {
+  it('renders the whole coupon page and attempts and fails to edit a coupon', async () => {
     const modal = new CouponsModal({
       target: document.body,
       props: {
@@ -36,60 +36,31 @@ describe('Coupons Test', () => {
     });
 
     // Check if the coupons page is rendered
-    expect(document.querySelector('table[class="coupons-table"] thead')).toBeInTheDocument();
+    expect(document.querySelector('table thead')).toBeInTheDocument();
+    expect(document.querySelector('button[id="edit"]')).toBeInTheDocument();
 
+    const editButton = document.querySelector('button[id="edit"]');
+
+    editButton.click();
+
+    name = 'Christmas Sale';
+    code = "XMAS";
+    isActivated = true;
+    rate = 50;
+    prodRequirement = ["White Rock"];
+    quantRequirement = 1;
+    redeemedBy = "";
+
+    mockFetch.mockResolvedValue({ // pretend that the credentials are invalid
+      ok: false,
+      status: 200,
+      // Add other necessary response properties
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     modal.$destroy();
   });
 
-  // it('displays error message on failed edit of coupon', async () => {
-  //   const page = new CouponsPage({
-  //     target: document.body,
-  //     props: {
-  //       isOpen: true
-  //     }
-  //   });
-
-  //   const addCouponButton = document.querySelector('button[id="add_coupons"]');
-
-  //   addCouponButton.click();
-
-  //   // TO-EDIT: Not sure if this is the correct way of accessing these variables
-
-  //   const couponNameInput = document.querySelector('Couponform["couponName"]');
-  //   const codeInput = document.querySelector('Couponform["code"]');
-  //   const discountedAmountInput = document.querySelector('Couponform["discountedAmount"]');
-  //   const productRequirementInput = document.querySelector('Couponform["productRequirement"]'); 
-  //   const orderCountRequirementInput = document.querySelector('Couponform["orderCountRequirement"]');
-  //   const isActivatedInput = document.querySelector('Couponform["isActivated"]'); 
-
-  //   couponNameInput.value = 'Test2 Coupon';
-  //   codeInput.value = 'HSAJW21';
-  //   discountedAmountInput.value = '20';
-
-  //   // TO-ADD: unique input, not sure how to change value
-
-  //   // Select White Rock
-  //   // Order Requirement 0 
-
-  //   // TO-EDIT: Click Save button
-  //   const saveButton = document.querySelector('saveCoupon');
-
-  //   // TO-ADD: Need to press the edit button specific to the generated Coupon ID but how
-
-
-  //   // Wait for the register logic to complete
-  //   mockFetch.mockResolvedValue({ // pretend that the credentials are invalid
-  //     ok: false,
-  //     status: 200,
-  //     // Add other necessary response properties
-  //   });
-    
-  //   await new Promise((resolve) => setTimeout(resolve, 1000));
-  //   expect(document.querySelector('.error')).toBeInTheDocument(); 
-    
-  //   page.$destroy();
-  // });
-
-
+  
 });

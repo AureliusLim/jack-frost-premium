@@ -24,7 +24,7 @@
     // Dispatch 'edit' event with the coupon ID
     dispatch('edit', couponId);
   };
-  console.log(data[0])
+  console.log(data[0]);
 </script>
 
 <svelte:head>
@@ -66,7 +66,7 @@
             <td>0</td>
           {/if}
             <td>
-              <button on:click={() => editCoupon(coupon.name)}>      
+              <button id = "edit" on:click={() => editCoupon(coupon.name)}>      
                 <EditIcon label='' iconSize = 'w-8 h-8'/>
               </button>
             </td>

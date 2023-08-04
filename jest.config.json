@@ -7,7 +7,7 @@
 	},
 	"moduleNameMapper":{
 		"^\\$lib/(.*)$": "<rootDir>/src/lib/$1",
-		"^\\$routes/(.*)$": "<rootDir>/src/routes/$1"
+		"^/src/routes/\\(admin\\)/admin/coupons/\\+page\\.svelte$": "<rootDir>/src/routes/(admin)/admin/coupons/+page.svelte"
 	},
 	
 	"moduleFileExtensions": ["js", "svelte"],

@@ -45,7 +45,7 @@
   <div class="info-container">
     <div class="header-container">
       <h1>My Coupons</h1>
-      <button on:click={()=>{goto('/admin/coupons/form')}}>
+      <button id = 'add_coupons' on:click={()=>{goto('/admin/coupons/form')}}>
         <AddIcon label='' iconSize = 'w-11 h-11'/>
       </button>
     </div>

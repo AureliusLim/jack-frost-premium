@@ -14,7 +14,7 @@
   export let productRequirement;
   export let orderCountRequirement;
   export let isActivated;
-  
+  export let isEdited = false;
   let selectedProducts = {};
   const dispatch = createEventDispatcher();
   onMount(async()=>{
@@ -78,6 +78,7 @@
     const selectedProductNames = [];
     const unselectedProductNames = [];
     console.log(selectedProducts)
+    isEdited = true;
     console.log(Object.entries(selectedProducts))
     for (const product in selectedProducts) {
       

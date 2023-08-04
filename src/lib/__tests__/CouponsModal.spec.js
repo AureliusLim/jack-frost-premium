@@ -1,66 +1,81 @@
 import { JSDOM } from 'jsdom';
-import CouponsModal from '../components/Coupons/CouponsTable.svelte';
-
+import Couponform from '$lib/components/Forms/Couponform.svelte';
 jest.setTimeout(10000); // Set the default timeout to 10000 milliseconds (10 seconds)
-
+const mockFetch = jest.fn();
+global.fetch = mockFetch;
 const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 global.document = dom.window.document;
 global.window = dom.window;
-// Mock the fetch function and its response based on the scenario
-const mockFetch = jest.fn();
-global.fetch = mockFetch;
+const onSubmit = jest.fn(e => e.preventDefault());
+console.error = jest.fn();
+console.warn = jest.fn();
+console.log= jest.fn();
+// Function to create the Svelte component manually
+function createCouponTable(coupon) {
+  const component = new Couponform({
+    target: document.body, 
+    props: { couponName: coupon.name },
+  });
 
-let name = "Test2 Coupon";
-let code = "TESTC2";
-let isActivated = true;
-let rate = 20;
-let prodRequirement = ["White Rock"];
-let quantRequirement = 0;
-let redeemedBy = "";
+  return component;
+}
 
-describe('Coupons Test', () => {
-  it('renders the whole coupon page and attempts and fails to edit a coupon', async () => {
-    const modal = new CouponsModal({
-      target: document.body,
-      props: {
-        data: [{
-          name: name, 
-          code: code,
-          isActivated: isActivated,
-          rate: rate,
-          prodRequirement: prodRequirement,
-          quantRequirement: quantRequirement,
-          redeemedBy: redeemedBy
-        }]
-      }
-    });
+describe('CouponForm', () => {
+  it('should successfully edit coupon name', async () => {
+    const coupons = [
+      { id: 1, name: 'Christmas', isActivated: true },
+      { id: 2, name: 'Coupon 2', isActivated: true },
+  
+    ];
 
-    // Check if the coupons page is rendered
-    expect(document.querySelector('table thead')).toBeInTheDocument();
-    expect(document.querySelector('button[id="edit"]')).toBeInTheDocument();
+    const component = createCouponTable(coupons);
 
-    const editButton = document.querySelector('button[id="edit"]');
+   
 
-    editButton.click();
+    // Update the input value with a new name
+    const newNameInput = document.querySelector('input[id="coupon-name"]');
+    newNameInput.value = 'New Coupon Name';
 
-    name = 'Christmas Sale';
-    code = "XMAS";
-    isActivated = true;
-    rate = 50;
-    prodRequirement = ["White Rock"];
-    quantRequirement = 1;
-    redeemedBy = "";
-
-    mockFetch.mockResolvedValue({ // pretend that the credentials are invalid
-      ok: false,
+    // Find the submit button and click it
+    const submitButton = document.querySelector('.save-button');
+    submitButton.click()
+    mockFetch.mockResolvedValue({
+      ok: true,
       status: 200,
       // Add other necessary response properties
     });
 
+   
+    
     await new Promise((resolve) => setTimeout(resolve, 1000));
+   
 
-    modal.$destroy();
+    // Ensure the isSuccess variable is true
+    expect(component.isEdited).toBe(true);
   });
 
+  it('should fail to edit coupon name', async () => {
+    const coupons = [
+      { id: 1, name: 'Christmas', isActivated: true },
+      { id: 2, name: 'Coupon 2', isActivated: true },
+      // Add more sample sections as needed
+    ];
+
+    const component = createCouponTable(coupons);
+
   
+    const newNameInput = document.querySelector('input[id="coupon-name"]');
+    newNameInput.value = 'Christmas';
+    const submitButton = document.querySelector('.save-button');
+    submitButton.click()
+    mockFetch.mockResolvedValue({ 
+      ok: false,
+      status: 200,
+      // Add other necessary response properties
+    });
+    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    expect(component.isEdited).toBe(false);
+  });
 });

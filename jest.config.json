@@ -6,7 +6,9 @@
 		"^.+\\.js$": "babel-jest"
 	},
 	"moduleNameMapper":{
+		"^\\$lib/assets/logos/jack-frost-premium\\.png$": "<rootDir>/fileMock.js",
 		"^\\$lib/(.*)$": "<rootDir>/src/lib/$1"
+	
 	},
 	
 	"moduleFileExtensions": ["js", "svelte"],

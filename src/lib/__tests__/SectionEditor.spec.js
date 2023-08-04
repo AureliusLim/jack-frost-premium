@@ -7,7 +7,8 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 global.document = dom.window.document;
 global.window = dom.window;
 const onSubmit = jest.fn(e => e.preventDefault());
-
+console.log = jest.fn();
+console.error = jest.fn()
 // Function to create the Svelte component manually
 function createSectionTable(sections) {
   const component = new SectionEditor({

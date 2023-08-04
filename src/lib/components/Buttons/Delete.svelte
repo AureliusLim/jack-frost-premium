@@ -39,8 +39,8 @@
 	}
 
 	.icon {
-		width: 8px;
-		height: 8px;
+		width: 30px;
+		height: 30px;
 		fill: currentColor;
 		stroke-width: 1;
 	}

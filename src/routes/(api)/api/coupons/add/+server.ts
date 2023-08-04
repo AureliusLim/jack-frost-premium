@@ -20,9 +20,9 @@ export const POST = (async ({locals, request }) => {
         name: data.coupon.name,
         code: data.coupon.code,
         isActivated: data.coupon.isActivated,
-        rate: data.coupon.discountedAmount,
+        rate: Number(data.coupon.discountedAmount),
         prodRequirement: finalproducts,
-        quantRequirement: data.coupon.orderCountRequirement
+        quantRequirement: Number(data.coupon.orderCountRequirement)
       }
     });
     return json({success: true, coupon})

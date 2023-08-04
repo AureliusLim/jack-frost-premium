@@ -7,7 +7,9 @@ const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
 global.document = dom.window.document;
 global.window = dom.window;
 const onSubmit = jest.fn(e => e.preventDefault());
-
+console.error = jest.fn();
+console.warn = jest.fn();
+console.log= jest.fn();
 // Function to create the Svelte component manually
 function createSectionTable(sections) {
   const component = new SectionEditor({
@@ -23,7 +25,7 @@ describe('SectionEditor', () => {
     const sections = [
       { id: 1, name: 'Christmas', isActivated: true },
       { id: 2, name: 'Section 2', isActivated: true },
-      // Add more sample sections as needed
+     
     ];
 
     const component = createSectionTable(sections);
@@ -37,7 +39,7 @@ describe('SectionEditor', () => {
     // Find the submit button and click it
     const submitButton = document.querySelector('button[type="submit"]');
     submitButton.click()
-    mockFetch.mockResolvedValue({ // pretend that the credentials are invalid
+    mockFetch.mockResolvedValue({ 
       ok: true,
       status: 200,
       // Add other necessary response properties
@@ -48,7 +50,7 @@ describe('SectionEditor', () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
    
 
-    // Ensure the isSuccess variable is true
+  
     expect(component.isSuccess).toBe(true);
   });
 
@@ -66,14 +68,14 @@ describe('SectionEditor', () => {
     newNameInput.value = 'Christmas';
     const submitButton = document.querySelector('button[type="submit"]');
     submitButton.click()
-    mockFetch.mockResolvedValue({ // pretend that the credentials are invalid
+    mockFetch.mockResolvedValue({ 
       ok: false,
       status: 200,
       // Add other necessary response properties
     });
     
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    // Ensure the isSuccess variable is initially false
+   
     expect(component.isSuccess).toBe(false);
   });
 });

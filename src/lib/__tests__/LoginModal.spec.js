@@ -9,7 +9,9 @@ global.window = dom.window;
 // Mock the fetch function and its response based on the scenario
 const mockFetch = jest.fn();
 global.fetch = mockFetch;
-
+console.error = jest.fn();
+console.warn = jest.fn();
+console.log= jest.fn();
 describe('Login Modal Tests', () => {
   it('renders the login form', () => {
     const modal = new LoginModal({
@@ -44,7 +46,7 @@ describe('Login Modal Tests', () => {
     passwordInput.value = 'incorrectpassword';
     submitButton.click();
     // Wait for the login logic to complete
-    mockFetch.mockResolvedValue({ // pretend that the credentials are invalid
+    mockFetch.mockResolvedValue({ 
       ok: false,
       status: 200,
       // Add other necessary response properties
@@ -72,7 +74,7 @@ describe('Login Modal Tests', () => {
     emailInput.value = 'john@gmail.com';
     passwordInput.value = 'john\'spassword';
     submitButton.click();
-    mockFetch.mockResolvedValue({ // pretend that the credentials are valid
+    mockFetch.mockResolvedValue({ 
       ok: true,
       status: 200,
       // Add other necessary response properties

@@ -61,13 +61,17 @@
 		/>
 	</div>
 {:else}
-<div class="product-list-container">
-	<ProductList
-		width="w-full md:max-w-[90%]"
-		products={searchResults}
-		on:showItem={showProductInfo}
-	/>
-</div>
+	{#if searchResults.length > 0}
+		<div class="product-list-container">
+			<ProductList
+				width="w-full md:max-w-[90%]"
+				products={searchResults}
+				on:showItem={showProductInfo}
+			/>
+		</div>
+		{:else}
+		<p class="no-results">Product Not Found</p>
+		{/if}
 {/if}
 
 {#if productInfoModal}
@@ -90,4 +94,10 @@
     font-size: larger;
     font-weight: bold;
   }
+	.no-results{
+		text-align:center;
+		color:red;
+		font-size: larger;
+    font-weight: bold;
+	}
 </style>

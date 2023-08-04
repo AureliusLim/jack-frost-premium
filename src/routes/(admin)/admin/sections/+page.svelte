@@ -5,9 +5,26 @@
   import { createEventDispatcher } from 'svelte';
   import SectionTable from '$lib/components/Sections/SectionTable.svelte';
   import AddIcon from '$lib/components/Buttons/Add.svelte';
+  import DeleteConfirmationModal from '$lib/components/Modal/Confirmation.svelte';
+  import CustomerSuccess from '$lib/components/Alert/CustomerSuccess.svelte';
+  import CustomerError from '$lib/components/Alert/CustomerError.svelte';
+
   let modalMsg = "";
+  let successCreate;
+  let successEdit;
+  let status;
+  let alertOn;
   let sections = []
   let name = "";
+  let deleteHolder = "";
+
+  const confirmationHeader = 'DELETE SECTION?';
+	const confirmationDetails =
+		'The section you’ve selected will be deleted. This action cannot be undone.';
+	const cancelLabel = 'Cancel';
+	const confirmLabel = 'Confirm';
+  let isAboutToDelete = false;
+
   // Sample section data
  onMount(()=>{
   console.log(data.sections)
@@ -32,23 +49,45 @@
       })
       const data = await response.json();
       console.log("SECTION ADDED")
-      modalMsg = "Section Added"
       console.log(data.section)
       if(data.success){
         sections[sections.length] = data.section
+        modalMsg = "Successfully added a new secton"
+        successCreate = true;
       }
       else{
-        modalMsg = "Invalid Section Name"
+        modalMsg = "Section name already exists. Try adding a new one."
+        successCreate = false;
       }
+      alertOn = true;
     }
   }
-  const handleDelete = async(event) =>{
+
+  const getEditStatus = (event) => {
+    status = event.detail
+    if(status){
+      modalMsg = "Successfully edited the secton"
+      successEdit = true;
+    }
+    else{
+      modalMsg = "Edit failed. Section name already exists."
+      successEdit = false;
+    }
+    alertOn = true;
+  }
+
+  const handleAlertClose = () => {
+    alertOn = false;
+    console.log(alertOn)
+  }
+
+  const handleDelete = async() =>{
     const response = await fetch('/api/sections/delete',{
       method: 'POST',
       headers:{
         'Content-type': 'application/json',
       },
-      body: JSON.stringify({ID: event.detail})
+      body: JSON.stringify({ID: deleteHolder})
     })
     const data = await response.json();
     console.log("SECTION Deleted")
@@ -64,10 +103,19 @@
           c += 1;
         }
       }
+      isAboutToDelete = false;
+      goto('/admin/sections')
     }
-  
   }
 
+  const deleteConfirmation = (event) => {
+    deleteHolder  = event.detail
+    isAboutToDelete = true;
+  };
+
+  const cancelDelete = () => {
+		isAboutToDelete = false;
+	};
 
   
   // Clean up event listeners on component destruction
@@ -77,6 +125,7 @@
   export let data: PageServerData;
 
   
+  
   console.log(sections)
 </script>
 
@@ -85,9 +134,25 @@
 </svelte:head>
 
 <div class="section-page-container">
-  {#if modalMsg}
-      <p>{modalMsg}</p>
-    {/if}
+    <!-- for successful/error prompts -->
+    <slot>
+      <div class="prompt-container">
+        {#if (successCreate == true || successEdit == true) && alertOn == true}
+          <CustomerSuccess
+          message={modalMsg}
+          on:closeAlert={handleAlertClose}
+          />
+        {/if}
+
+        {#if (successCreate == false || successEdit == false) && alertOn == true} 
+          <CustomerError
+          message={modalMsg}
+          on:closeAlert={handleAlertClose}
+          />
+        {/if}
+      </div>
+    </slot>
+
   <div class="form-container">
     <!-- Input Form -->
     <div class="input-container">
@@ -98,7 +163,19 @@
     </div>
   </div>
   <!-- SectionTable-->
-  <SectionTable sections={sections} on:delete={handleDelete}/>
+  <SectionTable sections={sections} on:delete={deleteConfirmation} on:close={getEditStatus}/>
+
+  {#if isAboutToDelete}
+    <DeleteConfirmationModal
+    {confirmationHeader}
+    {confirmationDetails}
+    {cancelLabel}
+    {confirmLabel}
+    on:cancel={cancelDelete}
+    on:confirm={handleDelete}
+    />
+  {/if}
+
 </div>
 
 <style lang="postcss">
@@ -112,6 +189,16 @@
     background-color: #CDD5EB;
     overflow: hidden;
     overflow-y: auto;
+  }
+
+  .prompt-container{
+    width: 30%;
+    margin-left: auto;
+    margin-right: 5%;
+    display: absolute;
+    align-items: right;
+    justify-content: right;
+    margin-top: 25px;
   }
 
   .form-container {

@@ -13,7 +13,7 @@
 
   // Function to handle coupon deletion
   const deleteCoupon = (couponId) => {
-    // Dispatch 'delete' event with the coupon ID
+  // Dispatch 'delete' event with the coupon ID
     dispatch('delete', couponId);
   };
 

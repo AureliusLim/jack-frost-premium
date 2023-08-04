@@ -8,7 +8,9 @@
   export let sections;
   let editing = false;
   let sectionToBeEdited;
+
   const dispatch = createEventDispatcher();
+
   const deleteSection = (ID)=>{
     dispatch('delete', ID)
   }
@@ -101,7 +103,7 @@
 
 
 {#if editing}
-  <SectionEditor on:close={()=>{editing = !editing}}  sectionName={sectionToBeEdited}/>
+  <SectionEditor on:close={(event)=>{editing = !editing; dispatch("close", event.detail)}}  sectionName={sectionToBeEdited}/>
 {/if}  
 <table class="section-table">
   <thead>

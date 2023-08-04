@@ -3,7 +3,7 @@
 
 	export let btnStyle = '';
 	export let label = 'Delete';
-	export let type: 'button' | 'reset' | 'submit' | null | undefined = 'button';
+	export let type;
 
 	let dispatch = createEventDispatcher();
 	let remove = () => {
@@ -21,17 +21,35 @@
 	<span class="label">{label}</span>
 </button>
 
-<style lang="postcss">
-	.delete-btn {
-		@apply flex items-center justify-center bg-transparent min-w-max max-w-max h-auto 
-    text-gray-800/[.8] hover:text-[#F6162E] cursor-pointer;
+<style >
+		.delete-btn {
+		display: flex;
+		items-align: center;
+		justify-content: center;
+		background-color: transparent;
+		min-width: max-content;
+		max-width: max-content;
+		height: auto;
+		color: rgba(128, 128, 128, 0.8);
+		cursor: pointer;
+	}
+
+	.delete-btn:hover {
+		color: #f6162e;
 	}
 
 	.icon {
-		@apply w-8 h-8 fill-current stroke-1;
+		width: 8px;
+		height: 8px;
+		fill: currentColor;
+		stroke-width: 1;
 	}
 
 	.label {
-		@apply pl-2 text-current font-IstokWeb text-2xl align-bottom;
+		padding-left: 2px;
+		color: currentColor;
+		font-family: IstokWeb;
+		font-size: 2xl;
+		vertical-align: bottom;
 	}
 </style>

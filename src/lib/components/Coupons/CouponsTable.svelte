@@ -4,7 +4,7 @@
   // import { goto } from '$app/navigation';
   import { onMount, onDestroy } from 'svelte';
   import { createEventDispatcher } from 'svelte';
-  // import DeleteIcon from '$lib/components/Buttons/Delete.svelte';
+  import DeleteIcon from '$lib/components/Buttons/Delete.svelte';
   import EditIcon from '$lib/components/Buttons/Edit.svelte';
 	
   export let data = [];

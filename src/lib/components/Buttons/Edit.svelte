@@ -23,12 +23,23 @@
 	</svg>
 </button>
 
-<style lang="postcss">
-	.edit-btn {
-		@apply p-0 bg-transparent min-w-max max-w-max h-auto text-gray-800/[.8] hover:text-[#F6162E] cursor-pointer;
+<style >
+		.edit-btn {
+		padding: 0;
+		background-color: transparent;
+		min-width: max-content;
+		max-width: max-content;
+		height: auto;
+		color: rgba(128, 128, 128, 0.8);
+		cursor: pointer;
+	}
+
+	.edit-btn:hover {
+		color: #f6162e;
 	}
 
 	.icon {
-		@apply w-7 h-7;
+		width: 7px;
+		height: 7px;
 	}
 </style>

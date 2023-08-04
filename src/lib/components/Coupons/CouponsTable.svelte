@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
+	// import { SystemDrive } from '$env/static/private';
+
+  // import { goto } from '$app/navigation';
   import { onMount, onDestroy } from 'svelte';
   import { createEventDispatcher } from 'svelte';
-  import DeleteIcon from '$lib/components/Buttons/Delete.svelte';
+  // import DeleteIcon from '$lib/components/Buttons/Delete.svelte';
   import EditIcon from '$lib/components/Buttons/Edit.svelte';
 	
-  export let data;
+  export let data = [];
 
 
   // Event dispatcher for editing and deleting coupons
@@ -22,7 +24,7 @@
     // Dispatch 'edit' event with the coupon ID
     dispatch('edit', couponId);
   };
-  console.log(data)
+  console.log(data[0])
 </script>
 
 <svelte:head>

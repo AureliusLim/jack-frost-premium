@@ -6,8 +6,7 @@
 		"^.+\\.js$": "babel-jest"
 	},
 	"moduleNameMapper":{
-		"^\\$lib/(.*)$": "<rootDir>/src/lib/$1",
-		"^/src/routes/\\(admin\\)/admin/coupons/\\+page\\.svelte$": "<rootDir>/src/routes/(admin)/admin/coupons/+page.svelte"
+		"^\\$lib/(.*)$": "<rootDir>/src/lib/$1"
 	},
 	
 	"moduleFileExtensions": ["js", "svelte"],
